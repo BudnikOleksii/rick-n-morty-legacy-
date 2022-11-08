@@ -1,3 +1,5 @@
+const DEFAULT_MIN_ACTION_DURATION = 300000;
+
 exports.up = function(knex) {
   return knex.schema.createTable('lots', (table) => {
     table.increments('id');
@@ -13,8 +15,8 @@ exports.up = function(knex) {
     table.integer('current_price').notNullable();
     table.timestamp('start_date').defaultTo(knex.fn.now());
     table.timestamp('end_date').defaultTo(knex.fn.now());
-    table.timestamp('min_action_duration').nullable().defaultTo(null);
-    table.timestamp('max_action_duration').nullable().defaultTo(null);
+    table.integer('min_action_duration').defaultTo(DEFAULT_MIN_ACTION_DURATION);
+    table.integer('max_action_duration').defaultTo(DEFAULT_MIN_ACTION_DURATION);
     table.integer('min_step').notNullable();
     table.integer('max_price').notNullable();
     table
