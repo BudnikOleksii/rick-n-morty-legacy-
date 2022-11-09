@@ -15,11 +15,11 @@ exports.up = function(knex) {
     table
       .integer('origin_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table
       .integer('location_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table.string('image').nullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('deleted_at').nullable().defaultTo(null);
