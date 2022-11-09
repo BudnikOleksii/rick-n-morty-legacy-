@@ -1,12 +1,9 @@
 const { BASE_URL, ENDPOINTS } = require('./constants');
-const { getIdFromUrl } = require('./getIdFromUrl');
 const { getData } = require('./getData');
 
 const getCharactersData = async () => {
-  const speciesMap = new Map();
-  const typesMap = new Map();
-  let speciesIndex = 1;
-  let typesIndex = 1;
+  const speciesSet = new Set();
+  const typesSet = new Set();
   const characters = [];
   const species = [];
   const types = [];
@@ -18,24 +15,17 @@ const getCharactersData = async () => {
         name, status, species, type, gender, origin, location, image,
       } = character;
 
-      if (!speciesMap.has(species)) {
-        speciesMap.set(species, speciesIndex);
-        speciesIndex++;
-      }
-
-      if (!typesMap.has(type)) {
-        typesMap.set(type, typesIndex);
-        typesIndex++;
-      }
+      speciesSet.add(species);
+      typesSet.add(type);
 
       characters.push({
         name,
         status,
-        species_id: speciesMap.get(species),
-        type_id: typesMap.get(type),
+        species,
+        type,
         gender,
-        origin: getIdFromUrl(origin.url) || null,
-        location: getIdFromUrl(location.url) || null,
+        origin: origin.name,
+        location: location.name,
         image,
       })
     });
@@ -67,21 +57,13 @@ const getCharactersData = async () => {
     }
   }
 
-  speciesMap.forEach((_, key) => {
-    species.push({ name: key });
+  speciesSet.forEach((speciesName) => {
+    species.push({ name: speciesName });
   });
 
-  typesMap.forEach((_, key) => {
-    types.push({ name: key });
+  typesSet.forEach((typeName) => {
+    types.push({ name: typeName });
   });
-
-  // console.log(response.data.results);
-  // console.log(next);
-  // console.log(characters);
-  // console.log(typesMap);
-  // console.log(speciesMap);
-  // console.log(species);
-  // console.log(types);
 
   return {
     characters,

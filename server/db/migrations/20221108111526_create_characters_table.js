@@ -1,7 +1,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('characters', (table) => {
     table.increments('id');
-    table.string('name').notNullable().unique();
+    table.string('name').notNullable();
     table.enu('status', ['Alive', 'Dead', 'unknown']).notNullable();
     table
       .integer('species_id')
