@@ -1,18 +1,16 @@
 const { BASE_URL, ENDPOINTS } = require('./constants');
 const { getData } = require('./get-data');
 
-const setDataFromResults = (results, data) => {
-  results.forEach(location => {
-    const {
-      name, type, dimension
-    } = location;
+const getLocation = (location) => {
+  const {
+    name, type, dimension
+  } = location;
 
-    data.push({
-      name,
-      type,
-      dimension,
-    });
-  });
+  return {
+    name,
+    type,
+    dimension,
+  };
 };
 
 const getLocationsData = async () => {
@@ -21,11 +19,12 @@ const getLocationsData = async () => {
 
   while (currentURL) {
     try {
-      const currentResponse = await getData(currentURL);
+      const { data } = await getData(currentURL);
 
-      setDataFromResults(currentResponse.data.results, locations);
+      const currentLocations = data.results.map(getLocation);
+      locations.push(...currentLocations);
 
-      currentURL = currentResponse.data.info.next;
+      currentURL = data.info.next;
     } catch (error) {
       throw new Error(error.message);
     }

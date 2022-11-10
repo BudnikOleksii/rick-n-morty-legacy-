@@ -1,43 +1,42 @@
 const { BASE_URL, ENDPOINTS } = require('./constants');
 const { getData } = require('./get-data');
 
-const setDataFromResults = (results, speciesSet, typesSet, characters) => {
-  results.forEach((character) => {
-    const {
-      name, status, species, type, gender, origin, location, image,
-    } = character;
-
-    speciesSet.add(species);
-    typesSet.add(type);
-
-    characters.push({
-      name,
-      status,
-      species,
-      type,
-      gender,
-      origin: origin.name,
-      location: location.name,
-      image,
-    })
-  });
-};
-
 const getCharactersData = async () => {
   const speciesSet = new Set();
   const typesSet = new Set();
   const characters = [];
   const species = [];
   const types = [];
+  const charactersEpisodes = [];
   let currentURL = BASE_URL + ENDPOINTS.characters;
 
   while (currentURL) {
     try {
-      const response = await getData(currentURL);
+      const { data } = await getData(currentURL);
 
-      currentURL = response.data.info.next;
+      currentURL = data.info.next;
 
-      setDataFromResults(response.data.results, speciesSet, typesSet, characters);
+      data.results.forEach((character) => {
+        const {
+          name, status, species, type, gender, origin, location, image, episode
+        } = character;
+
+        speciesSet.add(species);
+        typesSet.add(type);
+
+        characters.push({
+          name,
+          status,
+          species,
+          type,
+          gender,
+          origin: origin.name,
+          location: location.name,
+          image,
+        });
+
+        charactersEpisodes.push([name, episode]);
+      });
     } catch (error) {
       throw error;
     }
@@ -55,6 +54,7 @@ const getCharactersData = async () => {
     characters,
     species,
     types,
+    charactersEpisodes,
   };
 };
 
