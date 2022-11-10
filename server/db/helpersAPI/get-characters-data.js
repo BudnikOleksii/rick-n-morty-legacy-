@@ -35,7 +35,10 @@ const getCharactersData = async () => {
           image,
         });
 
-        charactersEpisodes.push([name, episode]);
+        charactersEpisodes.push({
+          characterName: name,
+          episodes: episode,
+        });
       });
     } catch (error) {
       throw error;
