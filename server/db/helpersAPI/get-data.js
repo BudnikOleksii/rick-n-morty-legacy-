@@ -12,18 +12,23 @@ const getData = (url) => {
 
       response.on('end', () => {
         const isStatusOk = response.statusCode && response.statusCode >= 200 && response.statusCode < 300;
-        const correctBody = body.replace(/ζ/g, 'Z')
+        const correctBody = body.replace(/ζ/g, 'Z');
         const data = JSON.parse(correctBody);
 
-        resolve({
-          data: isStatusOk ? data : {},
-          status: response.statusCode,
-          statusMessage: (!isStatusOk && data.error) ? data.error : response.statusMessage,
-        });
+        if (!isStatusOk) {
+          reject({
+            status: response.statusCode,
+            message: (!isStatusOk && data.error) ? data.error : response.statusMessage,
+          })
+        }
+
+        resolve({ data });
       });
     });
   });
 };
+
+
 
 module.exports = {
   getData,

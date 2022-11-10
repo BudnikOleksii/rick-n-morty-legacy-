@@ -1,9 +1,5 @@
-const { getCharactersData } = require('../helpersAPI/getCharactersData');
+const { getCharactersData } = require('../helpersAPI/get-characters-data');
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.seed = async function(knex) {
   await Promise.all(
     ['species', 'types', 'characters'].map(tableName => knex(tableName).del())

@@ -1,4 +1,4 @@
-const { getEpisodesData } = require('../helpersAPI/getEpisodesData');
+const { getEpisodesData } = require('../helpersAPI/get-episodes-data');
 
 exports.seed = async function(knex) {
   await knex('episodes').del();

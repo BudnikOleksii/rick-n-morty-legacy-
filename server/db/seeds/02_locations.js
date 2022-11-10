@@ -1,4 +1,4 @@
-const { getLocationsData } = require('../helpersAPI/getLocationsData');
+const { getLocationsData } = require('../helpersAPI/get-locations-data');
 
 exports.seed = async function(knex) {
   await knex('locations').del();
