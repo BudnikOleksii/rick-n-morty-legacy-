@@ -24,12 +24,12 @@ exports.seed = async function(knex) {
       charactersIdsMap.set(data.name, data.id);
     });
 
-  charactersEpisodes.forEach(characterData => {
-    characterData[1].forEach(episodeUrl => {
+  charactersEpisodes.forEach(([characterName, episodes]) => {
+    episodes.forEach(episodeUrl => {
       const episodeName = episodesNamesMap.get(getIdFromUrl(episodeUrl));
 
       charactersEpisodesData.push({
-        character_id: charactersIdsMap.get(characterData[0]),
+        character_id: charactersIdsMap.get(characterName),
         episode_id: episodesIdsMap.get(episodeName),
       })
     })
