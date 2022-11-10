@@ -10,7 +10,7 @@ exports.up = function(knex) {
     table
       .integer('owner_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table.integer('initial_price').notNullable();
     table.integer('current_price').notNullable();
     table.timestamp('start_date').defaultTo(knex.fn.now());
@@ -22,7 +22,7 @@ exports.up = function(knex) {
     table
       .integer('last_person_to_bet_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table.boolean('activated').defaultTo(true);
 
     table

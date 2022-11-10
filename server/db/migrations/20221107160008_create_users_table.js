@@ -4,7 +4,7 @@ exports.up = function(knex) {
     table.string('username').notNullable().unique();
     table.string('login').notNullable().unique();
     table.string('password').notNullable();
-    table.integer('rating').notNullable();
+    table.integer('rating').notNullable().defaultTo(0);
     table.timestamp('registration_date').defaultTo(knex.fn.now());
     table.timestamp('last_visit_date').defaultTo(knex.fn.now());
     table.string('ip').notNullable();

@@ -1,7 +1,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('characters', (table) => {
     table.increments('id');
-    table.string('name').notNullable().unique();
+    table.string('name').notNullable();
     table.enu('status', ['Alive', 'Dead', 'unknown']).notNullable();
     table
       .integer('species_id')
@@ -15,11 +15,11 @@ exports.up = function(knex) {
     table
       .integer('origin_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table
       .integer('location_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table.string('image').nullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('deleted_at').nullable().defaultTo(null);
