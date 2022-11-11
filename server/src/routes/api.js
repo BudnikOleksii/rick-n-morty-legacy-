@@ -1,3 +1,9 @@
-// Collect all our routers
-// api.use('/users', usersRouter);
-// Express routes that define API structure
+const express = require('express');
+
+const usersRouter = require('./users');
+
+const api = express.Router();
+
+api.use('/users', usersRouter);
+
+module.exports = api;
