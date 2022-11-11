@@ -6,16 +6,18 @@
   "scripts": {
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "knex": "^2.3.0",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "objection": "^3.0.1"
   },
