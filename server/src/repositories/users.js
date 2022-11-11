@@ -4,7 +4,7 @@
 const User = require('../models/users');
 
 const getUser = async (id) => {
-  return await User.query().findById(id);
+  return User.query().findById(id);
 };
 
 module.exports = {

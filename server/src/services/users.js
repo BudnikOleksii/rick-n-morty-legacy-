@@ -3,16 +3,17 @@
 // Crate methods for work with our repository, all logic here
 // Summary: Encapsulates all business logic
 const { getUser } = require('../repositories/users');
+const { Api400Error, Api404Error} = require('../utils/errors/ApiErrors');
 
 const getUserById = async (id) => {
   if (isNaN(Number(id)) || !Number(id)) {
-    throw new Error('Please, provide valid id');
+    throw new Api400Error('Invalid ID');
   }
 
   const user = await getUser(id);
 
   if (!user) {
-    throw new Error('Current user not found');
+    throw new Api404Error('Current user not found');
   }
 
   return user;
