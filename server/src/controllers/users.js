@@ -1,7 +1,7 @@
 const httpStatusCodes = require('../utils/httpStatusCodes');
 const { getUserById } = require('../services/users');
 
-const httpGetUserById = async (req, res) => {
+const httpGetUserById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -9,7 +9,7 @@ const httpGetUserById = async (req, res) => {
 
     return res.status(httpStatusCodes.OK).json(user);
   } catch (error) {
-    return res.status(error.statusCode).json(error);
+    next(error);
   }
 };
 

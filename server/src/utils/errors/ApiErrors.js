@@ -23,7 +23,19 @@ class Api404Error extends BaseError {
   }
 }
 
+class Api500Error extends BaseError {
+  constructor (
+    name,
+    statusCode = httpStatusCodes.INTERNAL_SERVER,
+    description = 'Internal server.',
+    isOperational = true
+  ) {
+    super(name, statusCode, isOperational, description);
+  }
+}
+
 module.exports = {
   Api400Error,
   Api404Error,
+  Api500Error,
 };
