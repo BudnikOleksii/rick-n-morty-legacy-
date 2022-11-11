@@ -1,3 +1,3 @@
 // Collect all our routers
 // api.use('/users', usersRouter);
-// Exports API
+// Express routes that define API structure
