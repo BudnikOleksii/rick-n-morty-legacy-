@@ -7,7 +7,7 @@ class User extends Model {
   }
 
   static relationMappings = {
-    movies: {
+    roles: {
       relation: Model.ManyToManyRelation,
       modelClass: Role,
       join: {

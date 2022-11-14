@@ -1,12 +1,19 @@
-// TODO
-// Create class UsersRepository
-// Add methods for work with DB
 const User = require('../models/users');
 
+const getAllUsers = () => {
+  return User.query()
+    .select('id', 'username', 'rating', 'registration_date', 'last_visit_date', 'ip', 'activated')
+    .where('deleted_at', null)
+    .withGraphFetched('roles');
+}
+
 const getUser = (id) => {
-  return User.query().findById(id);
+  return getAllUsers()
+    .andWhere('id', id)
+    .first();
 };
 
 module.exports = {
   getUser,
+  getAllUsers,
 };

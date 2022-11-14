@@ -1,9 +1,7 @@
-// TODO
-// Create class UsersService that get instance of our UsersRepository
-// Crate methods for work with our repository, all logic here
-// Summary: Encapsulates all business logic
-const { getUser } = require('../repositories/users');
+const { getUser, getAllUsers } = require('../repositories/users');
 const { BadRequestError, NotFoundError } = require('../utils/errors/ApiErrors');
+
+const getUsers = () => getAllUsers();
 
 const getUserById = async (id) => {
   if (isNaN(Number(id)) || !Number(id)) {
@@ -20,5 +18,6 @@ const getUserById = async (id) => {
 };
 
 module.exports = {
+  getUsers,
   getUserById,
 };
