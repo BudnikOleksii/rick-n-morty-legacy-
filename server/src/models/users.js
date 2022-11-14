@@ -1,4 +1,5 @@
 const { Model } = require('objection');
+const softDelete = require('objection-soft-delete');
 const Role = require('./roles');
 
 class User extends Model {
@@ -20,6 +21,14 @@ class User extends Model {
       }
     }
   };
+
+  $formatJson(json) {
+    json = super.$formatJson(json);
+    delete json.login;
+    delete json.password;
+    delete json.deleted_at;
+    return json;
+  }
 }
 
 module.exports = User;

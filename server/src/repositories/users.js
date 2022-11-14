@@ -1,19 +1,24 @@
 const User = require('../models/users');
 
-const getAllUsers = () => {
+const getAllUsers = (skip, limit) => {
   return User.query()
-    .select('id', 'username', 'rating', 'registration_date', 'last_visit_date', 'ip', 'activated')
+    .select()
     .where('deleted_at', null)
-    .withGraphFetched('roles');
+    .withGraphFetched('roles')
+    .limit(limit)
+    .offset(skip);
 }
 
 const getUser = (id) => {
-  return getAllUsers()
+  return User.query()
+    .select()
+    .where('deleted_at', null)
     .andWhere('id', id)
+    .withGraphFetched('roles')
     .first();
 };
 
-module.exports = {
+module.exports.UserRepository = {
   getUser,
   getAllUsers,
 };
