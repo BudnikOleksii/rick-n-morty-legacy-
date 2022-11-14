@@ -1,4 +1,4 @@
-const httpStatusCodes = require('../utils/httpStatusCodes');
+const httpStatusCodes = require('../utils/http-status-codes');
 const { getUserById } = require('../services/users');
 
 const httpGetUserById = async (req, res, next) => {
