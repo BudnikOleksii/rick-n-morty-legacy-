@@ -1,22 +1,23 @@
-const { Api500Error, Api400Error, Api404Error} = require('../utils/errors/ApiErrors');
-const errorTypes = require('../utils/errors/error-types');
+const httpStatusCodes = require('../utils/http-status-codes');
+const { InternalServerError, BadRequestError, NotFoundError } = require('../utils/errors/ApiErrors');
 
 const errorHandler = (err, req, res, next) => {
   let error = err;
+  let statusCode = httpStatusCodes.INTERNAL_SERVER;
 
-  switch (error.message) {
-    case errorTypes.invalidId:
-      error = new Api400Error(error.message);
+  switch (err.constructor) {
+    case BadRequestError:
+      statusCode = httpStatusCodes.BAD_REQUEST;
       break;
-    case errorTypes.notFound:
-      error = new Api404Error(error.message);
+    case NotFoundError:
+      statusCode = httpStatusCodes.NOT_FOUND;
       break;
     default:
-      error = new Api500Error(errorTypes.unknownError);
+      error = new InternalServerError('Something went wrong');
       break;
   }
 
-  return res.status(error.statusCode).json(error);
+  return res.status(statusCode).json(error);
 };
 
 module.exports = {
