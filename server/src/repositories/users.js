@@ -3,7 +3,7 @@ const User = require('../models/users');
 const getAllUsers = (skip, limit) => {
   return User.query()
     .select()
-    .where('deleted', false)
+    .whereNotDeleted()
     .withGraphFetched('roles')
     .limit(limit)
     .offset(skip);
@@ -12,8 +12,8 @@ const getAllUsers = (skip, limit) => {
 const getUser = (id) => {
   return User.query()
     .select()
-    .where('deleted', false)
-    .andWhere('id', id)
+    .whereNotDeleted()
+    .where('id', id)
     .withGraphFetched('roles')
     .first();
 };
