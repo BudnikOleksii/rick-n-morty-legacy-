@@ -23,7 +23,17 @@ const httpRegistration = async (req, res, next) => {
 
 const httpLogin = async (req, res, next) => {
   try {
-    // if correct return token
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const errorsArray = errors.array().map(err => err.msg);
+
+      throw new BadRequestError(errorsArray);
+    }
+
+    const userWithToken = await AuthService.loginUser(req.body);
+
+    return res.status(httpStatusCodes.OK).json(userWithToken);
   } catch (error) {
     next(error);
   }

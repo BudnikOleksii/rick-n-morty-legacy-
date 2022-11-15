@@ -41,8 +41,13 @@ const createUser = async (user) => {
   return getUser('id', createdUser.id);
 };
 
+const updateUser = (id, payload) => {
+  return User.query().patchAndFetchById(id, payload);
+};
+
 module.exports.UserRepository = {
   getUser,
   getAllUsers,
   createUser,
+  updateUser,
 };
