@@ -2,7 +2,7 @@ const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
 const { getPagination } = require('../utils/get-pagination');
 
-const httpGetAllUsers = async (req, res, next) => {
+const getAllUsers = async (req, res, next) => {
   const { skip, limit } = getPagination(req.query);
 
   try {
@@ -14,7 +14,7 @@ const httpGetAllUsers = async (req, res, next) => {
   }
 };
 
-const httpGetUserById = async (req, res, next) => {
+const getUserById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -27,6 +27,6 @@ const httpGetUserById = async (req, res, next) => {
 };
 
 module.exports.UserController = {
-  httpGetAllUsers,
-  httpGetUserById,
+  getAllUsers,
+  getUserById,
 };

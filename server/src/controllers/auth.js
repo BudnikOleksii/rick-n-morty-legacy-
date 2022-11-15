@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 const { BadRequestError } = require('../utils/errors/ApiErrors');
 const { AuthService } = require('../services/auth');
 
-const httpRegistration = async (req, res, next) => {
+const registration = async (req, res, next) => {
   try {
     const errors = validationResult(req);
 
@@ -21,7 +21,7 @@ const httpRegistration = async (req, res, next) => {
   }
 };
 
-const httpLogin = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
 
@@ -39,7 +39,7 @@ const httpLogin = async (req, res, next) => {
   }
 };
 
-const httpLogout = async (req, res, next) => {
+const logout = async (req, res, next) => {
   try {
     // logout
   } catch (error) {
@@ -48,7 +48,7 @@ const httpLogout = async (req, res, next) => {
 };
 
 module.exports.AuthController = {
-  httpRegistration,
-  httpLogin,
-  httpLogout,
+  registration,
+  login,
+  logout,
 };
