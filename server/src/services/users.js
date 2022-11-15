@@ -1,23 +1,37 @@
-// TODO
-// Create class UsersService that get instance of our UsersRepository
-// Crate methods for work with our repository, all logic here
-// Summary: Encapsulates all business logic
-const { getUser } = require('../repositories/users');
+const { UserRepository } = require('../repositories/users');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
+
+const MAX_USERS_PER_REQUEST = 100;
+
+const getAllUsers = async (skip, limit) => {
+  if (limit > MAX_USERS_PER_REQUEST) {
+    throw new BadRequestError(['Cannot fetch more than 100 users per request']);
+  }
+
+  const users = await UserRepository.getAllUsers(skip, limit);
+
+  if (!users.length) {
+    throw new NotFoundError(['Users not found']);
+  }
+
+  return users;
+}
 
 const getUserById = async (id) => {
   if (isNaN(Number(id)) || !Number(id)) {
-    throw new Error('Please, provide valid id');
+    throw new BadRequestError(['Invalid ID']);
   }
 
-  const user = await getUser(id);
+  const user = await UserRepository.getUser('id', id);
 
   if (!user) {
-    throw new Error('Current user not found');
+    throw new NotFoundError(['User not found']);
   }
 
   return user;
 };
 
-module.exports = {
+module.exports.UserService = {
+  getAllUsers,
   getUserById,
 };

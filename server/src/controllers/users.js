@@ -1,19 +1,32 @@
-const { getUserById } = require('../services/users');
+const httpStatusCodes = require('../utils/http-status-codes');
+const { UserService } = require('../services/users');
+const { getPagination } = require('../utils/get-pagination');
 
-const httpGetUserById = async (req, res) => {
-  const { id } = req.params;
+const getAllUsers = async (req, res, next) => {
+  const { skip, limit } = getPagination(req.query);
 
   try {
-    const user = await getUserById(id);
+    const users = await UserService.getAllUsers(skip, limit);
 
-    return res.status(200).json(user);
+    return res.status(httpStatusCodes.OK).json(users);
   } catch (error) {
-    return res.status(500).json({
-      error: error.message,
-    });
+    next(error);
   }
 };
 
-module.exports = {
-  httpGetUserById,
+const getUserById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UserService.getUserById(id);
+
+    return res.status(httpStatusCodes.OK).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.UserController = {
+  getAllUsers,
+  getUserById,
 };

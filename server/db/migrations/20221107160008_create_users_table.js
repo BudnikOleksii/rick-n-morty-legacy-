@@ -9,6 +9,7 @@ exports.up = function(knex) {
     table.timestamp('last_visit_date').defaultTo(knex.fn.now());
     table.string('ip').notNullable();
     table.boolean('activated').defaultTo(true);
+    table.boolean('deleted').notNullable().defaultTo(false);
     table.timestamp('deleted_at').nullable().defaultTo(null);
   });
 };
