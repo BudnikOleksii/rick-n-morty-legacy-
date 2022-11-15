@@ -30,6 +30,10 @@ class User extends softDelete({ columnName: 'deleted' })(Model) {
     delete json.deleted_at;
     return json;
   }
+
+  $beforeUpdate() {
+    this.last_visit_date = new Date();
+  }
 }
 
 module.exports = User;

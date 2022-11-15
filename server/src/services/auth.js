@@ -1,22 +1,10 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const { UserRepository } = require('../repositories/users');
 const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/api-errors');
+const { TokenService } = require('./tokens');
 
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const saltRounds = 7;
-
-const generateTokens = (payload) => {
-  const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '3h' });
-  const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: '30d' });
-
-  return {
-    accessToken,
-    refreshToken,
-  };
-};
 
 const registerUser = async (body) => {
   const {
@@ -58,6 +46,7 @@ const loginUser = async (body) => {
   } = body;
 
   const user = await UserRepository.getUser('login', login);
+  const userId = user.id;
 
   if (!user) {
     throw new NotFoundError(['User with current email doesnt exists']);
@@ -69,12 +58,13 @@ const loginUser = async (body) => {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const { accessToken, refreshToken } = generateTokens({
-    id: user.id,
-    roles: user.roles,
-  });
+  const userWithUpdatedIp = await UserRepository.updateUser(userId, { ip });
 
-  const userWithUpdatedIp = await UserRepository.updateUser(user.id, { ip });
+  const { accessToken, refreshToken } = await TokenService.createUserTokens(userId, user.roles);
+
+  if (!accessToken || !refreshToken) {
+    throw new InternalServerError('Cannot create or update tokens');
+  }
 
   return {
     accessToken,
