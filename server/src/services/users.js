@@ -5,13 +5,13 @@ const MAX_USERS_PER_REQUEST = 100;
 
 const getAllUsers = async (skip, limit) => {
   if (limit > MAX_USERS_PER_REQUEST) {
-    throw new BadRequestError('Cannot fetch more than 100 users per request');
+    throw new BadRequestError(['Cannot fetch more than 100 users per request']);
   }
 
   const users = await UserRepository.getAllUsers(skip, limit);
 
   if (!users.length) {
-    throw new NotFoundError('Users not found');
+    throw new NotFoundError(['Users not found']);
   }
 
   return users;
@@ -19,13 +19,13 @@ const getAllUsers = async (skip, limit) => {
 
 const getUserById = async (id) => {
   if (isNaN(Number(id)) || !Number(id)) {
-    throw new BadRequestError('Invalid ID');
+    throw new BadRequestError(['Invalid ID']);
   }
 
-  const user = await UserRepository.getUser(id);
+  const user = await UserRepository.getUser('id', id);
 
   if (!user) {
-    throw new NotFoundError('User not found');
+    throw new NotFoundError(['User not found']);
   }
 
   return user;

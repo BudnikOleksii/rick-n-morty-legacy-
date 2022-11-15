@@ -12,8 +12,11 @@ const errorHandler = (err, req, res, next) => {
     case NotFoundError:
       statusCode = httpStatusCodes.NOT_FOUND;
       break;
+    case InternalServerError:
+      statusCode = httpStatusCodes.INTERNAL_SERVER;
+      break;
     default:
-      error = new InternalServerError('Something went wrong');
+      error = new InternalServerError(['Something went wrong']);
       break;
   }
 

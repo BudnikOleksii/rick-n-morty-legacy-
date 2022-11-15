@@ -1,9 +1,9 @@
 class BaseError extends Error {
-  constructor (name, isOperational, description) {
+  constructor (errors, isOperational, description) {
     super(description);
 
     Object.setPrototypeOf(this, new.target.prototype);
-    this.name = name;
+    this.errors = errors;
     this.isOperational = isOperational;
     Error.captureStackTrace(this);
   }

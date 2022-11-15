@@ -12,21 +12,21 @@ class BadRequestError extends BaseError {
 
 class NotFoundError extends BaseError {
   constructor (
-    name,
+    errors,
     description = 'Not found.',
     isOperational = true
   ) {
-    super(name, isOperational, description);
+    super(errors, isOperational, description);
   }
 }
 
 class InternalServerError extends BaseError {
   constructor (
-    name,
+    errors,
     description = 'Internal server.',
     isOperational = true
   ) {
-    super(name, isOperational, description);
+    super(errors, isOperational, description);
   }
 }
 
