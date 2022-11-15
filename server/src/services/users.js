@@ -1,5 +1,5 @@
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, NotFoundError } = require('../utils/errors/ApiErrors');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 
 const MAX_USERS_PER_REQUEST = 100;
 

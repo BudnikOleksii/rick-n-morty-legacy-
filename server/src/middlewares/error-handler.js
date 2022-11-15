@@ -1,5 +1,5 @@
 const httpStatusCodes = require('../utils/http-status-codes');
-const { InternalServerError, BadRequestError, NotFoundError } = require('../utils/errors/ApiErrors');
+const { InternalServerError, BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 
 const errorHandler = (err, req, res, next) => {
   let error = err;

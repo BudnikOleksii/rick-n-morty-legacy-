@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/ApiErrors');
+const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/api-errors');
 const { secretKey } = require('../../config');
 
 const saltRounds = 7;

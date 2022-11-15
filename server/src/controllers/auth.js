@@ -1,17 +1,10 @@
 const httpStatusCodes = require('../utils/http-status-codes');
-const { validationResult } = require('express-validator');
-const { BadRequestError } = require('../utils/errors/ApiErrors');
 const { AuthService } = require('../services/auth');
+const { validate } = require('../validations/validate');
 
 const registration = async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const errorsArray = errors.array().map(err => err.msg);
-
-      throw new BadRequestError(errorsArray);
-    }
+    validate(req);
 
     const user = await AuthService.registerUser(req.body)
 
@@ -23,13 +16,7 @@ const registration = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const errorsArray = errors.array().map(err => err.msg);
-
-      throw new BadRequestError(errorsArray);
-    }
+    validate(req);
 
     const userWithToken = await AuthService.loginUser(req.body);
 

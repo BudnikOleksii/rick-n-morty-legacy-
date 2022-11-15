@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const { secretKey } = require('../../config');
-const { BadRequestError } = require('../utils/errors/ApiErrors');
+const { BadRequestError } = require('../utils/errors/api-errors');
 
 const authMiddleware = async (req, res, next) => {
   if (req.method === 'OPTIONS') {
