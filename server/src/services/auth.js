@@ -1,13 +1,21 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UserRepository } = require('../repositories/users');
 const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/api-errors');
-const { secretKey } = require('../../config');
 
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const saltRounds = 7;
 
-const generateAccessToken = (payload) => {
-  return jwt.sign(payload, secretKey, { expiresIn: '24h' });
+const generateTokens = (payload) => {
+  const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '3h' });
+  const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: '30d' });
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 const registerUser = async (body) => {
@@ -27,7 +35,8 @@ const registerUser = async (body) => {
     throw new BadRequestError(['Current user already exists']);
   }
 
-  const hashPassword = bcrypt.hashSync(password, saltRounds);
+  const hashPassword = await bcrypt.hash(password, saltRounds);
+  console.log(hashPassword);
 
   const user = await UserRepository.createUser({
     username,
@@ -54,13 +63,13 @@ const loginUser = async (body) => {
     throw new NotFoundError(['User with current email doesnt exists']);
   }
 
-  const isPasswordValid = bcrypt.compareSync(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const token = generateAccessToken({
+  const { accessToken, refreshToken } = generateTokens({
     id: user.id,
     roles: user.roles,
   });
@@ -68,7 +77,8 @@ const loginUser = async (body) => {
   const userWithUpdatedIp = await UserRepository.updateUser(user.id, { ip });
 
   return {
-    token,
+    accessToken,
+    refreshToken,
     user: userWithUpdatedIp,
   };
 };
