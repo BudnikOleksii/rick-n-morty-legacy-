@@ -51,7 +51,7 @@ const login = async (body) => {
     login, password, ip
   } = body;
 
-  const user = await UserRepository.getUser('login', login);
+  const user = await UserRepository.getExistingUser('login', login);
 
   if (!user) {
     throw new NotFoundError(['User with current email doesnt exists']);
@@ -89,7 +89,7 @@ const refreshToken = async (refreshToken) => {
     throw new UnauthorizedError(['User unauthorized']);
   }
 
-  const user = await UserRepository.getUser('id', userData.id);
+  const user = await UserRepository.getExistingUser('id', userData.id);
 
   if (!user) {
     throw new NotFoundError(['User doesnt exists']);

@@ -23,7 +23,7 @@ const getUserById = async (id) => {
     throw new BadRequestError(['Invalid ID']);
   }
 
-  const user = await UserRepository.getUser('id', id);
+  const user = await UserRepository.getExistingUser('id', id);
 
   if (!user) {
     throw new NotFoundError(['User not found']);
@@ -34,14 +34,20 @@ const getUserById = async (id) => {
 
 const deleteUser = async (id, tokenData) => {
   const isUserHavePermission = verifyPermission(tokenData, id);
-
+  console.log(id, tokenData);
   if (!isUserHavePermission) {
     throw new ForbiddenError(['Forbidden']);
   }
 
+  const user = await UserRepository.getExistingUser('id', id);
+
+  if (!user) {
+    throw new NotFoundError(['User not found']);
+  }
+
   const deleted = await UserRepository.deleteUser(id);
 
-  return { msg: 'ok', deleted };
+  return deleted;
 }
 
 module.exports.UserService = {

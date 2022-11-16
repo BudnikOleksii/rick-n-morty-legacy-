@@ -34,7 +34,6 @@ const deleteUser = async (req, res, next) => {
 
     return res.status(httpStatusCodes.OK).json(user);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

@@ -13,6 +13,10 @@ const getAllUsers = (skip, limit) => {
 }
 
 const getUser = (columnName, value) => {
+  return User.query().findOne(columnName, value);
+};
+
+const getExistingUser = (columnName, value) => {
   return User.query()
     .select()
     .whereNotDeleted()
@@ -36,7 +40,7 @@ const createUser = async (user) => {
 
   await createdUser
     .$relatedQuery('roles')
-    .relate(USERS_GROUP_ID);
+    .relate(1);
 
   return getUser('id', createdUser.id);
 };
@@ -51,6 +55,7 @@ const deleteUser = async (id) => {
 
 module.exports.UserRepository = {
   getUser,
+  getExistingUser,
   getAllUsers,
   createUser,
   updateUser,
