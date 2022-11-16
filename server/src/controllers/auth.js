@@ -51,8 +51,26 @@ const logout = async (req, res, next) => {
   }
 };
 
+const refreshToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.cookies;
+
+    const userData = await AuthService.refreshToken(refreshToken);
+
+    res.cookie('refreshToken', userData.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+
+    return res.status(httpStatusCodes.OK).json(userData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.AuthController = {
   registration,
   login,
   logout,
+  refreshToken,
 };

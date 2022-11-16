@@ -1,11 +1,8 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const { BadRequestError } = require('../utils/errors/api-errors');
+const { UnauthorizedError } = require('../utils/errors/api-errors');
+const { TokenService } = require('../services/tokens');
 
 const authMiddleware = (authorisedRoles) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     if (req.method === 'OPTIONS') {
       next();
     }
@@ -14,20 +11,30 @@ const authMiddleware = (authorisedRoles) => {
       const authorisationHeader = req.headers.authorization;
 
       if (!authorisationHeader) {
-        throw new BadRequestError('User not authorised');
+        throw new UnauthorizedError('User not authorised');
       }
 
-      const token = authorisationHeader.split(' ')[1];
-      const { roles } = jwt.verify(token, JWT_ACCESS_SECRET);
-      const hasRole = roles.some(role => authorisedRoles.includes(role.title));
+      const accessToken = authorisationHeader.split(' ')[1];
+
+      if (!accessToken) {
+        throw new UnauthorizedError('User not authorised');
+      }
+
+      const userData = await TokenService.validateAccessToken(accessToken);
+
+      if (!userData) {
+        throw new UnauthorizedError('User not authorised');
+      }
+
+      const hasRole = userData.roles.some(role => authorisedRoles.includes(role.title));
 
       if (!hasRole) {
-        throw new BadRequestError('User does not have access privileges');
+        throw new UnauthorizedError('User does not have access privileges');
       }
 
       return next();
     } catch (error) {
-      next(error);
+      return next(error);
     }
   };
 };

@@ -7,6 +7,7 @@ const getAllUsers = async (req, res, next) => {
 
   try {
     const users = await UserService.getAllUsers(skip, limit);
+    console.log('USERS CONTROLLER');
 
     return res.status(httpStatusCodes.OK).json(users);
   } catch (error) {

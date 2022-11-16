@@ -1,6 +1,13 @@
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+
 const { generateTokens } = require('../utils/generate-tokens');
 const { TokenRepository } = require('../repositories/tokens');
 const { InternalServerError } = require('../utils/errors/api-errors');
+
+const getToken = (columnName, value) => {
+  return TokenRepository.getToken(columnName, value);
+};
 
 const createTokens = async (userId, roles) => {
   const { accessToken, refreshToken } = generateTokens({
@@ -8,7 +15,7 @@ const createTokens = async (userId, roles) => {
     roles,
   });
 
-  let token = await TokenRepository.getToken('user_id', userId);
+  let token = await getToken('user_id', userId);
 
   if (token) {
     token = await TokenRepository.refreshToken(token.id, refreshToken);
@@ -32,7 +39,30 @@ const removeToken = async (refreshToken) => {
   return isTokenDeleted;
 };
 
+const validateAccessToken = async (token) => {
+  try {
+    const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+
+    return userData;
+  } catch (e) {
+    return null;
+  }
+};
+
+const validateRefreshToken = async (token) => {
+  try {
+    const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+    return userData;
+  } catch (e) {
+    return null;
+  }
+};
+
 module.exports.TokenService = {
+  getToken,
   createTokens,
   removeToken,
+  validateAccessToken,
+  validateRefreshToken,
 };

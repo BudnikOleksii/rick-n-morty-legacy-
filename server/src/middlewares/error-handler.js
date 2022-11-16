@@ -1,5 +1,7 @@
 const httpStatusCodes = require('../utils/http-status-codes');
-const { InternalServerError, BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
+const {
+  InternalServerError, BadRequestError, NotFoundError, UnauthorizedError
+} = require('../utils/errors/api-errors');
 
 const errorHandler = (err, req, res, next) => {
   let error = err;
@@ -9,6 +11,9 @@ const errorHandler = (err, req, res, next) => {
     case BadRequestError:
       statusCode = httpStatusCodes.BAD_REQUEST;
       break;
+    case UnauthorizedError:
+      statusCode = httpStatusCodes.UNAUTHORIZED;
+      break
     case NotFoundError:
       statusCode = httpStatusCodes.NOT_FOUND;
       break;

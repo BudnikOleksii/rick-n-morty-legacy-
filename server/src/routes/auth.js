@@ -7,6 +7,6 @@ const authRouter = express.Router();
 authRouter.post('/registration', newUserValidations, AuthController.registration);
 authRouter.post('/login', userValidations, AuthController.login);
 authRouter.post('/logout', AuthController.logout);
-// authRouter.get('/refresh', AuthController.logout);
+authRouter.get('/refresh', AuthController.refreshToken);
 
 module.exports = authRouter;

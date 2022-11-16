@@ -2,11 +2,21 @@ const BaseError = require('./base-error');
 
 class BadRequestError extends BaseError {
   constructor (
-    name,
+    errors,
     description = 'Bad request.',
     isOperational = true
   ) {
-    super(name, isOperational, description);
+    super(errors, isOperational, description);
+  }
+}
+
+class UnauthorizedError extends BaseError {
+  constructor (
+    errors,
+    description = 'Unauthorized.',
+    isOperational = true
+  ) {
+    super(errors, isOperational, description);
   }
 }
 
@@ -32,6 +42,7 @@ class InternalServerError extends BaseError {
 
 module.exports = {
   BadRequestError,
+  UnauthorizedError,
   NotFoundError,
   InternalServerError,
 };

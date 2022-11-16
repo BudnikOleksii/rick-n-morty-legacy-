@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/api-errors');
+const {
+  BadRequestError, InternalServerError, NotFoundError, UnauthorizedError
+} = require('../utils/errors/api-errors');
 const { TokenService } = require('./tokens');
 
 const saltRounds = 7;
@@ -75,8 +77,34 @@ const logout = (refreshToken) => {
   return TokenService.removeToken(refreshToken);
 };
 
+const refreshToken = async (refreshToken) => {
+  if (!refreshToken) {
+    throw new UnauthorizedError(['Token was not provided']);
+  }
+
+  const userData = await TokenService.validateRefreshToken(refreshToken);
+  const tokenFromDB = await TokenService.getToken('refresh_token', refreshToken);
+
+  if (!userData || !tokenFromDB) {
+    throw new UnauthorizedError(['User unauthorized']);
+  }
+
+  const user = await UserRepository.getUser('id', userData.id);
+
+  if (!user) {
+    throw new NotFoundError(['User doesnt exists']);
+  }
+  const tokens = await TokenService.createTokens(user.id, user.roles);
+
+  return {
+    ...tokens,
+    user,
+  };
+}
+
 module.exports.AuthService = {
   register,
   login,
   logout,
+  refreshToken,
 };
