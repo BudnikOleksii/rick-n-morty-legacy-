@@ -11,25 +11,25 @@ const authMiddleware = (authorisedRoles) => {
       const authorisationHeader = req.headers.authorization;
 
       if (!authorisationHeader) {
-        throw new UnauthorizedError('User not authorised');
+        throw new UnauthorizedError(['User not authorised']);
       }
 
       const accessToken = authorisationHeader.split(' ')[1];
 
       if (!accessToken) {
-        throw new UnauthorizedError('User not authorised');
+        throw new UnauthorizedError(['User not authorised']);
       }
 
       const userData = await TokenService.validateAccessToken(accessToken);
 
       if (!userData) {
-        throw new UnauthorizedError('User not authorised');
+        throw new UnauthorizedError(['User not authorised']);
       }
 
       const hasRole = userData.roles.some(role => authorisedRoles.includes(role.title));
 
       if (!hasRole) {
-        throw new UnauthorizedError('User does not have access privileges');
+        throw new UnauthorizedError(['User does not have access privileges']);
       }
 
       req.user = userData;

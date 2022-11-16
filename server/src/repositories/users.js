@@ -1,7 +1,5 @@
 const User = require('../models/users');
-
-// hardcode, maybe we need to get users_group id from DB everytime when we create user
-const USERS_GROUP_ID = 2;
+const { RoleRepository } = require('./roles');
 
 const getAllUsers = (skip, limit) => {
   return User.query()
@@ -38,15 +36,19 @@ const createUser = async (user) => {
       ip,
     });
 
+  const role = await RoleRepository.getRole('user');
+
   await createdUser
     .$relatedQuery('roles')
-    .relate(1);
+    .relate(role);
 
-  return getUser('id', createdUser.id);
+  return getExistingUser('id', createdUser.id);
 };
 
-const updateUser = (id, payload) => {
-  return User.query().patchAndFetchById(id, payload);
+const updateUser = async (id, payload) => {
+  await User.query().patch(payload).findById(id);
+
+  return getExistingUser('id', id);
 };
 
 const deleteUser = async (id) => {

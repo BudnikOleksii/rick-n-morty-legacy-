@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -24,8 +23,7 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "objection": "^3.0.1",
-    "objection-js-soft-delete": "^3.0.3",
-    "objection-soft-delete": "^1.0.7"
+    "objection-js-soft-delete": "^3.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
