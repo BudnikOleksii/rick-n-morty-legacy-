@@ -73,22 +73,14 @@ const login = async (body) => {
   };
 };
 
-const logout = (refreshToken) => {
+const logout = async (refreshToken) => {
+  await TokenService.getCheckedDataFromToken(refreshToken);
+
   return TokenService.removeToken(refreshToken);
 };
 
 const refreshToken = async (refreshToken) => {
-  if (!refreshToken) {
-    throw new UnauthorizedError(['Token was not provided']);
-  }
-
-  const userData = await TokenService.validateRefreshToken(refreshToken);
-  const tokenFromDB = await TokenService.getToken('refresh_token', refreshToken);
-
-  if (!userData || !tokenFromDB) {
-    throw new UnauthorizedError(['User unauthorized']);
-  }
-
+  const { userData } = await TokenService.getCheckedDataFromToken(refreshToken);
   const user = await UserRepository.getExistingUser('id', userData.id);
 
   if (!user) {

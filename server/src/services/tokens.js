@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const { generateTokens } = require('../utils/generate-tokens');
 const { TokenRepository } = require('../repositories/tokens');
-const { InternalServerError } = require('../utils/errors/api-errors');
+const { InternalServerError, UnauthorizedError} = require('../utils/errors/api-errors');
 
 const getToken = (columnName, value) => {
   return TokenRepository.getToken(columnName, value);
@@ -59,10 +59,28 @@ const validateRefreshToken = async (token) => {
   }
 };
 
+const getCheckedDataFromToken = async (refreshToken) => {
+  if (!refreshToken) {
+    throw new UnauthorizedError(['Token was not provided']);
+  }
+
+  const userData = await validateRefreshToken(refreshToken);
+  const tokenFromDB = await getToken('refresh_token', refreshToken);
+
+  if (!userData || !tokenFromDB) {
+    throw new UnauthorizedError(['User unauthorized']);
+  }
+
+  return {
+    userData,
+  };
+}
+
 module.exports.TokenService = {
   getToken,
   createTokens,
   removeToken,
   validateAccessToken,
   validateRefreshToken,
+  getCheckedDataFromToken,
 };
