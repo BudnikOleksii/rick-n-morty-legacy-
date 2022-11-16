@@ -32,6 +32,7 @@ const authMiddleware = (authorisedRoles) => {
         throw new UnauthorizedError('User does not have access privileges');
       }
 
+      req.user = userData;
       return next();
     } catch (error) {
       return next(error);

@@ -26,7 +26,21 @@ const getUserById = async (req, res, next) => {
   }
 };
 
+const deleteUser = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UserService.deleteUser(id, req.user);
+
+    return res.status(httpStatusCodes.OK).json(user);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 module.exports.UserController = {
   getAllUsers,
   getUserById,
+  deleteUser,
 };

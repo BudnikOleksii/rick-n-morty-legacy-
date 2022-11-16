@@ -1,5 +1,6 @@
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError, ForbiddenError } = require('../utils/errors/api-errors');
+const { verifyPermission } = require('../utils/verify-permission');
 
 const MAX_USERS_PER_REQUEST = 100;
 
@@ -31,7 +32,20 @@ const getUserById = async (id) => {
   return user;
 };
 
+const deleteUser = async (id, tokenData) => {
+  const isUserHavePermission = verifyPermission(tokenData, id);
+
+  if (!isUserHavePermission) {
+    throw new ForbiddenError(['Forbidden']);
+  }
+
+  const deleted = await UserRepository.deleteUser(id);
+
+  return { msg: 'ok', deleted };
+}
+
 module.exports.UserService = {
   getAllUsers,
   getUserById,
+  deleteUser,
 };

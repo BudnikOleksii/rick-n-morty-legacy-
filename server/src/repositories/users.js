@@ -45,9 +45,14 @@ const updateUser = (id, payload) => {
   return User.query().patchAndFetchById(id, payload);
 };
 
+const deleteUser = async (id) => {
+  return User.query().deleteById(id);
+};
+
 module.exports.UserRepository = {
   getUser,
   getAllUsers,
   createUser,
   updateUser,
+  deleteUser,
 };

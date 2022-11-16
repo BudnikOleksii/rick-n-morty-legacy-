@@ -9,5 +9,6 @@ const usersRouter = express.Router();
 usersRouter.use(authMiddleware(authorisedRoles));
 usersRouter.get('/', UserController.getAllUsers);
 usersRouter.get('/:id', UserController.getUserById);
+usersRouter.delete('/:id', UserController.deleteUser);
 
 module.exports = usersRouter;

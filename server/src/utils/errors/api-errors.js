@@ -20,6 +20,16 @@ class UnauthorizedError extends BaseError {
   }
 }
 
+class ForbiddenError extends BaseError {
+  constructor (
+    errors,
+    description = 'Forbidden.',
+    isOperational = true
+  ) {
+    super(errors, isOperational, description);
+  }
+}
+
 class NotFoundError extends BaseError {
   constructor (
     errors,
@@ -43,6 +53,7 @@ class InternalServerError extends BaseError {
 module.exports = {
   BadRequestError,
   UnauthorizedError,
+  ForbiddenError,
   NotFoundError,
   InternalServerError,
 };
