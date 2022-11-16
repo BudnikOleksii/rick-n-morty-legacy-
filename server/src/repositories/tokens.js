@@ -17,8 +17,15 @@ const refreshToken = (id, token) => {
   return Token.query().patchAndFetchById(id,{ refresh_token: token });
 };
 
+const removeToken = (refreshToken) => {
+  return Token.query()
+    .delete()
+    .where('refresh_token', '=', refreshToken)
+};
+
 module.exports.TokenRepository = {
   getToken,
   createToken,
   refreshToken,
+  removeToken,
 };

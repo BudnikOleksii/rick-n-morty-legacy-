@@ -1,7 +1,8 @@
 const { generateTokens } = require('../utils/generate-tokens');
 const { TokenRepository } = require('../repositories/tokens');
+const { InternalServerError } = require('../utils/errors/api-errors');
 
-const createUserTokens = async (userId, roles) => {
+const createTokens = async (userId, roles) => {
   const { accessToken, refreshToken } = generateTokens({
     id: userId,
     roles,
@@ -21,6 +22,17 @@ const createUserTokens = async (userId, roles) => {
   }
 };
 
+const removeToken = async (refreshToken) => {
+  const isTokenDeleted = await TokenRepository.removeToken(refreshToken);
+
+  if (!isTokenDeleted) {
+    throw new InternalServerError(['Token was not removed']);
+  }
+
+  return isTokenDeleted;
+};
+
 module.exports.TokenService = {
-  createUserTokens,
+  createTokens,
+  removeToken,
 };

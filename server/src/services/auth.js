@@ -1,4 +1,3 @@
-require('dotenv').config();
 const bcrypt = require('bcrypt');
 const { UserRepository } = require('../repositories/users');
 const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/api-errors');
@@ -6,7 +5,7 @@ const { TokenService } = require('./tokens');
 
 const saltRounds = 7;
 
-const registerUser = async (body) => {
+const register = async (body) => {
   const {
     username, login, password, ip
   } = body;
@@ -24,7 +23,6 @@ const registerUser = async (body) => {
   }
 
   const hashPassword = await bcrypt.hash(password, saltRounds);
-  console.log(hashPassword);
 
   const user = await UserRepository.createUser({
     username,
@@ -34,19 +32,24 @@ const registerUser = async (body) => {
   });
 
   if (!user) {
-    throw new InternalServerError('Cannot create user');
+    throw new InternalServerError(['Cannot create user']);
   }
 
-  return user;
+  const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
+
+  return {
+    accessToken,
+    refreshToken,
+    user,
+  };
 };
 
-const loginUser = async (body) => {
+const login = async (body) => {
   const {
     login, password, ip
   } = body;
 
   const user = await UserRepository.getUser('login', login);
-  const userId = user.id;
 
   if (!user) {
     throw new NotFoundError(['User with current email doesnt exists']);
@@ -58,13 +61,8 @@ const loginUser = async (body) => {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const userWithUpdatedIp = await UserRepository.updateUser(userId, { ip });
-
-  const { accessToken, refreshToken } = await TokenService.createUserTokens(userId, user.roles);
-
-  if (!accessToken || !refreshToken) {
-    throw new InternalServerError('Cannot create or update tokens');
-  }
+  const userWithUpdatedIp = await UserRepository.updateUser(user.id, { ip });
+  const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
   return {
     accessToken,
@@ -73,7 +71,12 @@ const loginUser = async (body) => {
   };
 };
 
+const logout = (refreshToken) => {
+  return TokenService.removeToken(refreshToken);
+};
+
 module.exports.AuthService = {
-  registerUser,
-  loginUser,
+  register,
+  login,
+  logout,
 };
