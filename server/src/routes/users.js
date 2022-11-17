@@ -10,5 +10,6 @@ usersRouter.use(authMiddleware(authorisedRoles));
 usersRouter.get('/', UserController.getAllUsers);
 usersRouter.get('/:id', UserController.getUserById);
 usersRouter.delete('/:id', UserController.deleteUser);
+usersRouter.patch('/role/:id', UserController.addNewRole);
 
 module.exports = usersRouter;

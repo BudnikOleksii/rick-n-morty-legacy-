@@ -1,42 +1,10 @@
 const bcrypt = require('bcrypt');
-const { UserRepository } = require('../repositories/users');
-const {
-  BadRequestError, InternalServerError, NotFoundError, UnauthorizedError
-} = require('../utils/errors/api-errors');
+const { BadRequestError } = require('../utils/errors/api-errors');
+const { UserService } = require('./users');
 const { TokenService } = require('./tokens');
 
-const saltRounds = 7;
-
 const register = async (body) => {
-  const {
-    username, login, password, ip
-  } = body;
-
-  let candidate = await UserRepository.getUser('login', login);
-
-  if (candidate) {
-    throw new BadRequestError(['Current email already in use']);
-  }
-
-  candidate = await UserRepository.getUser('username', username);
-
-  if (candidate) {
-    throw new BadRequestError(['Current user already exists']);
-  }
-
-  const hashPassword = await bcrypt.hash(password, saltRounds);
-
-  const user = await UserRepository.createUser({
-    username,
-    login,
-    password: hashPassword,
-    ip,
-  });
-
-  if (!user) {
-    throw new InternalServerError(['Cannot create user']);
-  }
-
+  const user = await UserService.createUser(body);
   const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
   return {
@@ -51,19 +19,14 @@ const login = async (body) => {
     login, password, ip
   } = body;
 
-  const user = await UserRepository.getExistingUser('login', login);
-
-  if (!user) {
-    throw new NotFoundError(['User with current email doesnt exists']);
-  }
-
+  const user = await UserService.getExistingUser('login', login);
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const userWithUpdatedIp = await UserRepository.updateUser(user.id, { ip });
+  const userWithUpdatedIp = await UserService.updateUser(user.id, { ip });
   const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
   return {
@@ -81,11 +44,7 @@ const logout = async (refreshToken) => {
 
 const refreshToken = async (refreshToken) => {
   const { userData } = await TokenService.getCheckedDataFromToken(refreshToken);
-  const user = await UserRepository.getExistingUser('id', userData.id);
-
-  if (!user) {
-    throw new NotFoundError(['User doesnt exists']);
-  }
+  const user = await UserService.getUserById(userData.id);
   const tokens = await TokenService.createTokens(user.id, user.roles);
 
   return {

@@ -30,9 +30,22 @@ const deleteUser = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const user = await UserService.deleteUser(id, req.user);
+    const isDeleted = await UserService.deleteUser(id, req.user);
 
-    return res.status(httpStatusCodes.OK).json(user);
+    return res.status(httpStatusCodes.OK).json(isDeleted);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addNewRole = async (req, res, next) => {
+  const { id } = req.params;
+  const { role } = req.body;
+
+  try {
+    const userWithNewRole = await UserService.addNewRole(id, role);
+
+    return res.status(httpStatusCodes.OK).json(userWithNewRole);
   } catch (error) {
     next(error);
   }
@@ -42,4 +55,5 @@ module.exports.UserController = {
   getAllUsers,
   getUserById,
   deleteUser,
+  addNewRole,
 };
