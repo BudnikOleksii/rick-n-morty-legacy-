@@ -32,7 +32,6 @@ class User extends softDelete(Model) {
     json = super.$formatJson(json);
     delete json.login;
     delete json.password;
-    delete json.deleted;
     delete json.deleted_at;
     return json;
   }

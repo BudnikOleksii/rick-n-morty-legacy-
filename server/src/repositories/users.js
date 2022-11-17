@@ -55,6 +55,10 @@ const deleteUser = async (id) => {
   return User.query().deleteById(id);
 };
 
+const addNewRole = async (user, role) => {
+  // add relation to DB
+};
+
 module.exports.UserRepository = {
   getUser,
   getExistingUser,
@@ -62,4 +66,5 @@ module.exports.UserRepository = {
   createUser,
   updateUser,
   deleteUser,
+  addNewRole,
 };

@@ -98,9 +98,7 @@ const deleteUser = async (id, tokenData) => {
 };
 
 const addNewRole = async (userId, role) => {
-  const user = getUserById(userId);
-
-
+  // send request to repository
 };
 
 module.exports.UserService = {
