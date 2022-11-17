@@ -8,7 +8,7 @@ const getAllUsers = (skip, limit) => {
     .withGraphFetched('roles')
     .limit(limit)
     .offset(skip);
-}
+};
 
 const getUser = (columnName, value) => {
   return User.query().findOne(columnName, value);

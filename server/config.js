@@ -11,7 +11,7 @@ const development = {
     port: parseInt(DEV_SERVER_PORT) || 8080,
     authorisedRoles: ['admin', 'user'],
     saltRounds: 7,
-    maxUsersPerRequest: 100,
+    maxPerRequest: 100,
     defaultPage: 1,
     defaultLimitPerPage: 20,
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',

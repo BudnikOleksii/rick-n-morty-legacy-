@@ -5,11 +5,11 @@ const { BadRequestError, NotFoundError, ForbiddenError, InternalServerError} = r
 const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
 
-const { maxUsersPerRequest, saltRounds } = config.server;
+const { maxPerRequest, saltRounds } = config.server;
 
 const getAllUsers = async (skip, limit) => {
-  if (limit > maxUsersPerRequest) {
-    throw new BadRequestError(['Cannot fetch more than 100 users per request']);
+  if (limit > maxPerRequest) {
+    throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} users per request`]);
   }
 
   const users = await UserRepository.getAllUsers(skip, limit);
