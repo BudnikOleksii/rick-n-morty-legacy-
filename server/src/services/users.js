@@ -1,13 +1,14 @@
+const config = require('../../config');
+
 const { UserRepository } = require('../repositories/users');
 const { BadRequestError, NotFoundError, ForbiddenError, InternalServerError} = require('../utils/errors/api-errors');
 const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
 
-const MAX_USERS_PER_REQUEST = 100;
-const saltRounds = 7;
+const { maxUsersPerRequest, saltRounds } = config.server;
 
 const getAllUsers = async (skip, limit) => {
-  if (limit > MAX_USERS_PER_REQUEST) {
+  if (limit > maxUsersPerRequest) {
     throw new BadRequestError(['Cannot fetch more than 100 users per request']);
   }
 

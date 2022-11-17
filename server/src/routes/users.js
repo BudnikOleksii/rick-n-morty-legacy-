@@ -1,8 +1,9 @@
 const express = require('express');
+const config = require('../../config');
 const { UserController } = require('../controllers/users');
 const { authMiddleware } = require('../middlewares/auth');
 
-const authorisedRoles = ['admin', 'user'];
+const authorisedRoles = config.server.authorisedRoles;
 
 const usersRouter = express.Router();
 
