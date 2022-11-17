@@ -9,7 +9,7 @@ exports.seed = async function(knex) {
   const usersRoleId = await knex
     .select('id')
     .from('roles')
-    .where('title', 'admin');
+    .where('title', 'user');
 
   const usersData = await knex
     .select('id')

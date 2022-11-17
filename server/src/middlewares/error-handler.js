@@ -1,5 +1,7 @@
 const httpStatusCodes = require('../utils/http-status-codes');
-const { InternalServerError, BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
+const {
+  InternalServerError, BadRequestError, NotFoundError, UnauthorizedError, ForbiddenError
+} = require('../utils/errors/api-errors');
 
 const errorHandler = (err, req, res, next) => {
   let error = err;
@@ -8,6 +10,12 @@ const errorHandler = (err, req, res, next) => {
   switch (err.constructor) {
     case BadRequestError:
       statusCode = httpStatusCodes.BAD_REQUEST;
+      break;
+    case UnauthorizedError:
+      statusCode = httpStatusCodes.UNAUTHORIZED;
+      break
+    case ForbiddenError:
+      statusCode = httpStatusCodes.FORBIDDEN;
       break;
     case NotFoundError:
       statusCode = httpStatusCodes.NOT_FOUND;

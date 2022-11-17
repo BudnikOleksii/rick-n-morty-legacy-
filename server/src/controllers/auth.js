@@ -6,9 +6,9 @@ const registration = async (req, res, next) => {
   try {
     validate(req);
 
-    const user = await AuthService.registerUser(req.body)
+    const userData = await AuthService.register(req.body);
 
-    return res.status(httpStatusCodes.CREATED).json(user);
+    return res.status(httpStatusCodes.CREATED).json(userData);
   } catch (error) {
     next(error);
   }
@@ -18,9 +18,9 @@ const login = async (req, res, next) => {
   try {
     validate(req);
 
-    const userWithToken = await AuthService.loginUser(req.body);
+    const userData = await AuthService.login(req.body);
 
-    return res.status(httpStatusCodes.OK).json(userWithToken);
+    return res.status(httpStatusCodes.OK).json(userData);
   } catch (error) {
     next(error);
   }
@@ -28,7 +28,23 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
-    // logout
+    const { refreshToken } = req.body;
+
+    const token = await AuthService.logout(refreshToken);
+
+    return res.status(httpStatusCodes.OK).json(token);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const refreshToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+
+    const userData = await AuthService.refreshToken(refreshToken);
+
+    return res.status(httpStatusCodes.OK).json(userData);
   } catch (error) {
     next(error);
   }
@@ -38,4 +54,5 @@ module.exports.AuthController = {
   registration,
   login,
   logout,
+  refreshToken,
 };

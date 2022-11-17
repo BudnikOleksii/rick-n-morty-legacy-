@@ -1,29 +1,43 @@
-const jwt = require('jsonwebtoken');
+const { UnauthorizedError } = require('../utils/errors/api-errors');
+const { TokenService } = require('../services/tokens');
 
-const { secretKey } = require('../../config');
-const { BadRequestError } = require('../utils/errors/api-errors');
-
-const authMiddleware = async (req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    next();
-  }
-
-  try {
-    const authorisationHeader = req.headers.authorization;
-
-    if (!authorisationHeader) {
-      throw new BadRequestError('Users not authorised');
+const authMiddleware = (authorisedRoles) => {
+  return async (req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      next();
     }
 
-    const token = authorisationHeader.split(' ')[1];
+    try {
+      const authorisationHeader = req.headers.authorization;
 
-    const decodedData = jwt.verify(token, secretKey);
+      if (!authorisationHeader) {
+        throw new UnauthorizedError(['User not authorised']);
+      }
 
-    req.user = decodedData;
-    return next();
-  } catch (error) {
-    next(error);
-  }
+      const accessToken = authorisationHeader.split(' ')[1];
+
+      if (!accessToken) {
+        throw new UnauthorizedError(['User not authorised']);
+      }
+
+      const userData = await TokenService.validateAccessToken(accessToken);
+
+      if (!userData) {
+        throw new UnauthorizedError(['User not authorised']);
+      }
+
+      const hasRole = userData.roles.some(role => authorisedRoles.includes(role.title));
+
+      if (!hasRole) {
+        throw new UnauthorizedError(['User does not have access privileges']);
+      }
+
+      req.user = userData;
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  };
 };
 
 module.exports = {

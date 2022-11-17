@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const connection = require('./db');
 
 const api = require('./routes/api');
+const { errorHandler } = require('./middlewares/error-handler');
 
 const app = express();
 
@@ -13,9 +14,9 @@ app.use(cors({
   origin: 'http://localhost:3000',
 }));
 app.use(morgan('combined'));
-
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
+api.use(errorHandler);
 
 app.use('/v1', api);
 

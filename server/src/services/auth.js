@@ -1,79 +1,61 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { UserRepository } = require('../repositories/users');
-const { BadRequestError, InternalServerError, NotFoundError } = require('../utils/errors/api-errors');
-const { secretKey } = require('../../config');
+const { BadRequestError } = require('../utils/errors/api-errors');
+const { UserService } = require('./users');
+const { TokenService } = require('./tokens');
 
-const saltRounds = 7;
+const register = async (body) => {
+  const user = await UserService.createUser(body);
+  const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
-const generateAccessToken = (payload) => {
-  return jwt.sign(payload, secretKey, { expiresIn: '24h' });
+  return {
+    accessToken,
+    refreshToken,
+    user,
+  };
 };
 
-const registerUser = async (body) => {
-  const {
-    username, login, password, ip
-  } = body;
-
-  let candidate = await UserRepository.getUser('login', login);
-
-  if (candidate) {
-    throw new BadRequestError(['Current email already in use']);
-  }
-
-  candidate = await UserRepository.getUser('username', username);
-
-  if (candidate) {
-    throw new BadRequestError(['Current user already exists']);
-  }
-
-  const hashPassword = bcrypt.hashSync(password, saltRounds);
-
-  const user = await UserRepository.createUser({
-    username,
-    login,
-    password: hashPassword,
-    ip,
-  });
-
-  if (!user) {
-    throw new InternalServerError('Cannot create user');
-  }
-
-  return user;
-};
-
-const loginUser = async (body) => {
+const login = async (body) => {
   const {
     login, password, ip
   } = body;
 
-  const user = await UserRepository.getUser('login', login);
-
-  if (!user) {
-    throw new NotFoundError(['User with current email doesnt exists']);
-  }
-
-  const isPasswordValid = bcrypt.compareSync(password, user.password);
+  const user = await UserService.getExistingUser('login', login);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const token = generateAccessToken({
-    id: user.id,
-    roles: user.roles,
-  });
-
-  const userWithUpdatedIp = await UserRepository.updateUser(user.id, { ip });
+  const userWithUpdatedIp = await UserService.updateUser(user.id, { ip });
+  const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
   return {
-    token,
+    accessToken,
+    refreshToken,
     user: userWithUpdatedIp,
   };
 };
 
+const logout = async (refreshToken) => {
+  await TokenService.getCheckedDataFromToken(refreshToken);
+
+  return TokenService.removeToken(refreshToken);
+};
+
+const refreshToken = async (refreshToken) => {
+  const { userData } = await TokenService.getCheckedDataFromToken(refreshToken);
+  const user = await UserService.getUserById(userData.id);
+  const tokens = await TokenService.createTokens(user.id, user.roles);
+
+  return {
+    ...tokens,
+    user,
+  };
+}
+
 module.exports.AuthService = {
-  registerUser,
-  loginUser,
+  register,
+  login,
+  logout,
+  refreshToken,
 };
