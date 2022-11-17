@@ -56,7 +56,13 @@ const deleteUser = async (id) => {
 };
 
 const addNewRole = async (user, role) => {
-  // add relation to DB
+  const roleFromDB = await RoleRepository.getRole(role);
+
+  await user
+    .$relatedQuery('roles')
+    .relate(roleFromDB);
+
+  return getExistingUser('id', user.id);
 };
 
 module.exports.UserRepository = {

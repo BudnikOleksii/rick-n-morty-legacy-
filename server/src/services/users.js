@@ -81,11 +81,7 @@ const updateUser = (id, payload) => {
 }
 
 const deleteUser = async (id, tokenData) => {
-  const isUserHavePermission = verifyPermission(tokenData, id);
-
-  if (!isUserHavePermission) {
-    throw new ForbiddenError(['Forbidden']);
-  }
+  verifyPermission(tokenData, id);
 
   const user = await UserRepository.getExistingUser('id', id);
 
@@ -93,13 +89,24 @@ const deleteUser = async (id, tokenData) => {
     throw new NotFoundError(['User not found']);
   }
 
-  const deleted = await UserRepository.deleteUser(id);
-
-  return deleted;
+  return UserRepository.deleteUser(id);
 };
 
-const addNewRole = async (userId, role) => {
-  // send request to repository
+const addNewRole = async (userId, newRole, tokenData) => {
+  verifyPermission(tokenData);
+
+  const user = await getUserById(userId);
+  const isUserHaveThisRole = user.roles.some(role => role.title === newRole);
+
+  if (isUserHaveThisRole) {
+    throw new BadRequestError(['User already have this role']);
+  }
+
+  const updatedUser = await UserRepository.addNewRole(user, newRole);
+
+  return {
+    user: updatedUser,
+  };
 };
 
 module.exports.UserService = {

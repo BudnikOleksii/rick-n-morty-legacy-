@@ -43,10 +43,9 @@ const addNewRole = async (req, res, next) => {
   const { role } = req.body;
 
   try {
-    // update and send to client user with new role
-    // const userWithNewRole = await UserService.addNewRole(id, role);
-    //
-    // return res.status(httpStatusCodes.OK).json(userWithNewRole);
+    const userWithNewRole = await UserService.addNewRole(id, role, req.user);
+
+    return res.status(httpStatusCodes.OK).json(userWithNewRole);
   } catch (error) {
     next(error);
   }
