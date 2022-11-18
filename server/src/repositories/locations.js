@@ -2,7 +2,7 @@ const Location = require('../models/locations');
 
 const getLocations = (skip, limit) => {
   return Location.query()
-    .select()
+    .withGraphFetched('residents')
     .limit(limit)
     .offset(skip);
 };

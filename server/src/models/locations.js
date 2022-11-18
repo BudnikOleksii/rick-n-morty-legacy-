@@ -1,25 +1,25 @@
 const { Model } = require('objection');
-// const User = require('./users');
+const Character = require('./characters');
 
 class Location extends Model {
   static get tableName() {
     return 'locations';
   }
 
-  // static relationMappings = {
-  //   users: {
-  //     relation: Model.ManyToManyRelation,
-  //     modelClass: User,
-  //     join: {
-  //       from: 'roles.id',
-  //       through: {
-  //         from: 'users_roles.role_id',
-  //         to: 'users_roles.user_id'
-  //       },
-  //       to: 'users.id'
-  //     }
-  //   }
-  // };
+  static relationMappings = {
+    residents: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Character,
+      join: {
+        from: 'locations.id',
+        through: {
+          from: 'locations_characters.location_id',
+          to: 'locations_characters.character_id'
+        },
+        to: 'characters.id'
+      }
+    }
+  };
 
   $formatJson(json) {
     json = super.$formatJson(json);
