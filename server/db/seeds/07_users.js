@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
+const config = require('../../config');
 
-const saltRounds = 7;
+const { saltRounds } = config.server;
 
 exports.seed = async function(knex) {
   await knex('users').del();

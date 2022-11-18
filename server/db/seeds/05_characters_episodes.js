@@ -18,10 +18,10 @@ exports.seed = async function(knex) {
       episodesIdsMap.set(data.name, data.id);
     });
 
-  (await knex.select('id', 'name')
+  (await knex.select('id', 'name', 'image')
     .from('characters'))
     .forEach(data => {
-      charactersIdsMap.set(data.name, data.id);
+      charactersIdsMap.set((data.name + data.image), data.id);
     });
 
   charactersEpisodes.forEach(({ characterName, episodes }) => {
