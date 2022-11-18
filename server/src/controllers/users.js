@@ -6,9 +6,10 @@ const { defaultPage, defaultLimitPerPage } = config.server;
 
 const getAllUsers = async (req, res, next) => {
   const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl;
 
   try {
-    const usersData = await UserService.getAllUsers(page, limit);
+    const usersData = await UserService.getAllUsers(page, limit, endpoint);
 
     return res.status(httpStatusCodes.OK).json(usersData);
   } catch (error) {

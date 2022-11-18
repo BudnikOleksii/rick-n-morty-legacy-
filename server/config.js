@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV;
 const development = {
   server: {
     port: parseInt(DEV_SERVER_PORT) || 8080,
-    apiURL: `http://localhost:${DEV_SERVER_PORT || 8080}/v1`,
+    protocol: 'http',
     authorisedRoles: ['admin', 'user'],
     saltRounds: 7,
     maxPerRequest: 100,

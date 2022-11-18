@@ -6,9 +6,10 @@ const { defaultPage, defaultLimitPerPage } = config.server;
 
 const getLocations = async (req, res, next) => {
   const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl;
 
   try {
-    const locationsData = await LocationsService.getLocations(page, limit);
+    const locationsData = await LocationsService.getLocations(page, limit, endpoint);
 
     return res.status(httpStatusCodes.OK).json(locationsData);
   } catch (error) {

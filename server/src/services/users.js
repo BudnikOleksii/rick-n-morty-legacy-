@@ -8,19 +8,15 @@ const { createInfoData } = require('../utils/create-info-data');
 
 const { maxPerRequest, saltRounds } = config.server;
 
-const getAllUsers = async (page, limit) => {
+const getAllUsers = async (page, limit, endpoint) => {
   if (limit > maxPerRequest) {
     throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} users per request`]);
   }
 
   const { results, total } = await UserRepository.getAllUsers(page, limit);
 
-  if (!results.length) {
-    throw new NotFoundError(['Users not found']);
-  }
-
   return {
-    info: createInfoData(total, page, limit, 'users'),
+    info: createInfoData(total, page, limit, endpoint),
     results,
   };
 }
