@@ -36,7 +36,7 @@ const getCharactersData = async () => {
         });
 
         charactersEpisodes.push({
-          characterName: name,
+          characterName: name + image,
           episodes: episode,
         });
       });

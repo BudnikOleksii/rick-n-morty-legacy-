@@ -1,14 +1,13 @@
 const User = require('../models/users');
 const { RoleRepository } = require('./roles');
 
-const getAllUsers = (skip, limit) => {
+const getAllUsers = (page, limit) => {
   return User.query()
     .select()
     .whereNotDeleted()
     .withGraphFetched('roles')
-    .limit(limit)
-    .offset(skip);
-}
+    .page(page - 1, limit);
+};
 
 const getUser = (columnName, value) => {
   return User.query().findOne(columnName, value);
@@ -56,7 +55,13 @@ const deleteUser = async (id) => {
 };
 
 const addNewRole = async (user, role) => {
-  // add relation to DB
+  const roleFromDB = await RoleRepository.getRole(role);
+
+  await user
+    .$relatedQuery('roles')
+    .relate(roleFromDB);
+
+  return getExistingUser('id', user.id);
 };
 
 module.exports.UserRepository = {

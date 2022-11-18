@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const {
-  DEV_SERVER_PORT, DEV_DB_TYPE, DEV_DB_NAME, DEV_DB_USER, DEV_DB_PASSWORD, DEV_DB_HOST, DEV_DB_PORT,
+  DEV_SERVER_PORT, DEV_DB_TYPE, DEV_DB_NAME, DEV_DB_USER, DEV_DB_PASSWORD, DEV_DB_HOST, DEV_DB_PORT, JWT_ACCESS_SECRET, JWT_REFRESH_SECRET,
 } = process.env;
 
 const env = process.env.NODE_ENV;
@@ -9,6 +9,16 @@ const env = process.env.NODE_ENV;
 const development = {
   server: {
     port: parseInt(DEV_SERVER_PORT) || 8080,
+    protocol: 'http',
+    authorisedRoles: ['admin', 'user'],
+    saltRounds: 7,
+    maxPerRequest: 100,
+    defaultPage: 1,
+    defaultLimitPerPage: 20,
+    jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
+    jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',
+    accessTokenExpiresIn: '3h',
+    refreshTokenExpiresIn: '30d',
   },
   db: {
     type: DEV_DB_TYPE || 'mysql',

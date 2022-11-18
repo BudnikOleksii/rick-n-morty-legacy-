@@ -1,14 +1,17 @@
+const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
-const { getPagination } = require('../utils/get-pagination');
+
+const { defaultPage, defaultLimitPerPage } = config.server;
 
 const getAllUsers = async (req, res, next) => {
-  const { skip, limit } = getPagination(req.query);
+  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl;
 
   try {
-    const users = await UserService.getAllUsers(skip, limit);
+    const usersData = await UserService.getAllUsers(page, limit, endpoint);
 
-    return res.status(httpStatusCodes.OK).json(users);
+    return res.status(httpStatusCodes.OK).json(usersData);
   } catch (error) {
     next(error);
   }
@@ -43,10 +46,9 @@ const addNewRole = async (req, res, next) => {
   const { role } = req.body;
 
   try {
-    // update and send to client user with new role
-    // const userWithNewRole = await UserService.addNewRole(id, role);
-    //
-    // return res.status(httpStatusCodes.OK).json(userWithNewRole);
+    const userWithNewRole = await UserService.addNewRole(id, role, req.user);
+
+    return res.status(httpStatusCodes.OK).json(userWithNewRole);
   } catch (error) {
     next(error);
   }

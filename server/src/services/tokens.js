@@ -1,9 +1,11 @@
-require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
+const config = require('../../config');
 const { generateTokens } = require('../utils/generate-tokens');
 const { TokenRepository } = require('../repositories/tokens');
 const { InternalServerError, UnauthorizedError} = require('../utils/errors/api-errors');
+
+const { jwtAccessSecret, jwtRefreshSecret } = config.server;
 
 const getToken = (columnName, value) => {
   return TokenRepository.getToken(columnName, value);
@@ -41,7 +43,7 @@ const removeToken = async (refreshToken) => {
 
 const validateAccessToken = async (token) => {
   try {
-    const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+    const userData = jwt.verify(token, jwtAccessSecret);
 
     return userData;
   } catch (e) {
@@ -51,7 +53,7 @@ const validateAccessToken = async (token) => {
 
 const validateRefreshToken = async (token) => {
   try {
-    const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    const userData = jwt.verify(token, jwtRefreshSecret);
 
     return userData;
   } catch (e) {

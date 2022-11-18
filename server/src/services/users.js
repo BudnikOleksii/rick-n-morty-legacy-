@@ -1,23 +1,24 @@
+const config = require('../../config');
+
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, NotFoundError, ForbiddenError, InternalServerError} = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError, InternalServerError} = require('../utils/errors/api-errors');
 const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
+const { createInfoData } = require('../utils/create-info-data');
 
-const MAX_USERS_PER_REQUEST = 100;
-const saltRounds = 7;
+const { maxPerRequest, saltRounds } = config.server;
 
-const getAllUsers = async (skip, limit) => {
-  if (limit > MAX_USERS_PER_REQUEST) {
-    throw new BadRequestError(['Cannot fetch more than 100 users per request']);
+const getAllUsers = async (page, limit, endpoint) => {
+  if (limit > maxPerRequest) {
+    throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} users per request`]);
   }
 
-  const users = await UserRepository.getAllUsers(skip, limit);
+  const { results, total } = await UserRepository.getAllUsers(page, limit);
 
-  if (!users.length) {
-    throw new NotFoundError(['Users not found']);
-  }
-
-  return users;
+  return {
+    info: createInfoData(total, page, limit, endpoint),
+    results,
+  };
 }
 
 const getExistingUser = async (columnName, value) => {
@@ -80,11 +81,7 @@ const updateUser = (id, payload) => {
 }
 
 const deleteUser = async (id, tokenData) => {
-  const isUserHavePermission = verifyPermission(tokenData, id);
-
-  if (!isUserHavePermission) {
-    throw new ForbiddenError(['Forbidden']);
-  }
+  verifyPermission(tokenData, id);
 
   const user = await UserRepository.getExistingUser('id', id);
 
@@ -92,13 +89,24 @@ const deleteUser = async (id, tokenData) => {
     throw new NotFoundError(['User not found']);
   }
 
-  const deleted = await UserRepository.deleteUser(id);
-
-  return deleted;
+  return UserRepository.deleteUser(id);
 };
 
-const addNewRole = async (userId, role) => {
-  // send request to repository
+const addNewRole = async (userId, newRole, tokenData) => {
+  verifyPermission(tokenData);
+
+  const user = await getUserById(userId);
+  const isUserHaveThisRole = user.roles.some(role => role.title === newRole);
+
+  if (isUserHaveThisRole) {
+    throw new BadRequestError(['User already have this role']);
+  }
+
+  const updatedUser = await UserRepository.addNewRole(user, newRole);
+
+  return {
+    user: updatedUser,
+  };
 };
 
 module.exports.UserService = {
