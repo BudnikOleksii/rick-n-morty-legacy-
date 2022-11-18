@@ -2,6 +2,7 @@ const { Model } = require('objection');
 const Species = require('./species');
 const Type = require('./types');
 const Location = require('./locations');
+const Episode = require('./episodes');
 
 class Character extends Model {
   static get tableName() {
@@ -45,6 +46,18 @@ class Character extends Model {
         to: 'locations.id',
       }
     },
+    episodes: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Episode,
+      join: {
+        from: 'characters.id',
+        through: {
+          from: 'characters_episodes.character_id',
+          to: 'characters_episodes.episode_id'
+        },
+        to: 'episodes.id'
+      }
+    }
   };
 
   $formatJson(json) {
