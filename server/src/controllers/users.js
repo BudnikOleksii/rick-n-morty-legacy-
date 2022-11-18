@@ -1,14 +1,16 @@
+const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
-const { getPagination } = require('../utils/get-pagination');
+
+const { defaultPage, defaultLimitPerPage } = config.server;
 
 const getAllUsers = async (req, res, next) => {
-  const { skip, limit } = getPagination(req.query);
+  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
 
   try {
-    const users = await UserService.getAllUsers(skip, limit);
+    const usersData = await UserService.getAllUsers(page, limit);
 
-    return res.status(httpStatusCodes.OK).json(users);
+    return res.status(httpStatusCodes.OK).json(usersData);
   } catch (error) {
     next(error);
   }

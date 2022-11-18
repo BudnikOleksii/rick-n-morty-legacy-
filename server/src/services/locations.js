@@ -2,21 +2,25 @@ const config = require('../../config');
 
 const { NotFoundError, BadRequestError} = require('../utils/errors/api-errors');
 const { LocationsRepository } = require('../repositories/locations');
+const {createInfoData} = require('../utils/create-info-data');
 
 const { maxPerRequest } = config.server;
 
-const getLocations = async (skip, limit) => {
+const getLocations = async (page, limit) => {
   if (limit > maxPerRequest) {
     throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} locations per request`]);
   }
 
-  const locations = await LocationsRepository.getLocations(skip, limit);
+  const { results, total } = await LocationsRepository.getLocations(page, limit);
 
-  if (!locations.length) {
+  if (!results.length) {
     throw new NotFoundError(['Locations not found']);
   }
 
-  return locations;
+  return {
+    info: createInfoData(total, page, limit, 'locations'),
+    results,
+  };
 }
 
 module.exports.LocationsService = {

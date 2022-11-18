@@ -2,8 +2,9 @@ const config = require('../../config');
 
 const { NotFoundError, BadRequestError} = require('../utils/errors/api-errors');
 const { CharactersRepository } = require('../repositories/characters');
+const { createInfoData } = require('../utils/create-info-data');
 
-const { maxPerRequest, apiURL } = config.server;
+const { maxPerRequest } = config.server;
 
 const getCharacters = async (page, limit) => {
   if (limit > maxPerRequest) {
@@ -16,15 +17,8 @@ const getCharacters = async (page, limit) => {
     throw new NotFoundError(['Characters not found']);
   }
 
-  const pages = Math.ceil(total / limit);
-
   return {
-    info: {
-      total,
-      next: page >= pages ? null : `${apiURL}/characters?page=${Number(page) + 1}&limit=${limit}`,
-      prev: page <= 1 ? null : `${apiURL}/characters?page=${Number(page) - 1}&limit=${limit}`,
-      pages,
-    },
+    info: createInfoData(total, page, limit, 'characters'),
     results,
   };
 }

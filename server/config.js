@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV;
 const development = {
   server: {
     port: parseInt(DEV_SERVER_PORT) || 8080,
-    apiURL: `http://localhost:${DEV_SERVER_PORT || 8080}/v1/`,
+    apiURL: `http://localhost:${DEV_SERVER_PORT || 8080}/v1`,
     authorisedRoles: ['admin', 'user'],
     saltRounds: 7,
     maxPerRequest: 100,
@@ -17,7 +17,7 @@ const development = {
     defaultLimitPerPage: 20,
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',
-    accessTokenExpiresIn: '10m',
+    accessTokenExpiresIn: '3h',
     refreshTokenExpiresIn: '30d',
   },
   db: {

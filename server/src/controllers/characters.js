@@ -1,6 +1,5 @@
 const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
-const { getPagination } = require('../utils/get-pagination');
 const { CharactersService } = require('../services/characters');
 
 const { defaultPage, defaultLimitPerPage } = config.server;

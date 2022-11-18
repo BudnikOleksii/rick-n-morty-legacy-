@@ -1,13 +1,12 @@
 const User = require('../models/users');
 const { RoleRepository } = require('./roles');
 
-const getAllUsers = (skip, limit) => {
+const getAllUsers = (page, limit) => {
   return User.query()
     .select()
     .whereNotDeleted()
     .withGraphFetched('roles')
-    .limit(limit)
-    .offset(skip);
+    .page(page - 1, limit);
 };
 
 const getUser = (columnName, value) => {

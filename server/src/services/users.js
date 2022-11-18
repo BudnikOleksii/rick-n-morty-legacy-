@@ -1,24 +1,28 @@
 const config = require('../../config');
 
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, NotFoundError, ForbiddenError, InternalServerError} = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError, InternalServerError} = require('../utils/errors/api-errors');
 const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
+const { createInfoData } = require('../utils/create-info-data');
 
 const { maxPerRequest, saltRounds } = config.server;
 
-const getAllUsers = async (skip, limit) => {
+const getAllUsers = async (page, limit) => {
   if (limit > maxPerRequest) {
     throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} users per request`]);
   }
 
-  const users = await UserRepository.getAllUsers(skip, limit);
+  const { results, total } = await UserRepository.getAllUsers(page, limit);
 
-  if (!users.length) {
+  if (!results.length) {
     throw new NotFoundError(['Users not found']);
   }
 
-  return users;
+  return {
+    info: createInfoData(total, page, limit, 'users'),
+    results,
+  };
 }
 
 const getExistingUser = async (columnName, value) => {

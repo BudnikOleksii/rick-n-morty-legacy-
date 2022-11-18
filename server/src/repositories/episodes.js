@@ -1,10 +1,9 @@
 const Episode = require('../models/episodes');
 
-const getEpisodes = (skip, limit) => {
+const getEpisodes = (page, limit) => {
   return Episode.query()
     // .withGraphFetched('characters')
-    .limit(limit)
-    .offset(skip);
+    .page(page - 1, limit);
 };
 
 module.exports.EpisodesRepository = {

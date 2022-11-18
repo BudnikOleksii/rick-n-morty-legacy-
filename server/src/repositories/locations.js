@@ -1,10 +1,9 @@
 const Location = require('../models/locations');
 
-const getLocations = (skip, limit) => {
+const getLocations = (page, limit) => {
   return Location.query()
     // .withGraphFetched('residents')
-    .limit(limit)
-    .offset(skip);
+    .page(page - 1, limit);
 };
 
 module.exports.LocationsRepository = {
