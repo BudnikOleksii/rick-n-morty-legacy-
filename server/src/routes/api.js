@@ -7,6 +7,7 @@ const typesRouter = require('./types');
 const locationsRouter = require('./locations');
 const charactersRouter = require('./characters');
 const episodesRouter = require('./episodes');
+const setsRouter = require('./sets');
 
 const api = express.Router();
 
@@ -17,5 +18,6 @@ api.use('/types', typesRouter);
 api.use('/locations', locationsRouter);
 api.use('/characters', charactersRouter);
 api.use('/episodes', episodesRouter);
+api.use('/sets', setsRouter);
 
 module.exports = api;
