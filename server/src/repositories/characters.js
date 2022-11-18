@@ -1,10 +1,9 @@
 const Character = require('../models/characters');
 
-const getCharacters = (skip, limit) => {
+const getCharacters = (page, limit) => {
   return Character.query()
     .withGraphFetched('[species, type, origin, location, episodes]')
-    .limit(limit)
-    .offset(skip);
+    .page(page - 1, limit);
 };
 
 module.exports.CharactersRepository = {
