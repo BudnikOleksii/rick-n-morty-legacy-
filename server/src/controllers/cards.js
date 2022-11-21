@@ -29,7 +29,21 @@ const createCard = async (req, res, next) => {
   }
 };
 
+const changeOwner = async (req, res, next) => {
+  const { cardId } = req.params;
+  const { ownerId } = req.body;
+
+  try {
+    const cardData = await CardsService.changeOwner(cardId, ownerId);
+
+    return res.status(httpStatusCodes.OK).json(cardData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.CardsController = {
   getCards,
   createCard,
+  changeOwner,
 };
