@@ -3,6 +3,7 @@ const config = require('../../config');
 const { BadRequestError} = require('../utils/errors/api-errors');
 const { CharactersRepository } = require('../repositories/characters');
 const { createInfoData } = require('../utils/create-info-data');
+const { checkId } = require('../utils/check-id');
 
 const { maxPerRequest } = config.server;
 
@@ -19,6 +20,19 @@ const getCharacters = async (page, limit, endpoint) => {
   };
 };
 
+const getCharacterById = async (id) => {
+  checkId(id);
+
+  const character = await CharactersRepository.getCharacterById(id);
+
+  if (!character) {
+    throw new BadRequestError(['Character not found']);
+  }
+
+  return character;
+};
+
 module.exports.CharactersService = {
   getCharacters,
+  getCharacterById,
 };

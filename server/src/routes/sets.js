@@ -11,7 +11,7 @@ setsRouter.use(authMiddleware(authorisedRoles));
 
 setsRouter.get('/', SetsController.getSets);
 setsRouter.post('/', SetsController.createSet);
-setsRouter.patch('/:id', SetsController.addCharactersToSet);
+setsRouter.patch('/:id', SetsController.toggleCharactersInSet);
 setsRouter.delete('/:id', SetsController.deleteSet);
 
 module.exports = setsRouter;

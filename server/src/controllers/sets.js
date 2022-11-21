@@ -41,12 +41,12 @@ const deleteSet = async (req, res, next) => {
   }
 };
 
-const addCharactersToSet = async (req, res, next) => {
+const toggleCharactersInSet = async (req, res, next) => {
   const { id } = req.params;
-  const { charactersIds } = req.body;
+  const { characterId } = req.body;
 
   try {
-    const setWithNewCharacters = await SetsService.addCharactersToSet(id, charactersIds, req.user);
+    const setWithNewCharacters = await SetsService.toggleCharactersInSet(id, characterId, req.user);
 
     return res.status(httpStatusCodes.OK).json(setWithNewCharacters);
   } catch (error) {
@@ -58,5 +58,5 @@ module.exports.SetsController = {
   getSets,
   createSet,
   deleteSet,
-  addCharactersToSet,
+  toggleCharactersInSet,
 };

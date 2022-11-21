@@ -1,5 +1,4 @@
 const Set = require('../models/sets');
-const { CharactersRepository } = require('./characters');
 
 const getSets = (page, limit) => {
   return Set.query()
@@ -19,13 +18,19 @@ const createSet = (name) => {
 
 const deleteSet = (id) => Set.query().deleteById(id);
 
-const addCharactersToSet = async (set, characterId) => {
-  const character = await CharactersRepository
-    .getCharacterById(characterId)
-
+const addCharacterToSet = async (set, character) => {
   await set
     .$relatedQuery('characters')
     .relate(character);
+
+  return getSet('id', set.id);
+};
+
+const removeCharacterFromSet = async (set, character) => {
+  await set
+    .$relatedQuery('characters')
+    .unrelate()
+    .where('id', character.id);
 
   return getSet('id', set.id);
 };
@@ -35,5 +40,6 @@ module.exports.SetsRepository = {
   getSet,
   createSet,
   deleteSet,
-  addCharactersToSet,
+  addCharacterToSet,
+  removeCharacterFromSet,
 };

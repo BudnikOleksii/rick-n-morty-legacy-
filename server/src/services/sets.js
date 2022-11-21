@@ -5,6 +5,7 @@ const { SetsRepository } = require('../repositories/sets');
 const { createInfoData } = require('../utils/create-info-data');
 const { verifyPermission } = require('../utils/verify-permission');
 const { checkId } = require('../utils/check-id');
+const { CharactersService } = require('./characters');
 
 const { maxPerRequest, minNameLength } = config.server;
 
@@ -19,7 +20,17 @@ const getSets = async (page, limit, endpoint) => {
     info: createInfoData(total, page, limit, endpoint),
     results,
   };
-}
+};
+
+const getSet = async (columnName, value) => {
+  const set = await SetsRepository.getSet(columnName, value);
+
+  if (!set) {
+    throw new BadRequestError(['Set not found']);
+  }
+
+  return set;
+};
 
 const createSet = async (name, tokenData) => {
   verifyPermission(tokenData);
@@ -48,24 +59,26 @@ const deleteSet = async (id, tokenData) => {
   }
 
   return deletedSet;
-}
+};
 
-const addCharactersToSet = async (setId, characterId, tokenData) => {
+const toggleCharactersInSet = async (setId, characterId, tokenData) => {
   verifyPermission(tokenData);
 
-  const set = await SetsRepository.getSet('id', setId);
+  const set = await getSet('id', setId);
+  const character = await CharactersService.getCharacterById(characterId);
   const isSetHaveExistingCharacter = set.characters.some(character => character.id === Number(characterId));
 
   if (isSetHaveExistingCharacter) {
-    throw new BadRequestError(['Set already includes this character']);
+    return SetsRepository.removeCharacterFromSet(set, character);
   }
 
-  return SetsRepository.addCharactersToSet(set, characterId);
+  return SetsRepository.addCharacterToSet(set, character);
 };
 
 module.exports.SetsService = {
   getSets,
+  getSet,
   createSet,
   deleteSet,
-  addCharactersToSet,
+  toggleCharactersInSet,
 };
