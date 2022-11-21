@@ -6,9 +6,7 @@ const getCharacters = (page, limit) => {
     .page(page - 1, limit);
 };
 
-const getCharacterById = (id) => {
-  return Character.query().findById(id);
-}
+const getCharacterById = (id) => Character.query().findById(id);
 
 module.exports.CharactersRepository = {
   getCharacters,

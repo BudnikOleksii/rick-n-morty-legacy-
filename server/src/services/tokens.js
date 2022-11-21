@@ -76,7 +76,7 @@ const getCheckedDataFromToken = async (refreshToken) => {
   return {
     userData,
   };
-}
+};
 
 module.exports.TokenService = {
   getToken,

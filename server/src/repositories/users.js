@@ -50,9 +50,7 @@ const updateUser = async (id, payload) => {
   return getExistingUser('id', id);
 };
 
-const deleteUser = async (id) => {
-  return User.query().deleteById(id);
-};
+const deleteUser = (id) => User.query().deleteById(id);
 
 const addNewRole = async (user, role) => {
   const roleFromDB = await RoleRepository.getRole(role);

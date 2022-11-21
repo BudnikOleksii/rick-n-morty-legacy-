@@ -17,6 +17,8 @@ const createSet = (name) => {
   return Set.query().insertAndFetch({ name });
 };
 
+const deleteSet = (id) => Set.query().deleteById(id);
+
 const addCharactersToSet = async (set, characterId) => {
   const character = await CharactersRepository
     .getCharacterById(characterId)
@@ -32,5 +34,6 @@ module.exports.SetsRepository = {
   getSets,
   getSet,
   createSet,
+  deleteSet,
   addCharactersToSet,
 };

@@ -29,6 +29,18 @@ const createSet = async (req, res, next) => {
   }
 };
 
+const deleteSet = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const deletedSet = await SetsService.deleteSet(id, req.user);
+
+    return res.status(httpStatusCodes.OK).json(deletedSet);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const addCharactersToSet = async (req, res, next) => {
   const { id } = req.params;
   const { charactersIds } = req.body;
@@ -45,5 +57,6 @@ const addCharactersToSet = async (req, res, next) => {
 module.exports.SetsController = {
   getSets,
   createSet,
+  deleteSet,
   addCharactersToSet,
 };

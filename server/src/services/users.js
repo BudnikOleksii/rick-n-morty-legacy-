@@ -5,6 +5,7 @@ const { BadRequestError, NotFoundError, InternalServerError} = require('../utils
 const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
 const { createInfoData } = require('../utils/create-info-data');
+const { checkId } = require('../utils/check-id');
 
 const { maxPerRequest, saltRounds } = config.server;
 
@@ -32,16 +33,12 @@ const getExistingUser = async (columnName, value) => {
 };
 
 const getUserById = async (id) => {
-  if (isNaN(Number(id)) || !Number(id)) {
-    throw new BadRequestError(['Invalid ID']);
-  }
+  checkId(id);
 
   return getExistingUser('id', id);
 };
 
-const getUser = (columnName, value) => {
-  return UserRepository.getUser(columnName, value);
-};
+const getUser = (columnName, value) => UserRepository.getUser(columnName, value);
 
 const createUser = async (userData) => {
   const {
@@ -76,9 +73,7 @@ const createUser = async (userData) => {
   return user;
 }
 
-const updateUser = (id, payload) => {
-  return UserRepository.updateUser(id, payload);
-}
+const updateUser = (id, payload) => UserRepository.updateUser(id, payload);
 
 const deleteUser = async (id, tokenData) => {
   verifyPermission(tokenData, id);
@@ -102,11 +97,7 @@ const addNewRole = async (userId, newRole, tokenData) => {
     throw new BadRequestError(['User already have this role']);
   }
 
-  const updatedUser = await UserRepository.addNewRole(user, newRole);
-
-  return {
-    user: updatedUser,
-  };
+  return UserRepository.addNewRole(user, newRole);
 };
 
 module.exports.UserService = {

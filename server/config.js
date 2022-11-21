@@ -15,6 +15,7 @@ const development = {
     maxPerRequest: 100,
     defaultPage: 1,
     defaultLimitPerPage: 20,
+    minNameLength: 4,
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',
     accessTokenExpiresIn: '3h',

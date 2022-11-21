@@ -17,7 +17,7 @@ const getCharacters = async (page, limit, endpoint) => {
     info: createInfoData(total, page, limit, endpoint),
     results,
   };
-}
+};
 
 module.exports.CharactersService = {
   getCharacters,
