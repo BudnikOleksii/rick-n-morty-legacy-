@@ -17,6 +17,19 @@ const getCharacters = async (req, res, next) => {
   }
 };
 
+const getCharacterById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const characterData = await CharactersService.getCharacterById(id);
+
+    return res.status(httpStatusCodes.OK).json(characterData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.CharactersController = {
   getCharacters,
+  getCharacterById,
 };

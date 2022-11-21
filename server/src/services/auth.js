@@ -51,7 +51,7 @@ const refreshToken = async (refreshToken) => {
     ...tokens,
     user,
   };
-}
+};
 
 module.exports.AuthService = {
   register,
