@@ -2,7 +2,7 @@ const { NotFoundError } = require('../utils/errors/api-errors');
 const { CharactersRepository } = require('../repositories/characters');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
-const {checkLimitForRequest} = require('../utils/check-limit-for-request');
+const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 
 const getCharacters = async (page, limit, endpoint) => {
   checkLimitForRequest(limit, 'characters');
