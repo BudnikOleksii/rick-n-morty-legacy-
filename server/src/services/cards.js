@@ -3,6 +3,8 @@ const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { CardsRepository } = require('../repositories/cards');
+const { verifyPermission } = require('../utils/verify-permission');
+const { CharactersService } = require('./characters');
 
 const getCards = async (page, limit, endpoint) => {
   checkLimitForRequest(limit, 'cards');
@@ -26,7 +28,23 @@ const getCardById = async (id) => {
   return card;
 };
 
+const getCurrentUserCards = async (tokenData) => {
+  console.log(tokenData);
+  return {msg: 'OK'}
+};
+
+const createCard = async (characterId, tokenData) => {
+  verifyPermission(tokenData);
+  // verification is all cards sold at least once
+
+  const character = await CharactersService.getCharacterById(characterId);
+
+  return CardsRepository.createCard(character);
+};
+
 module.exports.CardsService = {
   getCards,
   getCardById,
+  getCurrentUserCards,
+  createCard,
 };

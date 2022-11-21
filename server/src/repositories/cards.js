@@ -9,7 +9,12 @@ const getCards = (page, limit) => {
 
 const getCardById = (id) => Card.query().findById(id);
 
+const createCard = (character) => {
+  return Card.query().insertAndFetch({ character_id: character.id });
+};
+
 module.exports.CardsRepository = {
   getCards,
   getCardById,
+  createCard,
 };

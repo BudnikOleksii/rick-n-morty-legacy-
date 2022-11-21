@@ -1,4 +1,4 @@
-const {ForbiddenError} = require('./errors/api-errors');
+const { ForbiddenError } = require('./errors/api-errors');
 const checkIsAdmin = (roles) => roles.some(role => role.title === 'admin');
 
 const verifyPermission = (tokenData, userId = 0) => {

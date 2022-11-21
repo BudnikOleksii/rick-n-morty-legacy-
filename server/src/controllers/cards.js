@@ -17,6 +17,19 @@ const getCards = async (req, res, next) => {
   }
 };
 
+const createCard = async (req, res, next) => {
+  const { characterId } = req.body;
+
+  try {
+    const newCard = await CardsService.createCard(characterId, req.user);
+
+    return res.status(httpStatusCodes.CREATED).json(newCard);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.CardsController = {
   getCards,
+  createCard,
 };

@@ -8,7 +8,10 @@ const getCharacters = (page, limit) => {
 
 const getCharacterById = (id) => Character.getCharacter(id);
 
+const countUnused = () => Character.query().where('unused', true).resultSize();
+
 module.exports.CharactersRepository = {
   getCharacters,
   getCharacterById,
+  countUnused,
 };
