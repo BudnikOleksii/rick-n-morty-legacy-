@@ -1,6 +1,6 @@
 const config = require('../../config');
 
-const { BadRequestError} = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 const { CharactersRepository } = require('../repositories/characters');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
@@ -26,7 +26,7 @@ const getCharacterById = async (id) => {
   const character = await CharactersRepository.getCharacterById(id);
 
   if (!character) {
-    throw new BadRequestError(['Character not found']);
+    throw new NotFoundError(['Character not found']);
   }
 
   return character;

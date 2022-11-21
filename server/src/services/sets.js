@@ -26,7 +26,7 @@ const getSet = async (columnName, value) => {
   const set = await SetsRepository.getSet(columnName, value);
 
   if (!set) {
-    throw new BadRequestError(['Set not found']);
+    throw new NotFoundError(['Set not found']);
   }
 
   return set;
