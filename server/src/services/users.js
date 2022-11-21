@@ -6,14 +6,12 @@ const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
+const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 
-const { maxPerRequest, saltRounds } = config.server;
+const { saltRounds } = config.server;
 
 const getAllUsers = async (page, limit, endpoint) => {
-  if (limit > maxPerRequest) {
-    throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} users per request`]);
-  }
-
+  checkLimitForRequest(limit, 'users');
   const { results, total } = await UserRepository.getAllUsers(page, limit);
 
   return {
@@ -26,7 +24,7 @@ const getExistingUser = async (columnName, value) => {
   const user = await UserRepository.getExistingUser(columnName, value);
 
   if (!user) {
-    throw new NotFoundError(['User doesnt exists']);
+    throw new NotFoundError(['User not found']);
   }
 
   return user;
@@ -77,12 +75,7 @@ const updateUser = (id, payload) => UserRepository.updateUser(id, payload);
 
 const deleteUser = async (id, tokenData) => {
   verifyPermission(tokenData, id);
-
-  const user = await UserRepository.getExistingUser('id', id);
-
-  if (!user) {
-    throw new NotFoundError(['User not found']);
-  }
+  await getUserById(id);
 
   return UserRepository.deleteUser(id);
 };

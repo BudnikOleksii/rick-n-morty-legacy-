@@ -6,14 +6,12 @@ const { createInfoData } = require('../utils/create-info-data');
 const { verifyPermission } = require('../utils/verify-permission');
 const { checkId } = require('../utils/check-id');
 const { CharactersService } = require('./characters');
+const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 
-const { maxPerRequest, minNameLength } = config.server;
+const { minNameLength } = config.server;
 
 const getSets = async (page, limit, endpoint) => {
-  if (limit > maxPerRequest) {
-    throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} sets per request`]);
-  }
-
+  checkLimitForRequest(limit, 'sets');
   const { results, total } = await SetsRepository.getSets(page, limit);
 
   return {

@@ -1,17 +1,11 @@
-const config = require('../../config');
-
-const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
+const { NotFoundError } = require('../utils/errors/api-errors');
 const { CharactersRepository } = require('../repositories/characters');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
-
-const { maxPerRequest } = config.server;
+const {checkLimitForRequest} = require('../utils/check-limit-for-request');
 
 const getCharacters = async (page, limit, endpoint) => {
-  if (limit > maxPerRequest) {
-    throw new BadRequestError([`Cannot fetch more than ${maxPerRequest} characters per request`]);
-  }
-
+  checkLimitForRequest(limit, 'characters');
   const { results, total } = await CharactersRepository.getCharacters(page, limit);
 
   return {
