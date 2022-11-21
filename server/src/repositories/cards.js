@@ -7,7 +7,12 @@ const getCards = (page, limit) => {
     .page(page - 1, limit);
 };
 
-const getCardById = (id) => Card.query().findById(id);
+const getCardById = (id) => {
+  return Card.query()
+    .whereNotDeleted()
+    .withGraphFetched('[character.[species, type, origin, location, episodes], owner]')
+    .findById(id)
+};
 
 const createCard = (character) => {
   return Card.query().insertAndFetch({ character_id: character.id });

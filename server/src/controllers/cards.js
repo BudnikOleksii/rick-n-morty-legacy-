@@ -17,6 +17,18 @@ const getCards = async (req, res, next) => {
   }
 };
 
+const getCardById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const card = await CardsService.getCardById(id);
+
+    return res.status(httpStatusCodes.OK).json(card);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createCard = async (req, res, next) => {
   const { characterId } = req.body;
 
@@ -58,6 +70,7 @@ const getUserCards = async (req, res, next) => {
 
 module.exports.CardsController = {
   getCards,
+  getCardById,
   getUserCards,
   createCard,
   changeOwner,

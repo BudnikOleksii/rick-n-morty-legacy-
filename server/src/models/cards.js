@@ -35,6 +35,8 @@ class Card extends softDelete(Model) {
 
   $formatJson(json) {
     json = super.$formatJson(json);
+    delete json.character_id;
+    delete json.owner_id;
     delete json.created_at;
     delete json.deleted_at;
     return json;
