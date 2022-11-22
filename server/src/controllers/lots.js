@@ -1,6 +1,7 @@
 const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { LotsService } = require('../services/lots');
+const {validate} = require('../validations/validate');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 
@@ -19,10 +20,13 @@ const getLots = async (req, res, next) => {
 
 const createLot = async (req, res, next) => {
   try {
+    validate(req);
+
     const lotData = await LotsService.createLot(req.body, req.user);
 
     return res.status(httpStatusCodes.CREATED).json(lotData);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

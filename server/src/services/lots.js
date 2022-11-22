@@ -22,11 +22,14 @@ const getLots = async (page, limit, endpoint) => {
   };
 };
 
+const getLotById = async (id) => {
+  checkId(id);
+};
+
 const createLot = async (body, tokenData) => {
   const {
     cardId, initialPrice, endDate, minActionDuration, minStep, maxPrice
   } = body;
-  checkId(cardId);
 
   const card = await CardsService.getCardById(cardId);
   // only card owner or admin can start auction
@@ -44,7 +47,7 @@ const createLot = async (body, tokenData) => {
     card_id: cardId,
     initial_price: currentPrice,
     current_price: currentPrice,
-    end_date: endDate || generateDefaultEndDate(),
+    end_date: endDate ? new Date(endDate) : generateDefaultEndDate(),
     min_action_duration: minActionDuration || defaultMinActionDuration,
     min_step: minStep || defaultMinStep,
     max_price: maxPrice || defaultMaxPrice,
@@ -55,5 +58,6 @@ const createLot = async (body, tokenData) => {
 
 module.exports.LotsService = {
   getLots,
+  getLotById,
   createLot,
 };
