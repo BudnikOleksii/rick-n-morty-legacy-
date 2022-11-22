@@ -18,7 +18,7 @@ const development = {
     defaultInitialPrice: 1,
     defaultMinActionDuration: 300000,
     defaultMinStep: 10,
-    defaultMaxPrice: 2**(31-1),
+    defaultMaxPrice: 2**31 - 1,
     defaultAuctionDuration: 7 * 24 * 60 * 60 * 1000,
     minNameLength: 4,
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',

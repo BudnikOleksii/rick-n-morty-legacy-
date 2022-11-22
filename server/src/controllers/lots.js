@@ -26,7 +26,6 @@ const createLot = async (req, res, next) => {
 
     return res.status(httpStatusCodes.CREATED).json(lotData);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
