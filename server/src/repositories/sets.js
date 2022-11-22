@@ -2,13 +2,13 @@ const Set = require('../models/sets');
 
 const getSets = (page, limit) => {
   return Set.query()
-    .withGraphFetched('characters')
+    .withGraphFetched('characters.[species, type, origin, location, episodes]')
     .page(page - 1, limit);
 };
 
 const getSet = (columnName, value) => {
   return Set.query()
-    .withGraphFetched('characters')
+    .withGraphFetched('characters.[species, type, origin, location, episodes]')
     .findOne(columnName, value);
 };
 
