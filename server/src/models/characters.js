@@ -13,7 +13,6 @@ class Character extends Model {
     species: {
       relation: Model.BelongsToOneRelation,
       modelClass: Species,
-      filter: query => query.select('name'),
       join: {
         from: 'characters.species_id',
         to: 'species.id',
@@ -22,7 +21,6 @@ class Character extends Model {
     type: {
       relation: Model.BelongsToOneRelation,
       modelClass: Type,
-      filter: query => query.select('name'),
       join: {
         from: 'characters.type_id',
         to: 'types.id',
@@ -31,7 +29,6 @@ class Character extends Model {
     origin: {
       relation: Model.BelongsToOneRelation,
       modelClass: Location,
-      filter: query => query.select('name'),
       join: {
         from: 'characters.origin_id',
         to: 'locations.id',
@@ -40,7 +37,6 @@ class Character extends Model {
     location: {
       relation: Model.BelongsToOneRelation,
       modelClass: Location,
-      filter: query => query.select('name'),
       join: {
         from: 'characters.location_id',
         to: 'locations.id',
@@ -72,6 +68,9 @@ class Character extends Model {
     delete json.location_id;
     delete json.created_at;
     delete json.deleted_at;
+
+    json.species = this.species.name;
+    json.type = this.type.name;
     return json;
   }
 }
