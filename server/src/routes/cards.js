@@ -10,7 +10,6 @@ const authorisedRoles = config.server.authorisedRoles;
 cardsRouter.use(authMiddleware(authorisedRoles));
 cardsRouter.get('/', CardsController.getCards);
 cardsRouter.get('/:id', CardsController.getCardById);
-cardsRouter.get('/user/:userId', CardsController.getUserCards);
 cardsRouter.post('/', CardsController.createCard);
 cardsRouter.patch('/:cardId', CardsController.changeOwner);
 
