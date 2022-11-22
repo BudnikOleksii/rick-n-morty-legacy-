@@ -9,6 +9,7 @@ const charactersRouter = require('./characters');
 const episodesRouter = require('./episodes');
 const setsRouter = require('./sets');
 const cardsRouter = require('./cards');
+const lotsRouter = require('./lots');
 
 const api = express.Router();
 
@@ -21,5 +22,6 @@ api.use('/characters', charactersRouter);
 api.use('/episodes', episodesRouter);
 api.use('/sets', setsRouter);
 api.use('/cards', cardsRouter);
+api.use('/lots', lotsRouter);
 
 module.exports = api;

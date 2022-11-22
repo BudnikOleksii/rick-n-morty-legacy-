@@ -23,14 +23,6 @@ class Lot extends softDelete(Model) {
         to: 'cards.id',
       }
     },
-    owner: {
-      relation: Model.BelongsToOneRelation,
-      modelClass: User,
-      join: {
-        from: 'lots.owner_id',
-        to: 'users.id',
-      }
-    },
     lastPersonToBet: {
       relation: Model.BelongsToOneRelation,
       modelClass: User,
@@ -44,8 +36,7 @@ class Lot extends softDelete(Model) {
   $formatJson(json) {
     json = super.$formatJson(json);
     delete json.card_id;
-    delete json.owner_id;
-    delete json.last_person_to_bet;
+    delete json.last_person_to_bet_id;
     return json;
   }
 }
