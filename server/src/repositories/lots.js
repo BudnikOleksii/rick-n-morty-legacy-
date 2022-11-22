@@ -21,8 +21,18 @@ const createLot = async (payload) => {
   return getLot('id', newLot.id);
 };
 
+const updateLot = async (id, user, payload) => {
+  const lot = await Lot.query().patchAndFetchById(id, payload);
+  await lot
+    .$relatedQuery('lastPersonToBet')
+    .relate(user);
+
+  return getLot('id', id);
+};
+
 module.exports.LotsRepository = {
   getLots,
   getLot,
   createLot,
+  updateLot,
 };

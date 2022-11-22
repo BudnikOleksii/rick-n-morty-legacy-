@@ -7,6 +7,7 @@ const { LotsRepository } = require('../repositories/lots');
 const { checkId } = require('../utils/check-id');
 const { CardsService } = require('./cards');
 const { generateDefaultEndDate } = require('../utils/generate-default-end-date');
+const {UserService} = require('./users');
 
 const {
   defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice
@@ -24,6 +25,8 @@ const getLots = async (page, limit, endpoint) => {
 
 const getLotById = async (id) => {
   checkId(id);
+
+  return LotsRepository.getLot('id', id);
 };
 
 const createLot = async (body, tokenData) => {
@@ -56,8 +59,44 @@ const createLot = async (body, tokenData) => {
   return LotsRepository.createLot(payload);
 };
 
+const handleBet = async (lotId, bet, tokenData) => {
+  if (isNaN(Number(bet)) || !Number(bet)) {
+    throw new BadRequestError(['Incorrect bet']);
+  }
+
+  const lot = await getLotById(lotId);
+
+  if (new Date() > lot.end_date) {
+    // TODO finish auction!!!
+    throw new BadRequestError(['Current auction already finished']);
+  }
+
+  if (lot.card.owner?.id === tokenData.id) {
+    throw new BadRequestError(['You cannot bet for yours lot!']);
+  }
+
+  if (lot.current_price >= bet || bet > lot.max_price) {
+    throw new BadRequestError(['Bet must be more than previous and less than max price']);
+  }
+
+  const currentStep = bet - lot.current_price;
+
+  if (currentStep < lot.min_step) {
+    throw new BadRequestError(['Bet step must be more than minimum']);
+  }
+
+  // TODO check time for deadline, if less than min_auction_duration update it
+
+  const user = await UserService.getUserById(tokenData.id);
+
+  return LotsRepository.updateLot(lotId, user, {
+    current_price: bet
+  });
+};
+
 module.exports.LotsService = {
   getLots,
   getLotById,
   createLot,
+  handleBet,
 };

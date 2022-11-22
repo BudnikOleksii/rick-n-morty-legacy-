@@ -27,7 +27,7 @@ class Lot extends softDelete(Model) {
       relation: Model.BelongsToOneRelation,
       modelClass: User,
       join: {
-        from: 'lots.last_person_to_bet',
+        from: 'lots.last_person_to_bet_id',
         to: 'users.id',
       }
     },

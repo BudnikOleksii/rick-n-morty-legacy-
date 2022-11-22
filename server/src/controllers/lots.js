@@ -30,7 +30,21 @@ const createLot = async (req, res, next) => {
   }
 };
 
+const handleBet = async (req, res, next) => {
+  const { id } = req.params;
+  const { bet } = req.body;
+
+  try {
+    const lotData = await LotsService.handleBet(id, bet, req.user);
+
+    return res.status(httpStatusCodes.OK).json(lotData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.LotsController = {
   getLots,
   createLot,
+  handleBet,
 };

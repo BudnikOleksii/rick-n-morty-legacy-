@@ -12,5 +12,6 @@ lotsRouter.use(authMiddleware(authorisedRoles));
 
 lotsRouter.get('/', LotsController.getLots);
 lotsRouter.post('/', newLotValidations, LotsController.createLot);
+lotsRouter.patch('/:id', LotsController.handleBet);
 
 module.exports = lotsRouter;
