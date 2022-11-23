@@ -7,7 +7,7 @@ const { LotsRepository } = require('../repositories/lots');
 const { checkId } = require('../utils/check-id');
 const { CardsService } = require('./cards');
 const { generateDefaultEndDate } = require('../utils/generate-default-end-date');
-const {UserService} = require('./users');
+const { UserService } = require('./users');
 
 const {
   defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice
@@ -59,6 +59,13 @@ const createLot = async (body, tokenData) => {
   return LotsRepository.createLot(payload);
 };
 
+const finishAuction = (lotId) => {
+  // TODO
+  // 1) relate new owner or keep current if no one bet
+  // 2) create transaction if needed
+  // 3) Remove auction(change activated to false)
+};
+
 const handleBet = async (lotId, bet, tokenData) => {
   if (isNaN(Number(bet)) || !Number(bet)) {
     throw new BadRequestError(['Incorrect bet']);
@@ -89,9 +96,11 @@ const handleBet = async (lotId, bet, tokenData) => {
 
   const user = await UserService.getUserById(tokenData.id);
 
-  return LotsRepository.updateLot(lotId, user, {
-    current_price: bet
-  });
+  // return LotsRepository.updateLot(lotId, user, {
+  //   current_price: bet
+  // });
+
+  return lot;
 };
 
 module.exports.LotsService = {
