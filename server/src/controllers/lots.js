@@ -1,7 +1,7 @@
 const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { LotsService } = require('../services/lots');
-const {validate} = require('../validations/validate');
+const { validate } = require('../validations/validate');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 

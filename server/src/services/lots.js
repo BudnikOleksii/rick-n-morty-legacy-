@@ -96,11 +96,9 @@ const handleBet = async (lotId, bet, tokenData) => {
 
   const user = await UserService.getUserById(tokenData.id);
 
-  // return LotsRepository.updateLot(lotId, user, {
-  //   current_price: bet
-  // });
-
-  return lot;
+  return LotsRepository.updateLot(lotId, user, {
+    current_price: bet
+  });
 };
 
 module.exports.LotsService = {
