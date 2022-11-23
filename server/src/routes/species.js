@@ -1,6 +1,6 @@
 const express = require('express');
 const { SpeciesController } = require('../controllers/species');
-const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { authenticationGuard } = require('../middlewares/authGuard');
 
 const speciesRouter = express.Router();
 

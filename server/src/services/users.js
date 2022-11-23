@@ -1,8 +1,6 @@
 const config = require('../../config');
-
 const { UserRepository } = require('../repositories/users');
 const { BadRequestError, NotFoundError, InternalServerError} = require('../utils/errors/api-errors');
-const { verifyPermission } = require('../utils/verify-permission');
 const bcrypt = require('bcrypt');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
@@ -73,8 +71,7 @@ const createUser = async (userData) => {
 
 const updateUser = (id, payload) => UserRepository.updateUser(id, payload);
 
-const deleteUser = async (id, tokenData) => {
-  verifyPermission(tokenData, id);
+const deleteUser = async (id) => {
   await getUserById(id);
 
   return UserRepository.deleteUser(id);

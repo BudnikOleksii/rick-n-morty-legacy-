@@ -1,7 +1,7 @@
 const { UnauthorizedError } = require('../utils/errors/api-errors');
 const { TokenService } = require('../services/tokens');
 
-const authenticationGuard = async (req, res, next) => {
+const authGuard = async (req, res, next) => {
   if (req.method === 'OPTIONS') {
     next();
   }
@@ -27,5 +27,5 @@ const authenticationGuard = async (req, res, next) => {
 };
 
 module.exports = {
-  authenticationGuard,
+  authenticationGuard: authGuard,
 };

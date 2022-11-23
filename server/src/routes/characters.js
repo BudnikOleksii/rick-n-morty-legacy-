@@ -1,6 +1,6 @@
 const express = require('express');
 const { CharactersController } = require('../controllers/characters');
-const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { authenticationGuard } = require('../middlewares/authGuard');
 
 const charactersRouter = express.Router();
 

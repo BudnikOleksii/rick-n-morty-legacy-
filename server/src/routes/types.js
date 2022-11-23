@@ -1,6 +1,6 @@
 const express = require('express');
 const { TypesController } = require('../controllers/types');
-const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { authenticationGuard } = require('../middlewares/authGuard');
 
 const typesRouter = express.Router();
 

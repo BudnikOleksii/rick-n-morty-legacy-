@@ -1,7 +1,7 @@
 const express = require('express');
 const config = require('../../config');
 const { SetsController } = require('../controllers/sets');
-const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { authenticationGuard } = require('../middlewares/authGuard');
 const {roleGuard} = require('../middlewares/roleGuard');
 
 const { adminRole } = config.server;

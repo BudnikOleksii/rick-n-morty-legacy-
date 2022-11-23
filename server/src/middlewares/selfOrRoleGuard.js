@@ -1,7 +1,7 @@
 const { checkRole } = require('../utils/check-role');
-const {ForbiddenError} = require('../utils/errors/api-errors');
+const { ForbiddenError } = require('../utils/errors/api-errors');
 
-const roleGuard = (authorisedRole) => {
+const selfOrRoleGuard = (authorisedRole) => {
   return async (req, res, next) => {
     if (req.method === 'OPTIONS') {
       next();
@@ -10,9 +10,11 @@ const roleGuard = (authorisedRole) => {
     try {
       const { user } = req;
       const isHaveRole = checkRole(user.roles, authorisedRole);
+      const isCurrentUser = Number(12) === user.id;
+      const isHavePermission = isHaveRole || isCurrentUser;
 
-      if (!isHaveRole) {
-        throw new ForbiddenError(['User does not have access privileges']);
+      if (!isHavePermission) {
+        throw new ForbiddenError(['User does not have permission']);
       }
 
       return next();
@@ -23,5 +25,5 @@ const roleGuard = (authorisedRole) => {
 };
 
 module.exports = {
-  roleGuard,
+  selfOrRoleGuard,
 };

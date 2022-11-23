@@ -1,5 +1,5 @@
 const express = require('express');
-const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { authenticationGuard } = require('../middlewares/authGuard');
 const { LotsController } = require('../controllers/lots');
 const { newLotValidations } = require('../validations/lots');
 

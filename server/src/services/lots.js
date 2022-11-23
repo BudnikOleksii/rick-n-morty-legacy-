@@ -1,7 +1,6 @@
 const config = require('../../config');
-const { BadRequestError } = require('../utils/errors/api-errors');
+const { BadRequestError, ForbiddenError } = require('../utils/errors/api-errors');
 const { createInfoData } = require('../utils/create-info-data');
-const { verifyPermission } = require('../utils/verify-permission');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { LotsRepository } = require('../repositories/lots');
 const { checkId } = require('../utils/check-id');
@@ -35,8 +34,17 @@ const createLot = async (body, tokenData) => {
   } = body;
 
   const card = await CardsService.getCardById(cardId);
-  // only card owner or admin can start auction
-  verifyPermission(tokenData, card.owner?.id);
+  let canStarAuction;
+
+  if (card.owner) {
+    canStarAuction = card.owner.id === tokenData.id;
+  } else {
+    canStarAuction = tokenData.roles.some(role => role.title === 'admin');
+  }
+
+  if (!canStarAuction) {
+    throw new ForbiddenError(['Auction can start only card owner!']);
+  }
 
   const candidate = await LotsRepository.getLot('card_id', cardId);
 
