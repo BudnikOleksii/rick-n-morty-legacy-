@@ -21,7 +21,7 @@ const createSet = async (req, res, next) => {
   const { name } = req.body;
 
   try {
-    const setData = await SetsService.createSet(name, req.user);
+    const setData = await SetsService.createSet(name);
 
     return res.status(httpStatusCodes.CREATED).json(setData);
   } catch (error) {
@@ -33,7 +33,7 @@ const deleteSet = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const deletedSet = await SetsService.deleteSet(id, req.user);
+    const deletedSet = await SetsService.deleteSet(id);
 
     return res.status(httpStatusCodes.OK).json(deletedSet);
   } catch (error) {
@@ -46,7 +46,7 @@ const toggleCharactersInSet = async (req, res, next) => {
   const { characterId } = req.body;
 
   try {
-    const setWithNewCharacters = await SetsService.toggleCharactersInSet(id, characterId, req.user);
+    const setWithNewCharacters = await SetsService.toggleCharactersInSet(id, characterId);
 
     return res.status(httpStatusCodes.OK).json(setWithNewCharacters);
   } catch (error) {

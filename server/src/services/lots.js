@@ -59,11 +59,16 @@ const createLot = async (body, tokenData) => {
   return LotsRepository.createLot(payload);
 };
 
-const finishAuction = (lotId) => {
+const finishAuction = async (lot) => {
+  const { card, lastPersonToBet } = lot;
   // TODO
   // 1) relate new owner or keep current if no one bet
-  // 2) create transaction if needed
-  // 3) Remove auction(change activated to false)
+  if (lastPersonToBet) {
+    const updatedCard = await CardsService.changeOwner(card.id, lastPersonToBet.id);
+  }
+  // 2) Mark character as used!!!
+  // 3) create transaction if needed
+  // 4) Remove auction(change activated to false)
 };
 
 const handleBet = async (lotId, bet, tokenData) => {
@@ -74,7 +79,7 @@ const handleBet = async (lotId, bet, tokenData) => {
   const lot = await getLotById(lotId);
 
   if (new Date() > lot.end_date) {
-    // TODO finish auction!!!
+    const finishedAuction = await finishAuction(lot);
     throw new BadRequestError(['Current auction already finished']);
   }
 

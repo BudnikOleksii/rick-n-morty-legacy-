@@ -3,7 +3,6 @@ const config = require('../../config');
 const { BadRequestError, NotFoundError} = require('../utils/errors/api-errors');
 const { SetsRepository } = require('../repositories/sets');
 const { createInfoData } = require('../utils/create-info-data');
-const { verifyPermission } = require('../utils/verify-permission');
 const { checkId } = require('../utils/check-id');
 const { CharactersService } = require('./characters');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
@@ -30,9 +29,7 @@ const getSet = async (columnName, value) => {
   return set;
 };
 
-const createSet = async (name, tokenData) => {
-  verifyPermission(tokenData);
-
+const createSet = async (name) => {
   if (name.trim().length < minNameLength) {
     throw new BadRequestError([`Set name should be at least ${minNameLength} characters`]);
   }
@@ -46,10 +43,8 @@ const createSet = async (name, tokenData) => {
   return SetsRepository.createSet(name);
 };
 
-const deleteSet = async (id, tokenData) => {
-  verifyPermission(tokenData);
+const deleteSet = async (id) => {
   checkId(id);
-
   const deletedSet = await SetsRepository.deleteSet(id);
 
   if (!deletedSet) {
@@ -59,9 +54,7 @@ const deleteSet = async (id, tokenData) => {
   return deletedSet;
 };
 
-const toggleCharactersInSet = async (setId, characterId, tokenData) => {
-  verifyPermission(tokenData);
-
+const toggleCharactersInSet = async (setId, characterId) => {
   const set = await getSet('id', setId);
   const character = await CharactersService.getCharacterById(characterId);
   const isSetHaveExistingCharacter = set.characters.some(character => character.id === Number(characterId));

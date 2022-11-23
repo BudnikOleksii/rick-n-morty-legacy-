@@ -10,7 +10,7 @@ const development = {
   server: {
     port: parseInt(DEV_SERVER_PORT) || 8080,
     protocol: 'http',
-    authorisedRoles: ['admin', 'user'],
+    adminRole: 'admin',
     saltRounds: 7,
     maxPerRequest: 100,
     defaultPage: 1,

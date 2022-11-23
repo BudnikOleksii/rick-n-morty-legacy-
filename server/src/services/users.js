@@ -80,9 +80,7 @@ const deleteUser = async (id, tokenData) => {
   return UserRepository.deleteUser(id);
 };
 
-const addNewRole = async (userId, newRole, tokenData) => {
-  verifyPermission(tokenData);
-
+const addNewRole = async (userId, newRole) => {
   const user = await getUserById(userId);
   const isUserHaveThisRole = user.roles.some(role => role.title === newRole);
 

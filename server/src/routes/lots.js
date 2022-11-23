@@ -1,15 +1,11 @@
 const express = require('express');
-const config = require('../../config');
-const { authMiddleware } = require('../middlewares/auth');
+const { authenticationGuard } = require('../middlewares/authenticationGuard');
 const { LotsController } = require('../controllers/lots');
 const { newLotValidations } = require('../validations/lots');
 
-const { authorisedRoles } = config.server;
-
 const lotsRouter = express.Router();
 
-lotsRouter.use(authMiddleware(authorisedRoles));
-
+lotsRouter.use(authenticationGuard);
 lotsRouter.get('/', LotsController.getLots);
 lotsRouter.post('/', newLotValidations, LotsController.createLot);
 lotsRouter.patch('/:id', LotsController.handleBet);

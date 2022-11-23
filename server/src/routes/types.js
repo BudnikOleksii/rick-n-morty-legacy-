@@ -1,8 +1,10 @@
 const express = require('express');
 const { TypesController } = require('../controllers/types');
+const { authenticationGuard } = require('../middlewares/authenticationGuard');
 
 const typesRouter = express.Router();
 
+typesRouter.use(authenticationGuard);
 typesRouter.get('/', TypesController.getTypes);
 
 module.exports = typesRouter;

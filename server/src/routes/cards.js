@@ -1,16 +1,17 @@
 const express = require('express');
 const config = require('../../config');
 const { CardsController } = require('../controllers/cards');
-const { authMiddleware } = require('../middlewares/auth');
+const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { roleGuard } = require('../middlewares/roleGuard');
 
 const cardsRouter = express.Router();
 
-const authorisedRoles = config.server.authorisedRoles;
+const { adminRole } = config.server;
 
-cardsRouter.use(authMiddleware(authorisedRoles));
+cardsRouter.use(authenticationGuard);
 cardsRouter.get('/', CardsController.getCards);
 cardsRouter.get('/:id', CardsController.getCardById);
-cardsRouter.post('/', CardsController.createCard);
+cardsRouter.post('/', roleGuard(adminRole), CardsController.createCard);
 cardsRouter.patch('/:cardId', CardsController.changeOwner);
 
 module.exports = cardsRouter;

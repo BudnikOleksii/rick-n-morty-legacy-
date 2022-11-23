@@ -33,7 +33,7 @@ const createCard = async (req, res, next) => {
   const { characterId } = req.body;
 
   try {
-    const newCard = await CardsService.createCard(characterId, req.user);
+    const newCard = await CardsService.createCard(characterId);
 
     return res.status(httpStatusCodes.CREATED).json(newCard);
   } catch (error) {

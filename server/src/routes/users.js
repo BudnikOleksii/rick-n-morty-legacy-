@@ -1,17 +1,18 @@
 const express = require('express');
 const config = require('../../config');
 const { UserController } = require('../controllers/users');
-const { authMiddleware } = require('../middlewares/auth');
+const { authenticationGuard } = require('../middlewares/authenticationGuard');
+const { roleGuard } = require('../middlewares/roleGuard');
 
-const authorisedRoles = config.server.authorisedRoles;
+const { adminRole } = config.server;
 
 const usersRouter = express.Router();
 
-usersRouter.use(authMiddleware(authorisedRoles));
+usersRouter.use(authenticationGuard);
 usersRouter.get('/', UserController.getAllUsers);
 usersRouter.get('/:id', UserController.getUserById);
 usersRouter.get('/:id/cards', UserController.getUserCards);
 usersRouter.delete('/:id', UserController.deleteUser);
-usersRouter.patch('/role/:id', UserController.addNewRole);
+usersRouter.patch('/role/:id', roleGuard(adminRole), UserController.addNewRole);
 
 module.exports = usersRouter;
