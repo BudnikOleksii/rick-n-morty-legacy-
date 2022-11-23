@@ -8,7 +8,6 @@ const roleGuard = (authorisedRole) => {
 
     try {
       const { user } = req;
-
       const hasRole = user.roles.some(role => role.title === authorisedRole);
 
       if (!hasRole) {

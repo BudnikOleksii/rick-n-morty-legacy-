@@ -7,13 +7,7 @@ const authenticationGuard = async (req, res, next) => {
   }
 
   try {
-    const authorisationHeader = req.headers.authorization;
-
-    if (!authorisationHeader) {
-      throw new UnauthorizedError(['User not authorised']);
-    }
-
-    const accessToken = authorisationHeader.split(' ')[1];
+    const accessToken = req.headers.authorization?.split(' ')[1];
 
     if (!accessToken) {
       throw new UnauthorizedError(['User not authorised']);
@@ -22,7 +16,7 @@ const authenticationGuard = async (req, res, next) => {
     const userData = await TokenService.validateAccessToken(accessToken);
 
     if (!userData) {
-      throw new UnauthorizedError(['User not authorised']);
+      throw new UnauthorizedError(['Invalid token']);
     }
 
     req.user = userData;
