@@ -10,8 +10,11 @@ const getCharacterById = (id) => Character.getCharacter(id);
 
 const countUnused = () => Character.query().where('unused', true).resultSize();
 
+const markCharacterAsUsed = (id) => Character.query().patchAndFetchById(id, { unused: false });
+
 module.exports.CharactersRepository = {
   getCharacters,
   getCharacterById,
   countUnused,
+  markCharacterAsUsed,
 };

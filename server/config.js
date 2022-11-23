@@ -20,6 +20,8 @@ const development = {
     defaultMinStep: 10,
     defaultMaxPrice: 2**31 - 1,
     defaultAuctionDuration: 7 * 24 * 60 * 60 * 1000,
+    defaultAdminUserName: 'admin',
+    systemFee: 0.1,
     minNameLength: 4,
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',

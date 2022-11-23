@@ -26,7 +26,10 @@ const getCharacterById = async (id) => {
   return character;
 };
 
+const markCharacterAsUsed = (id) => CharactersRepository.markCharacterAsUsed(id);
+
 module.exports.CharactersService = {
   getCharacters,
   getCharacterById,
+  markCharacterAsUsed,
 };

@@ -30,9 +30,12 @@ const updateLot = async (id, user, payload) => {
   return getLot('id', id);
 };
 
+const finishAuction = (id) => Lot.query().deleteById(id);
+
 module.exports.LotsRepository = {
   getLots,
   getLot,
   createLot,
   updateLot,
+  finishAuction,
 };

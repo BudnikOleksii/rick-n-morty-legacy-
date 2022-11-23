@@ -18,6 +18,18 @@ const getLots = async (req, res, next) => {
   }
 };
 
+const getLotById = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const lotData = await LotsService.getLotById(id);
+
+    return res.status(httpStatusCodes.OK).json(lotData);
+  } catch (error) {
+    next(error);
+  }
+}
+
 const createLot = async (req, res, next) => {
   try {
     validate(req);
@@ -45,6 +57,7 @@ const handleBet = async (req, res, next) => {
 
 module.exports.LotsController = {
   getLots,
+  getLotById,
   createLot,
   handleBet,
 };
