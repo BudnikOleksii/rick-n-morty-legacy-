@@ -1,6 +1,7 @@
 const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
+const { CardsService } = require('../services/cards');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 
@@ -33,7 +34,7 @@ const deleteUser = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const isDeleted = await UserService.deleteUser(id, req.user);
+    const isDeleted = await UserService.deleteUser(id);
 
     return res.status(httpStatusCodes.OK).json(isDeleted);
   } catch (error) {
@@ -46,9 +47,23 @@ const addNewRole = async (req, res, next) => {
   const { role } = req.body;
 
   try {
-    const userWithNewRole = await UserService.addNewRole(id, role, req.user);
+    const userWithNewRole = await UserService.addNewRole(id, role);
 
     return res.status(httpStatusCodes.OK).json(userWithNewRole);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserCards = async (req, res, next) => {
+  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl + req.path;
+  const { id } = req.params;
+
+  try {
+    const cardsData = await CardsService.getUserCards(page, limit, endpoint, id)
+
+    return res.status(httpStatusCodes.OK).json(cardsData);
   } catch (error) {
     next(error);
   }
@@ -59,4 +74,5 @@ module.exports.UserController = {
   getUserById,
   deleteUser,
   addNewRole,
+  getUserCards,
 };

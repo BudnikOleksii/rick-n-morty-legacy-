@@ -1,17 +1,17 @@
 const express = require('express');
 const config = require('../../config');
 const { SetsController } = require('../controllers/sets');
-const { authMiddleware } = require('../middlewares/auth');
+const { authGuard } = require('../middlewares/authGuard');
+const { roleGuard } = require('../middlewares/roleGuard');
 
-const { authorisedRoles } = config.server;
+const { adminRole } = config.server;
 
 const setsRouter = express.Router();
 
-setsRouter.use(authMiddleware(authorisedRoles));
-
+setsRouter.use(authGuard);
 setsRouter.get('/', SetsController.getSets);
-setsRouter.post('/', SetsController.createSet);
-setsRouter.patch('/:id', SetsController.toggleCharactersInSet);
-setsRouter.delete('/:id', SetsController.deleteSet);
+setsRouter.post('/', roleGuard(adminRole), SetsController.createSet);
+setsRouter.patch('/:id', roleGuard(adminRole), SetsController.toggleCharactersInSet);
+setsRouter.delete('/:id', roleGuard(adminRole), SetsController.deleteSet);
 
 module.exports = setsRouter;
