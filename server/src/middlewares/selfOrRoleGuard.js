@@ -10,7 +10,7 @@ const selfOrRoleGuard = (authorisedRole) => {
     try {
       const { user } = req;
       const isHaveRole = checkRole(user.roles, authorisedRole);
-      const isCurrentUser = Number(12) === user.id;
+      const isCurrentUser = Number(req.params.id) === user.id;
       const isHavePermission = isHaveRole || isCurrentUser;
 
       if (!isHavePermission) {
