@@ -9,7 +9,7 @@ const { generateEndDate } = require('../utils/generate-end-date');
 const { UserService } = require('./users');
 const { CharactersRepository } = require('../repositories/characters');
 const { TransactionService } = require('./transactions');
-const { ratingSubject } = require('./rating-subject');
+const { auctionFinished } = require('./auction-finished-subject');
 
 const {
   defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice
@@ -85,8 +85,8 @@ const finishAuction = async (lot) => {
     await TransactionService.createTransaction(lot);
 
     // we don't need wait actions because it's side effect?
-    ratingSubject.next(lastPersonToBet.id);
-    ratingSubject.next(card.owner?.id);
+    auctionFinished.next(lastPersonToBet.id);
+    auctionFinished.next(card.owner?.id);
   }
 
   await LotsRepository.finishAuction(lot.id);
