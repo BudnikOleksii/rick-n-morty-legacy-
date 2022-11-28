@@ -8,7 +8,8 @@ const { CardsService } = require('./cards');
 const { generateEndDate } = require('../utils/generate-end-date');
 const { UserService } = require('./users');
 const { CharactersRepository } = require('../repositories/characters');
-const {TransactionService} = require('./transactions');
+const { TransactionService } = require('./transactions');
+const {ratingSubject} = require('./rating-subject');
 
 const {
   defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice
@@ -77,18 +78,16 @@ const createLot = async (body, tokenData) => {
 
 const finishAuction = async (lot) => {
   const { card, lastPersonToBet } = lot;
-  // TODO
-  // 1) relate new owner or keep current if no one bet
-  // 2) Mark character as used!!!
-  // 3) create transaction if needed (check if user have enough balance to pay for card)
+
   if (lastPersonToBet) {
     await CardsService.changeOwner(card.id, lastPersonToBet.id);
     await CharactersRepository.markCharacterAsUsed(lot.card.character.id);
+    await TransactionService.createTransaction(lot);
 
-    // return transaction if needed
-    const transaction = await TransactionService.createTransaction(lot);
+    // we don't need wait actions because it's side effect?
+    ratingSubject.next(lot);
   }
-  // 4) Remove auction(change activated to false)
+
   await LotsRepository.finishAuction(lot.id);
 };
 
@@ -120,7 +119,6 @@ const handleBet = async (lotId, bet, tokenData) => {
     throw new BadRequestError(['Bet step must be more than minimum']);
   }
 
-  // TODO check time for deadline, if less than min_auction_duration update it
   const timeToAuctionEnd = end_date - new Date();
   const newEndDate = timeToAuctionEnd < min_action_duration ? generateEndDate(min_action_duration) : end_date;
 

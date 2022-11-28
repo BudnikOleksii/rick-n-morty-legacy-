@@ -2,6 +2,7 @@ const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
 const { CardsService } = require('../services/cards');
+const {SetsService} = require('../services/sets');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 
@@ -69,10 +70,23 @@ const getUserCards = async (req, res, next) => {
   }
 };
 
+const getUserSets = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const userSets = await SetsService.getUserSets(id);
+
+    return res.status(httpStatusCodes.OK).json(userSets);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.UserController = {
   getAllUsers,
   getUserById,
   deleteUser,
   addNewRole,
   getUserCards,
+  getUserSets,
 };

@@ -6,6 +6,11 @@ const getSets = (page, limit) => {
     .page(page - 1, limit);
 };
 
+const getAllSets = () => {
+  return Set.query()
+    .withGraphFetched('characters.[species, type]');
+};
+
 const getSet = (columnName, value) => {
   return Set.query()
     .withGraphFetched('characters.[species, type, origin, location, episodes]')
@@ -37,6 +42,7 @@ const removeCharacterFromSet = async (set, character) => {
 
 module.exports.SetsRepository = {
   getSets,
+  getAllSets,
   getSet,
   createSet,
   deleteSet,

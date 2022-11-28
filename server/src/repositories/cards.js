@@ -32,14 +32,22 @@ const getUserCards = (page, limit, userId) => {
   return Card.query()
     .whereNotDeleted()
     .where('owner_id', userId)
-    .withGraphFetched('[character.[species, type, origin, location, episodes], owner]')
+    .withGraphFetched('[character.[species, type, origin, location, episodes]]')
     .page(page - 1, limit);
+};
+
+const getAllUserCards = (userId) => {
+  return Card.query()
+    .whereNotDeleted()
+    .where('owner_id', userId)
+    .withGraphFetched('[character.[species, type]]');
 };
 
 module.exports.CardsRepository = {
   getCards,
   getCardById,
   getUserCards,
+  getAllUserCards,
   createCard,
   changeOwner,
 };

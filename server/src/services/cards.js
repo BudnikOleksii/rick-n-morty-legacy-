@@ -39,6 +39,8 @@ const getUserCards = async (page, limit, endpoint, userId) => {
   };
 };
 
+const getAllUserCards = (userId) => CardsRepository.getAllUserCards(userId);
+
 const createCard = async (characterId) => {
   // TODO verification is all cards sold at least once
 
@@ -60,6 +62,7 @@ module.exports.CardsService = {
   getCards,
   getCardById,
   getUserCards,
+  getAllUserCards,
   createCard,
   changeOwner,
 };

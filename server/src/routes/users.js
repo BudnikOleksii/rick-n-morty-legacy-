@@ -13,6 +13,7 @@ usersRouter.use(authGuard);
 usersRouter.get('/', UserController.getAllUsers);
 usersRouter.get('/:id', UserController.getUserById);
 usersRouter.get('/:id/cards', UserController.getUserCards);
+usersRouter.get('/:id/sets', UserController.getUserSets);
 usersRouter.delete('/:id', selfOrRoleGuard(adminRole), UserController.deleteUser);
 usersRouter.patch('/role/:id', roleGuard(adminRole), UserController.addNewRole);
 
