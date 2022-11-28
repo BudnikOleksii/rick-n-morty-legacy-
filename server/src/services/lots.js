@@ -131,9 +131,21 @@ const handleBet = async (lotId, bet, tokenData) => {
   });
 };
 
+const closeAllFinishedAuctions = async () => {
+  const lots = await LotsRepository.getAllLots();
+
+  lots.forEach(lot => {
+    if (new Date() > lot.end_date) {
+      // We don't need to wait?
+      finishAuction(lot);
+    }
+  });
+};
+
 module.exports.LotsService = {
   getLots,
   getLotById,
   createLot,
   handleBet,
+  closeAllFinishedAuctions,
 };
