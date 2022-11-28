@@ -6,7 +6,7 @@ const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
 const { CharactersService } = require('./characters');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
-const {CardsService} = require('./cards');
+const { CardsService } = require('./cards');
 
 const { minNameLength } = config.server;
 
