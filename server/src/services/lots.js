@@ -9,7 +9,7 @@ const { generateEndDate } = require('../utils/generate-end-date');
 const { UserService } = require('./users');
 const { CharactersRepository } = require('../repositories/characters');
 const { TransactionService } = require('./transactions');
-const {ratingSubject} = require('./rating-subject');
+const { ratingSubject } = require('./rating-subject');
 
 const {
   defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice

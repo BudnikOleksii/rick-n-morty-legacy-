@@ -2,7 +2,7 @@ const config = require('../../config');
 const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
 const { CardsService } = require('../services/cards');
-const {SetsService} = require('../services/sets');
+const { SetsService } = require('../services/sets');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 
