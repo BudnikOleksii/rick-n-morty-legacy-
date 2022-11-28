@@ -85,7 +85,8 @@ const finishAuction = async (lot) => {
     await TransactionService.createTransaction(lot);
 
     // we don't need wait actions because it's side effect?
-    ratingSubject.next(lot);
+    ratingSubject.next(lastPersonToBet.id);
+    ratingSubject.next(card.owner?.id);
   }
 
   await LotsRepository.finishAuction(lot.id);

@@ -6,23 +6,17 @@ const { UserService } = require('./users');
 const ratingSubject = new Subject();
 
 ratingSubject.subscribe({
-  next: async (lot) => {
-    const { owner, lastPersonToBet } = lot;
-    const newOwnerCardsCount = (await CardsService.getAllUserCards(lastPersonToBet.id)).length;
-    const newOwnerSetsBonus = (await SetsService.getUserSets(lastPersonToBet.id)).ratingBonus;
-
-    await UserService.updateUser(lastPersonToBet.id, {
-      rating: newOwnerCardsCount + newOwnerSetsBonus,
-    });
-
-    if (owner) {
-      const oldOwnerCardsCount = (await CardsService.getAllUserCards(owner.id)).length;
-      const oldOwnerSetsBonus = (await SetsService.getUserSets(owner.id)).ratingBonus;
-
-      await UserService.updateUser(lastPersonToBet.id, {
-        rating: oldOwnerCardsCount + oldOwnerSetsBonus,
-      });
+  next: async (userId) => {
+    if (!userId) {
+      return;
     }
+
+    const userCardsCount = (await CardsService.getAllUserCards(userId)).length;
+    const userSetsBonus = (await SetsService.getUserSets(userId)).ratingBonus;
+
+    await UserService.updateUser(userId, {
+      rating: userCardsCount + userSetsBonus,
+    });
   },
 });
 
