@@ -8,7 +8,7 @@ exports.up = function(knex) {
     table
       .integer('seller_id')
       .unsigned()
-      .notNullable();
+      .nullable();
     table
       .integer('purchaser_id')
       .unsigned()

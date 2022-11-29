@@ -7,10 +7,6 @@ exports.up = function(knex) {
       .integer('card_id')
       .unsigned()
       .notNullable();
-    table
-      .integer('owner_id')
-      .unsigned()
-      .nullable();
     table.integer('initial_price').notNullable();
     table.integer('current_price').notNullable();
     table.timestamp('start_date').defaultTo(knex.fn.now());
@@ -29,11 +25,6 @@ exports.up = function(knex) {
       .foreign('card_id')
       .references('id')
       .inTable('cards')
-      .onDelete('cascade');
-    table
-      .foreign('owner_id')
-      .references('id')
-      .inTable('users')
       .onDelete('cascade');
     table
       .foreign('last_person_to_bet_id')
