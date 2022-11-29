@@ -6,6 +6,7 @@ const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
 const { CharactersService } = require('./characters');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
+const { CardsService } = require('./cards');
 
 const { minNameLength } = config.server;
 
@@ -66,10 +67,62 @@ const toggleCharactersInSet = async (setId, characterId) => {
   return SetsRepository.addCharacterToSet(set, character);
 };
 
+const getUserSets = async (userId) => {
+  const userCardsIds = new Set();
+  const sets = await SetsRepository.getAllSets();
+  const userSetsMap = new Map();
+  const userSets = [];
+  let ratingBonus = 0;
+
+  (await CardsService.getAllUserCards(userId)).forEach(card => {
+    userCardsIds.add(card.character.id)
+  });
+
+  sets.forEach(set => {
+    set.characters.forEach(character => {
+      if (userCardsIds.has(character.id)) {
+        const usersSet = userSetsMap.get(set.name);
+
+        if (usersSet) {
+          usersSet.userCards = [...usersSet.userCards, character];
+        } else {
+          userSetsMap.set(set.name, {
+            setName: set.name,
+            setLength: set.characters.length,
+            userCards: [character],
+          });
+        }
+      }
+    });
+  });
+
+  userSetsMap.forEach(set => {
+    const { setName, setLength, userCards } = set;
+    const isCompleted = userCards.length >= setLength;
+
+    if (isCompleted) {
+      ratingBonus += setLength;
+    }
+
+    userSets.push({
+      setName,
+      setLength,
+      isCompleted,
+      userCards,
+    });
+  });
+
+  return {
+    ratingBonus,
+    userSets,
+  };
+};
+
 module.exports.SetsService = {
   getSets,
   getSet,
   createSet,
   deleteSet,
   toggleCharactersInSet,
+  getUserSets,
 };

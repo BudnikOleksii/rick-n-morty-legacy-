@@ -22,8 +22,10 @@
     "knex": "^2.3.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "node-cron": "^3.0.2",
     "objection": "^3.0.1",
-    "objection-js-soft-delete": "^3.0.3"
+    "objection-js-soft-delete": "^3.0.3",
+    "rxjs": "^7.5.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

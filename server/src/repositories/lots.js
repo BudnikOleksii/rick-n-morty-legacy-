@@ -1,5 +1,13 @@
 const Lot = require('../models/lots');
 
+const getAllFinishedLots = () => {
+  return Lot.query()
+    .select()
+    .whereNotDeleted()
+    .where('end_date', '<', new Date())
+    .withGraphFetched('[card.[character.[species, type], owner], lastPersonToBet]');
+};
+
 const getLots = (page, limit) => {
   return Lot.query()
     .select()
@@ -33,6 +41,7 @@ const updateLot = async (id, user, payload) => {
 const finishAuction = (id) => Lot.query().deleteById(id);
 
 module.exports.LotsRepository = {
+  getAllFinishedLots,
   getLots,
   getLot,
   createLot,

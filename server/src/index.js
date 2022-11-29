@@ -1,12 +1,19 @@
 const http = require('http');
-const config = require('../config');
 
+const { port } = require('../config').server;
 const app = require('./app');
-
-const PORT = config.server.port;
+const { LotsService } = require('./services/lots');
+const { initCronJobs } = require('./cron-jobs');
 
 const server = http.createServer(app);
 
-server.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  await LotsService.closeAllFinishedAuctions();
+  initCronJobs();
+
+  server.listen(port, () => {
+    console.log(`Listening on http://localhost:${port}`);
+  });
+};
+
+startServer();
