@@ -84,9 +84,7 @@ const finishAuction = async (lot) => {
     await CharactersRepository.markCharacterAsUsed(lot.card.character.id);
     await TransactionService.createTransaction(lot);
 
-    // we don't need wait actions because it's side effect?
-    auctionFinished.next(lastPersonToBet.id);
-    auctionFinished.next(card.owner?.id);
+    auctionFinished.next(lot);
   }
 
   await LotsRepository.finishAuction(lot.id);
@@ -120,6 +118,12 @@ const handleBet = async (lotId, bet, tokenData) => {
     throw new BadRequestError(['Bet step must be more than minimum']);
   }
 
+  const { balance } = await TransactionService.getUserBalance(tokenData.id);
+
+  if (balance < bet) {
+    throw new BadRequestError(['User don`t have enough money']);
+  }
+
   const timeToAuctionEnd = end_date - new Date();
   const newEndDate = timeToAuctionEnd < min_action_duration ? generateEndDate(min_action_duration) : end_date;
 
@@ -132,15 +136,13 @@ const handleBet = async (lotId, bet, tokenData) => {
 };
 
 const closeAllFinishedAuctions = async () => {
-  const lots = await LotsRepository.getAllLots();
+  try {
+    const lots = await LotsRepository.getAllFinishedLots();
 
-  lots.forEach(lot => {
-    if (new Date() > lot.end_date) {
-      // We don't need to wait?
-      console.log(lot);
-      finishAuction(lot);
-    }
-  });
+    await Promise.all(lots.map(finishAuction));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 module.exports.LotsService = {
