@@ -1,5 +1,6 @@
 const { Model } = require('objection');
 const Role = require('./roles');
+const Chat = require('./chats');
 const objectionSoftDelete = require('objection-js-soft-delete').default;
 
 const softDelete = objectionSoftDelete({
@@ -24,6 +25,18 @@ class User extends softDelete(Model) {
           to: 'users_roles.role_id'
         },
         to: 'roles.id'
+      }
+    },
+    chats: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Chat,
+      join: {
+        from: 'users.id',
+        through: {
+          from: 'users_chats.user_id',
+          to: 'users_chats.chat_id'
+        },
+        to: 'chats.id'
       }
     }
   };

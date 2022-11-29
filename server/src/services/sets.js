@@ -7,8 +7,7 @@ const { checkId } = require('../utils/check-id');
 const { CharactersService } = require('./characters');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { CardsService } = require('./cards');
-
-const { minNameLength } = config.server;
+const { checkNameLength } = require('../utils/check-name-length');
 
 const getSets = async (page, limit, endpoint) => {
   checkLimitForRequest(limit, 'sets');
@@ -31,9 +30,7 @@ const getSet = async (columnName, value) => {
 };
 
 const createSet = async (name) => {
-  if (name.trim().length < minNameLength) {
-    throw new BadRequestError([`Set name should be at least ${minNameLength} characters`]);
-  }
+  checkNameLength(name);
 
   const candidate = await SetsRepository.getSet('name', name);
 
