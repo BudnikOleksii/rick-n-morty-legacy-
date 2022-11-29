@@ -1,25 +1,14 @@
 const { Subject } = require('rxjs');
-const { CardsService } = require('./cards');
-const { SetsService } = require('./sets');
-const { UserService } = require('./users');
+const { RatingService } = require('./rating');
 
 const auctionFinished = new Subject();
 
-const updateUsersRating = async (userId) => {
-  const userCardsCount = (await CardsService.getAllUserCards(userId)).length;
-  const userSetsBonus = (await SetsService.getUserSets(userId)).ratingBonus;
-
-  await UserService.updateUser(userId, {
-    rating: userCardsCount + userSetsBonus,
-  });
-};
-
 const updateRating = async (lot) => {
   const { owner, lastPersonToBet } = lot;
-  await updateUsersRating(lastPersonToBet.id);
+  await RatingService.updateUserRating(lastPersonToBet.id);
 
   if (owner) {
-    await updateUsersRating(owner.id);
+    await RatingService.updateUserRating(owner.id);
   }
 };
 
