@@ -3,6 +3,7 @@ const httpStatusCodes = require('../utils/http-status-codes');
 const { UserService } = require('../services/users');
 const { CardsService } = require('../services/cards');
 const { SetsService } = require('../services/sets');
+const { TransactionService } = require('../services/transactions');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 
@@ -82,6 +83,18 @@ const getUserSets = async (req, res, next) => {
   }
 };
 
+const getUserBalance = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const userBalance = await TransactionService.getUserBalance(id);
+
+    return res.status(httpStatusCodes.OK).json(userBalance);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.UserController = {
   getAllUsers,
   getUserById,
@@ -89,4 +102,5 @@ module.exports.UserController = {
   addNewRole,
   getUserCards,
   getUserSets,
+  getUserBalance,
 };

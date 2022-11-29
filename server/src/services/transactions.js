@@ -31,6 +31,19 @@ const createTransaction = async (lot) => {
   return TransactionRepository.createTransaction(transactionData);
 };
 
+const getUserBalance = async (userId) => {
+  const userDebitSum = (await TransactionRepository.getUserDebitSum(userId)).debit || 0;
+  const userCredits = await TransactionRepository.getUserCreditSum(userId);
+  const userCreditsSum = (userCredits.paid || 0) + (userCredits.feePaid || 0);
+
+  return {
+    balance: userDebitSum - userCreditsSum,
+    userDebitSum,
+    userCreditsSum,
+  };
+};
+
 module.exports.TransactionService = {
   createTransaction,
+  getUserBalance,
 };

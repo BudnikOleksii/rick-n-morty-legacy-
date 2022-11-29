@@ -137,6 +137,7 @@ const closeAllFinishedAuctions = async () => {
   lots.forEach(lot => {
     if (new Date() > lot.end_date) {
       // We don't need to wait?
+      console.log(lot);
       finishAuction(lot);
     }
   });
