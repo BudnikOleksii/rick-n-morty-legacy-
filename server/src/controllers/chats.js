@@ -1,9 +1,15 @@
 const httpStatusCodes = require('../utils/http-status-codes');
 const { ChatsService } = require('../services/chats');
+const config = require('../../config');
+
+const { defaultPage, defaultLimitPerPage } = config.server;
 
 const getChats = async (req, res, next) => {
+  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl;
+
   try {
-    const chatsData = await ChatsService.getChats();
+    const chatsData = await ChatsService.getChats(page, limit, endpoint);
 
     return res.status(httpStatusCodes.OK).json(chatsData);
   } catch (error) {

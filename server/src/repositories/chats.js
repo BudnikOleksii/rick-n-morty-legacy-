@@ -1,7 +1,10 @@
 const Chat = require('../models/chats');
 
-const getChats = () => Chat.query()
-  .withGraphFetched('users');
+const getChats = (page, limit) => {
+  return Chat.query()
+    .withGraphFetched('users')
+    .page(page - 1, limit);
+};
 
 const getChat = (columnName, value) => {
   return Chat.query().findOne(columnName, value);
@@ -22,7 +25,7 @@ const addUserToChat = async (chat, user) => {
     .$relatedQuery('users')
     .relate(user);
 
-  return getChat('id', chat.id);
+  return getChatById(chat.id);
 };
 
 const removeUserFromChat = async (chat, user) => {
@@ -31,7 +34,7 @@ const removeUserFromChat = async (chat, user) => {
     .unrelate()
     .where('id', user.id);
 
-  return getChat('id', chat.id);
+  return getChatById(chat.id);
 };
 
 module.exports.ChatsRepository = {

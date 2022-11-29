@@ -3,8 +3,18 @@ const { checkNameLength } = require('../utils/check-name-length');
 const { BadRequestError, NotFoundError} = require('../utils/errors/api-errors');
 const { UserService } = require('./users');
 const { checkId } = require('../utils/check-id');
+const { checkLimitForRequest } = require('../utils/check-limit-for-request');
+const { createInfoData } = require('../utils/create-info-data');
 
-const getChats = () => ChatsRepository.getChats();
+const getChats = async (page, limit, endpoint) => {
+  checkLimitForRequest(limit, 'chats');
+  const { results, total } = await ChatsRepository.getChats(page, limit);
+
+  return {
+    info: createInfoData(total, page, limit, endpoint),
+    results,
+  };
+};
 
 const getChat = async (columnName, value) => {
   const chat = await ChatsRepository.getChat(columnName, value);
@@ -42,12 +52,12 @@ const createChat = async (name) => {
 
 const toggleUserInChat = async (chatId, userId) => {
   const chat = await getChat('id', chatId);
-  const user = await UserService.getUserById(userId);
-  // const isUserHaveExistingChat = chat.characters.some(character => character.id === Number(characterId));
-  //
-  // if (isSetHaveExistingCharacter) {
-  //   return SetsRepository.removeCharacterFromSet(set, character);
-  // }
+  const user = await UserService.getUserChats(userId);
+  const isUserHaveExistingChat = user.chats.some(chat => chat.id === Number(chatId));
+
+  if (isUserHaveExistingChat) {
+    return ChatsRepository.removeUserFromChat(chat, user);
+  }
 
   return ChatsRepository.addUserToChat(chat, user);
 };

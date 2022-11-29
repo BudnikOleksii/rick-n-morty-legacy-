@@ -62,6 +62,12 @@ const addNewRole = async (user, role) => {
   return getExistingUser('id', user.id);
 };
 
+const getUserChats = (id) => {
+  return User.query()
+    .findById(id)
+    .withGraphFetched('chats');
+};
+
 module.exports.UserRepository = {
   getUser,
   getExistingUser,
@@ -70,4 +76,5 @@ module.exports.UserRepository = {
   updateUser,
   deleteUser,
   addNewRole,
+  getUserChats,
 };
