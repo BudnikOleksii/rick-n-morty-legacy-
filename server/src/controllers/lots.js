@@ -28,7 +28,7 @@ const getLotById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const createLot = async (req, res, next) => {
   try {
