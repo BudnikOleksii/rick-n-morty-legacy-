@@ -16,7 +16,7 @@ const getAllUsers = async (page, limit, endpoint) => {
     info: createInfoData(total, page, limit, endpoint),
     results,
   };
-}
+};
 
 const getExistingUser = async (columnName, value) => {
   const user = await UserRepository.getExistingUser(columnName, value);
@@ -88,6 +88,18 @@ const addNewRole = async (userId, newRole) => {
   return UserRepository.addNewRole(user, newRole);
 };
 
+const getUserChats = async (id) => {
+  checkId(id);
+
+  const user = await UserRepository.getUserChats(id);
+
+  if (!user) {
+    throw new NotFoundError(['User not found']);
+  }
+
+  return user;
+};
+
 module.exports.UserService = {
   getAllUsers,
   getUserById,
@@ -97,4 +109,5 @@ module.exports.UserService = {
   updateUser,
   deleteUser,
   addNewRole,
+  getUserChats,
 };

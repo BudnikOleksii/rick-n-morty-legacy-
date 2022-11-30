@@ -95,6 +95,18 @@ const getUserBalance = async (req, res, next) => {
   }
 };
 
+const getUserChats = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const userData = await UserService.getUserChats(id);
+
+    return res.status(httpStatusCodes.OK).json(userData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.UserController = {
   getAllUsers,
   getUserById,
@@ -103,4 +115,5 @@ module.exports.UserController = {
   getUserCards,
   getUserSets,
   getUserBalance,
+  getUserChats,
 };
