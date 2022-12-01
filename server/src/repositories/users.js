@@ -68,6 +68,8 @@ const getUserChats = (id) => {
     .withGraphFetched('chats');
 };
 
+const updateLastSeen = (id, ipAddress) => User.query().patch({ ip: ipAddress }).findById(id);
+
 module.exports.UserRepository = {
   getUser,
   getExistingUser,
@@ -77,4 +79,5 @@ module.exports.UserRepository = {
   deleteUser,
   addNewRole,
   getUserChats,
+  updateLastSeen,
 };

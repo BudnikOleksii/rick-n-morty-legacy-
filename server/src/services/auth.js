@@ -3,8 +3,8 @@ const { BadRequestError } = require('../utils/errors/api-errors');
 const { UserService } = require('./users');
 const { TokenService } = require('./tokens');
 
-const register = async (body) => {
-  const user = await UserService.createUser(body);
+const register = async (body, ip) => {
+  const user = await UserService.createUser(body, ip);
   const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
   return {
@@ -16,7 +16,7 @@ const register = async (body) => {
 
 const login = async (body) => {
   const {
-    login, password, ip
+    login, password
   } = body;
 
   const user = await UserService.getExistingUser('login', login);
@@ -26,13 +26,12 @@ const login = async (body) => {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const userWithUpdatedIp = await UserService.updateUser(user.id, { ip });
   const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
 
   return {
     accessToken,
     refreshToken,
-    user: userWithUpdatedIp,
+    user,
   };
 };
 

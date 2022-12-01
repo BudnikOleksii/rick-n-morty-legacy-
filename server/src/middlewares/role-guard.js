@@ -1,5 +1,5 @@
 const { checkRole } = require('../utils/check-role');
-const {ForbiddenError} = require('../utils/errors/api-errors');
+const { ForbiddenError } = require('../utils/errors/api-errors');
 
 const roleGuard = (authorisedRole) => {
   return async (req, res, next) => {

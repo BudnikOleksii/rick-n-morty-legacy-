@@ -36,9 +36,9 @@ const getUserById = async (id) => {
 
 const getUser = (columnName, value) => UserRepository.getUser(columnName, value);
 
-const createUser = async (userData) => {
+const createUser = async (userData, ip) => {
   const {
-    username, login, password, ip
+    username, login, password
   } = userData;
 
   let candidate = await getUser('login', login);
@@ -100,6 +100,13 @@ const getUserChats = async (id) => {
   return user;
 };
 
+const updateLastSeen = async (id, ipAddress) => {
+  const user = await getUserById(id);
+  const ip = ipAddress || user.ip;
+
+  await UserRepository.updateLastSeen(id, ip);
+};
+
 module.exports.UserService = {
   getAllUsers,
   getUserById,
@@ -110,4 +117,5 @@ module.exports.UserService = {
   deleteUser,
   addNewRole,
   getUserChats,
+  updateLastSeen,
 };
