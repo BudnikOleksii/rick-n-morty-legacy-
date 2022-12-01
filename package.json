@@ -1,0 +1,22 @@
+{
+  "name": "rickandmorty_cards_market",
+  "version": "1.0.0",
+  "description": "**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm run dev --prefix server",
+    "client": "npm start --prefix client",
+    "watch": "concurrently 'npm:server' 'npm:client' "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/oleksiib_jsn/rickandmorty_cards_market.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/oleksiib_jsn/rickandmorty_cards_market#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
