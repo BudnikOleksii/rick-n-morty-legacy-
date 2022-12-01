@@ -17,8 +17,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on(socketEvents.send, (data) => {
-    // With data send room id to notify other users in current chat
-    socket.to(data.roomId).emit(socketEvents.receive, data.msg);
+    // get room id from current socket room
+    socket.to(socket.rooms.values().next().value).emit(socketEvents.receive, data.msg);
   });
 });
 
