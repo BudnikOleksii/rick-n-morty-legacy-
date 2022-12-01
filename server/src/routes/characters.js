@@ -1,10 +1,13 @@
 const express = require('express');
 const { CharactersController } = require('../controllers/characters');
-const { authGuard } = require('../middlewares/authGuard');
+const { authGuard } = require('../middlewares/auth-guard');
+const { updateLastVisitDate } = require('../middlewares/update-last-visit');
 
 const charactersRouter = express.Router();
 
-charactersRouter.get('/', authGuard, CharactersController.getCharacters);
-charactersRouter.get('/:id', authGuard, CharactersController.getCharacterById);
+charactersRouter.use(authGuard);
+charactersRouter.use(updateLastVisitDate);
+charactersRouter.get('/', CharactersController.getCharacters);
+charactersRouter.get('/:id', CharactersController.getCharacterById);
 
 module.exports = charactersRouter;

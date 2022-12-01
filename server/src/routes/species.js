@@ -1,9 +1,12 @@
 const express = require('express');
 const { SpeciesController } = require('../controllers/species');
-const { authGuard } = require('../middlewares/authGuard');
+const { authGuard } = require('../middlewares/auth-guard');
+const { updateLastVisitDate } = require('../middlewares/update-last-visit');
 
 const speciesRouter = express.Router();
 
-speciesRouter.get('/', authGuard, SpeciesController.getSpecies);
+speciesRouter.use(authGuard);
+speciesRouter.use(updateLastVisitDate);
+speciesRouter.get('/', SpeciesController.getSpecies);
 
 module.exports = speciesRouter;

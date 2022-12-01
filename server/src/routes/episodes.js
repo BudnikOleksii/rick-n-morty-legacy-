@@ -1,9 +1,12 @@
 const express = require('express');
 const { EpisodesController } = require('../controllers/episodes');
-const { authGuard } = require('../middlewares/authGuard');
+const { authGuard } = require('../middlewares/auth-guard');
+const { updateLastVisitDate } = require('../middlewares/update-last-visit');
 
 const episodesRouter = express.Router();
 
-episodesRouter.get('/', authGuard, EpisodesController.getEpisodes);
+episodesRouter.use(authGuard);
+episodesRouter.use(updateLastVisitDate);
+episodesRouter.get('/', EpisodesController.getEpisodes);
 
 module.exports = episodesRouter;

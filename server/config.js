@@ -24,6 +24,11 @@ const development = {
     checkFinishedLotsInterval: '0 */1 * * * *',
     systemFee: 0.1,
     minNameLength: 4,
+    socketEvents: {
+      join: 'joinRoom',
+      send: 'sendMessage',
+      receive: 'receiveMessage',
+    },
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',
     accessTokenExpiresIn: '3h',

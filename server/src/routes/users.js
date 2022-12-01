@@ -1,15 +1,17 @@
 const express = require('express');
 const config = require('../../config');
 const { UserController } = require('../controllers/users');
-const { authGuard } = require('../middlewares/authGuard');
-const { roleGuard } = require('../middlewares/roleGuard');
-const { selfOrRoleGuard } = require('../middlewares/selfOrRoleGuard');
+const { authGuard } = require('../middlewares/auth-guard');
+const { roleGuard } = require('../middlewares/role-guard');
+const { selfOrRoleGuard } = require('../middlewares/self-or-role-guard');
+const { updateLastVisitDate } = require('../middlewares/update-last-visit');
 
 const { adminRole } = config.server;
 
 const usersRouter = express.Router();
 
 usersRouter.use(authGuard);
+usersRouter.use(updateLastVisitDate);
 usersRouter.get('/', UserController.getAllUsers);
 usersRouter.get('/:id', UserController.getUserById);
 usersRouter.get('/:id/cards', UserController.getUserCards);

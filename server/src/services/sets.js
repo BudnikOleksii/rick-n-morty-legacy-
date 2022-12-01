@@ -1,5 +1,3 @@
-const config = require('../../config');
-
 const { BadRequestError, NotFoundError} = require('../utils/errors/api-errors');
 const { SetsRepository } = require('../repositories/sets');
 const { createInfoData } = require('../utils/create-info-data');

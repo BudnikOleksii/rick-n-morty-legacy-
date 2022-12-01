@@ -1,12 +1,14 @@
 const httpStatusCodes = require('../utils/http-status-codes');
 const { AuthService } = require('../services/auth');
 const { validate } = require('../validations/validate');
+const { getIpFromRequest } = require('../utils/get-ip-from-request');
 
 const registration = async (req, res, next) => {
   try {
     validate(req);
 
-    const userData = await AuthService.register(req.body);
+    const ip = getIpFromRequest(req);
+    const userData = await AuthService.register(req.body, ip);
 
     return res.status(httpStatusCodes.CREATED).json(userData);
   } catch (error) {
