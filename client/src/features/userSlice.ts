@@ -26,7 +26,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    authStart: (state, action) => {
+    loginStart: (state, action) => {
+      state.userIsloading = true;
+      state.userErrors = null;
+    },
+    registrationStart: (state, action) => {
       state.userIsloading = true;
       state.userErrors = null;
     },
@@ -42,7 +46,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { authStart, authSuccess, authError } = userSlice.actions;
+export const { loginStart, registrationStart, authSuccess, authError } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 

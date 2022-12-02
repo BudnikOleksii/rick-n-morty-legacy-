@@ -6,6 +6,7 @@ export const BASE_URL = `http://localhost:${PORT}/v1`;
 
 export const ENDPOINTS = {
   login: '/auth/login',
+  registration: '/auth/registration',
 };
 
 const $api = axios.create({
@@ -15,9 +16,7 @@ const $api = axios.create({
 
 $api.interceptors.request.use((config) => {
   if (config.headers) {
-    config.headers.Authorization = `Bearer ${
-      getItemFromLocalStorage('tokens')?.accessToken
-    }`;
+    config.headers.Authorization = `Bearer ${getItemFromLocalStorage('tokens')?.accessToken}`;
   }
 
   return config;

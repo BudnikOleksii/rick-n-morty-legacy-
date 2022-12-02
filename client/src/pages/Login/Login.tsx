@@ -12,25 +12,24 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { authStart, selectUser } from '../../features/userSlice';
+import { loginStart, selectUser } from '../../features/userSlice';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // Just for tests
-  const user = useAppSelector(selectUser);
-  console.log(user);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     dispatch(
-      authStart({
+      loginStart({
         login: data.get('email'),
         password: data.get('password'),
       })
     );
+
+    navigate('/');
   };
 
   return (
@@ -71,20 +70,12 @@ const Login = () => {
             id="password"
             autoComplete="current-password"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link
-                variant="body2"
-                onClick={() => navigate(PATHS.registration)}
-              >
+              <Link variant="body2" onClick={() => navigate(PATHS.registration)}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

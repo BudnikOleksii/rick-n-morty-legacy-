@@ -1,11 +1,11 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { ILoginResponse } from '../types/auth';
 import { logIn } from '../api/authService';
-import { authError, authStart, authSuccess } from '../features/userSlice';
+import { authError, loginStart, authSuccess } from '../features/userSlice';
 import axios from 'axios';
 import { setItemToLocalStorage } from '../helpers/localstorage-helpers';
 
-function* workLogIn({ payload }: ReturnType<typeof authStart>) {
+function* workLogIn({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(logIn, payload)) as ILoginResponse;
 
@@ -22,8 +22,8 @@ function* workLogIn({ payload }: ReturnType<typeof authStart>) {
   }
 }
 
-function* userSaga() {
-  yield takeEvery(authStart.type, workLogIn);
+function* loginSaga() {
+  yield takeEvery(loginStart.type, workLogIn);
 }
 
-export default userSaga;
+export default loginSaga;
