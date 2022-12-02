@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,17 +11,26 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { authStart, selectUser } from '../../features/userSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  // Just for tests
+  const user = useAppSelector(selectUser);
+  console.log(user);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    dispatch(
+      authStart({
+        login: data.get('email'),
+        password: data.get('password'),
+      })
+    );
   };
 
   return (

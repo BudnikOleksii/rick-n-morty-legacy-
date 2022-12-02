@@ -28,6 +28,7 @@ const userSlice = createSlice({
   reducers: {
     authStart: (state, action) => {
       state.userIsloading = true;
+      state.userErrors = null;
     },
     authSuccess: (state, action) => {
       state.userIsloading = false;
