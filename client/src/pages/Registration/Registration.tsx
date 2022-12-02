@@ -29,8 +29,6 @@ const Registration = () => {
         password: data.get('password'),
       })
     );
-
-    navigate('/');
   };
 
   return (

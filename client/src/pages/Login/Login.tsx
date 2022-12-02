@@ -28,8 +28,6 @@ const Login = () => {
         password: data.get('password'),
       })
     );
-
-    navigate('/');
   };
 
   return (

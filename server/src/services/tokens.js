@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config');
 const { generateTokens } = require('../utils/generate-tokens');
 const { TokenRepository } = require('../repositories/tokens');
-const { InternalServerError, UnauthorizedError} = require('../utils/errors/api-errors');
+const { InternalServerError, UnauthorizedError } = require('../utils/errors/api-errors');
+const { ref } = require('objection');
 
 const { jwtAccessSecret, jwtRefreshSecret } = config.server;
 
@@ -17,18 +18,16 @@ const createTokens = async (userId, roles) => {
     roles,
   });
 
-  let token = await getToken('user_id', userId);
+  const oldToken = await TokenRepository.getToken('user_id', userId);
 
-  if (token) {
-    token = await TokenRepository.refreshToken(token.id, refreshToken);
-  } else {
-    token = await TokenRepository.createToken(userId, refreshToken);
-  }
+  await TokenRepository.removeToken(oldToken.id);
+
+  const token = await TokenRepository.createToken(userId, refreshToken);
 
   return {
     accessToken,
     refreshToken: token.refresh_token,
-  }
+  };
 };
 
 const removeToken = async (refreshToken) => {
@@ -73,9 +72,7 @@ const getCheckedDataFromToken = async (refreshToken) => {
     throw new UnauthorizedError(['User unauthorized']);
   }
 
-  return {
-    userData,
-  };
+  return userData;
 };
 
 module.exports.TokenService = {

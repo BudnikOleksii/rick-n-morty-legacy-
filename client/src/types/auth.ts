@@ -13,7 +13,7 @@ export interface IRegistration {
 
 export type ILogin = Omit<IRegistration, 'username'>;
 
-export interface ILoginResponse {
+export interface IAuthResponse {
   tokens: ITokens;
   user: IUser;
 }

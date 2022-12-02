@@ -1,6 +1,10 @@
 const httpStatusCodes = require('../utils/http-status-codes');
 const {
-  InternalServerError, BadRequestError, NotFoundError, UnauthorizedError, ForbiddenError
+  InternalServerError,
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+  ForbiddenError,
 } = require('../utils/errors/api-errors');
 
 const errorHandler = (err, req, res, next) => {
@@ -13,7 +17,7 @@ const errorHandler = (err, req, res, next) => {
       break;
     case UnauthorizedError:
       statusCode = httpStatusCodes.UNAUTHORIZED;
-      break
+      break;
     case ForbiddenError:
       statusCode = httpStatusCodes.FORBIDDEN;
       break;
