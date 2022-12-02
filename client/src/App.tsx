@@ -1,5 +1,4 @@
 import React from 'react';
-import { Counter } from './features/counter/Counter';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import NotFound from './pages/NotFound/NotFound';
@@ -12,8 +11,6 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/*Just a little remainder about redux toolkit*/}
-        <Route path="counter" element={<Counter />} />
         {/*Public routes*/}
         <Route path={PATHS.registration} element={<Registration />} />
         <Route path={PATHS.login} element={<Login />} />
