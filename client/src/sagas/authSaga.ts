@@ -1,14 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { ILogin, ILoginResponse } from '../types/auth';
+import { ILoginResponse } from '../types/auth';
 import { logIn } from '../api/authService';
 import { authError, authStart, authSuccess } from '../features/userSlice';
 import axios from 'axios';
 
-type payload = {
-  payload: ILogin;
-};
-
-function* workLogIn({ payload }: payload) {
+function* workLogIn({ payload }: ReturnType<typeof authStart>) {
   try {
     const user = (yield call(logIn, payload)) as ILoginResponse;
     yield put(authSuccess(user));
@@ -22,8 +18,6 @@ function* workLogIn({ payload }: payload) {
 }
 
 function* userSaga() {
-  // TODO find solution for TS
-  // @ts-ignore
   yield takeEvery(authStart.type, workLogIn);
 }
 
