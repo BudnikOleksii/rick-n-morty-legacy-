@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Layout from './components/Layout/Layout';
+import { Layout } from './components/Layout';
 import NotFound from './pages/NotFound/NotFound';
 import Registration from './pages/Registration/Registration';
 import Login from './pages/Login/Login';
