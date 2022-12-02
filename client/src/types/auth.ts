@@ -1,4 +1,6 @@
-export interface IAuth {
+import { IUser } from './user';
+
+export interface ITokens {
   accessToken: string;
   refreshToken: string;
 }
@@ -10,3 +12,8 @@ export interface IRegistration {
 }
 
 export type ILogin = Omit<IRegistration, 'username'>;
+
+export interface ILoginResponse {
+  tokens: ITokens;
+  user: IUser;
+}

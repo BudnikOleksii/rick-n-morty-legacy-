@@ -6,15 +6,17 @@ import NotFound from './pages/NotFound/NotFound';
 import Registration from './pages/Registration/Registration';
 import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
+import { PATHS } from './constants';
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/*Public routes*/}
+        {/*Just a little remainder about redux toolkit*/}
         <Route path="counter" element={<Counter />} />
-        <Route path="registration" element={<Registration />} />
-        <Route path="login" element={<Login />} />
+        {/*Public routes*/}
+        <Route path={PATHS.registration} element={<Registration />} />
+        <Route path={PATHS.login} element={<Login />} />
 
         {/*Private routes*/}
         <Route path="/" element={<Home />} />
