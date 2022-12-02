@@ -3,10 +3,10 @@ import { IUser } from '../types/user';
 import { ITokens } from '../types/auth';
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
-import { getItemFromLocalstorage } from '../helpers/getItemFromLocalstorage';
+import { getItemFromLocalStorage } from '../helpers/localstorage-helpers';
 
-const tokens: ITokens = getItemFromLocalstorage('tokens');
-const user: IUser = getItemFromLocalstorage('user');
+const tokens: ITokens = getItemFromLocalStorage('tokens');
+const user: IUser = getItemFromLocalStorage('user');
 
 interface UserState {
   tokens: Maybe<ITokens>;
