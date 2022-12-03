@@ -10,11 +10,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-import { PATHS } from '../../constants';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { loginStart, selectUser } from '../../features/userSlice';
+import { PATHS } from '../constants';
+import { useAppDispatch } from '../app/hooks';
+import { registrationStart } from '../features/userSlice';
 
-const Login = () => {
+const Registration = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -23,7 +23,8 @@ const Login = () => {
     const data = new FormData(event.currentTarget);
 
     dispatch(
-      loginStart({
+      registrationStart({
+        username: data.get('username'),
         login: data.get('email'),
         password: data.get('password'),
       })
@@ -45,36 +46,49 @@ const Login = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+              />
+            </Grid>
+          </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign In
+            Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link variant="body2" onClick={() => navigate(PATHS.registration)}>
-                {"Don't have an account? Sign Up"}
+              <Link variant="body2" onClick={() => navigate(PATHS.login)}>
+                Already have an account? Sign in
               </Link>
             </Grid>
           </Grid>
@@ -84,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Registration;

@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-const NotFound = () => {
+const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -23,9 +23,7 @@ const NotFound = () => {
           <Grid item xs={6}>
             <Typography variant="h1">404</Typography>
 
-            <Typography variant="h6">
-              The page you’re looking for doesn’t exist.
-            </Typography>
+            <Typography variant="h6">The page you’re looking for doesn’t exist.</Typography>
 
             <Button variant="contained" onClick={() => navigate('/')}>
               Back Home
@@ -45,4 +43,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

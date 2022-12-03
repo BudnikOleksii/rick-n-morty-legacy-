@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import NotFound from './pages/NotFound/NotFound';
-import Registration from './pages/Registration/Registration';
-import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
+import NotFoundPage from './pages/NotFound';
+import Registration from './pages/Registration';
+import Login from './pages/Login';
+import Home from './pages/Home';
 import { PATHS } from './constants';
+import { PrivateRoute } from './components/PrivateRoute';
 
 const App = () => {
   return (
@@ -16,10 +17,17 @@ const App = () => {
         <Route path={PATHS.login} element={<Login />} />
 
         {/*Private routes*/}
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
 
         {/*Not found route*/}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

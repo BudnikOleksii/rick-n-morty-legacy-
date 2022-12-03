@@ -20,7 +20,9 @@ const createTokens = async (userId, roles) => {
 
   const oldToken = await TokenRepository.getToken('user_id', userId);
 
-  await TokenRepository.removeToken(oldToken.id);
+  if (oldToken) {
+    await TokenRepository.removeToken(oldToken.id);
+  }
 
   const token = await TokenRepository.createToken(userId, refreshToken);
 

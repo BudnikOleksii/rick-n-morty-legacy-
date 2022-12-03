@@ -1,7 +1,6 @@
 import { all } from 'redux-saga/effects';
-import loginSaga from './loginSaga';
-import registrationSaga from './registrationSaga';
+import authSaga from './authSaga';
 
 export default function* IndexSaga() {
-  yield all([loginSaga(), registrationSaga()]);
+  yield all([authSaga()]);
 }
