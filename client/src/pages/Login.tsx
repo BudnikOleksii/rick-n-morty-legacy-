@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../constants';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { loginStart, selectUser } from '../features/userSlice';
+import { useAppDispatch } from '../app/hooks';
+import { loginStart } from '../features/userSlice';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -71,8 +71,13 @@ const Login = () => {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
+          <Grid container>
+            <Grid item xs={6}>
+              <Link variant="body2" onClick={() => navigate('/')}>
+                {'Logged in? Home page'}
+              </Link>
+            </Grid>
+            <Grid item xs={6}>
               <Link variant="body2" onClick={() => navigate(PATHS.registration)}>
                 {"Don't have an account? Sign Up"}
               </Link>

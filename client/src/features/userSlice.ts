@@ -10,18 +10,25 @@ interface UserState {
   user: Maybe<IUser>;
   userIsloading: boolean;
   userErrors: Maybe<string[]>;
+  isLoggedIn: boolean;
 }
 
 const initialState: UserState = {
   user,
   userIsloading: false,
   userErrors: null,
+  isLoggedIn: false,
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    checkAuthStart: (state) => {
+      state.userIsloading = true;
+      state.userErrors = null;
+      state.isLoggedIn = false;
+    },
     loginStart: (state, action) => {
       state.userIsloading = true;
       state.userErrors = null;
@@ -33,6 +40,7 @@ const userSlice = createSlice({
     authSuccess: (state, action) => {
       state.userIsloading = false;
       state.user = action.payload.user;
+      state.isLoggedIn = true;
     },
     authError: (state, action) => {
       state.userIsloading = false;
@@ -41,7 +49,8 @@ const userSlice = createSlice({
   },
 });
 
-export const { loginStart, registrationStart, authSuccess, authError } = userSlice.actions;
+export const { checkAuthStart, loginStart, registrationStart, authSuccess, authError } =
+  userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
 

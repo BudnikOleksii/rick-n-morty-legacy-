@@ -1,17 +1,26 @@
 import { FC, ReactNode } from 'react';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import UnauthorizedPage from '../../pages/Unauthorized';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { checkAuthStart, selectUser } from '../../features/userSlice';
 
 interface IProps {
   children: ReactNode;
 }
 
 export const PrivateRoute: FC<IProps> = ({ children }) => {
-  const tokens = getItemFromLocalStorage('tokens');
+  const dispatch = useAppDispatch();
+  const { isLoggedIn } = useAppSelector(selectUser);
 
-  if (!tokens) {
-    return <UnauthorizedPage />;
+  if (isLoggedIn) {
+    return <>{children}</>;
   }
 
-  return <>{children}</>;
+  const tokens = getItemFromLocalStorage('tokens');
+
+  if (tokens) {
+    dispatch(checkAuthStart());
+  }
+
+  return <UnauthorizedPage />;
 };

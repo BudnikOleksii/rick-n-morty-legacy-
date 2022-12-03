@@ -5,5 +5,7 @@ export const getItemFromLocalStorage = (key: string) => {
 };
 
 export const setItemToLocalStorage = (key: string, value: any) => {
-  window.localStorage.setItem(key, JSON.stringify(value));
+  if (key && value) {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }
 };
