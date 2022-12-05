@@ -5,19 +5,16 @@ const { TokenService } = require('./tokens');
 
 const register = async (body, ip) => {
   const user = await UserService.createUser(body, ip);
-  const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
+  const tokens = await TokenService.createTokens(user.id, user.roles);
 
   return {
-    accessToken,
-    refreshToken,
+    tokens,
     user,
   };
 };
 
 const login = async (body) => {
-  const {
-    login, password
-  } = body;
+  const { login, password } = body;
 
   const user = await UserService.getExistingUser('login', login);
   const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -26,11 +23,10 @@ const login = async (body) => {
     throw new BadRequestError(['Incorrect password']);
   }
 
-  const { accessToken, refreshToken } = await TokenService.createTokens(user.id, user.roles);
+  const tokens = await TokenService.createTokens(user.id, user.roles);
 
   return {
-    accessToken,
-    refreshToken,
+    tokens,
     user,
   };
 };
@@ -42,12 +38,12 @@ const logout = async (refreshToken) => {
 };
 
 const refreshToken = async (refreshToken) => {
-  const { userData } = await TokenService.getCheckedDataFromToken(refreshToken);
+  const userData = await TokenService.getCheckedDataFromToken(refreshToken);
   const user = await UserService.getUserById(userData.id);
   const tokens = await TokenService.createTokens(user.id, user.roles);
 
   return {
-    ...tokens,
+    tokens,
     user,
   };
 };
