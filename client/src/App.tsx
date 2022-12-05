@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import { PATHS } from './constants';
 import { PrivateRoute } from './components/PrivateRoute';
+import Cards from './pages/Cards';
 
 const App = () => {
   return (
@@ -17,14 +18,11 @@ const App = () => {
         <Route path={PATHS.login} element={<Login />} />
 
         {/*Private routes*/}
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Home />}>
+            <Route path={PATHS.cards} element={<Cards />} />
+          </Route>
+        </Route>
 
         {/*Not found route*/}
         <Route path="*" element={<NotFoundPage />} />

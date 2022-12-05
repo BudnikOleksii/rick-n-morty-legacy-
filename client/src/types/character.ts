@@ -1,5 +1,6 @@
 import { IEpisode } from './episode';
 import { Maybe } from './maybe';
+import { ILocation } from './location';
 
 export interface ICharacter {
   id: number;
@@ -10,7 +11,7 @@ export interface ICharacter {
   unused: boolean;
   type: string;
   species: string;
-  origin: Maybe<Location>;
-  location: Maybe<Location>;
+  origin: Maybe<ILocation>;
+  location: Maybe<ILocation>;
   episodes: IEpisode[];
 }

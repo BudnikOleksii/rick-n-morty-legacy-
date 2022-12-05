@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import React from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../app/hooks';
 import { selectAuth } from '../features/auth/auth-selectors';
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -16,12 +16,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { PATHS } from '../constants';
-import { useNavigate } from 'react-router-dom';
-import { cardsLoadingStart, cardsRemoveErrors } from '../features/cards/cards-slice';
-import { selectCards } from '../features/cards/cards-selectors';
-import LinearProgress from '@mui/material/LinearProgress';
-import Alert from '@mui/material/Alert';
-import { Snackbar } from '@mui/material';
 
 const { cards, lots, sets, chat, faq, users } = PATHS;
 const drawerWidth = 240;
@@ -29,31 +23,20 @@ const defaultNavItems = [lots, cards, sets, chat, faq].map((item) => item.slice(
 
 const Home = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { user, isAdmin } = useAppSelector(selectAuth);
+  const { isAdmin } = useAppSelector(selectAuth);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navItems = isAdmin ? [users.slice(1), ...defaultNavItems] : defaultNavItems;
-
-  const { cards, cardsInfo, cardsIsloading, cardsErrors } = useAppSelector(selectCards);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  console.log(cards);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(cardsLoadingStart(user.id));
-    }
-  }, []);
 
   const handleLinkClick = (item: string) => navigate(item);
-  const handleCloseNotification = () => dispatch(cardsRemoveErrors());
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        Rick and Morty App
       </Typography>
       <Divider />
       <List>
@@ -113,17 +96,8 @@ const Home = () => {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3, width: '100%' }}>
-        <Toolbar />
-        {cardsIsloading && <LinearProgress />}
-        {cardsErrors && (
-          <Snackbar open={!!cardsErrors} autoHideDuration={3000} onClose={handleCloseNotification}>
-            <Alert onClose={handleCloseNotification} severity="error" sx={{ width: '100%' }}>
-              {cardsErrors}
-            </Alert>
-          </Snackbar>
-        )}
-      </Box>
+
+      <Outlet />
     </Box>
   );
 };
