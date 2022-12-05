@@ -11,8 +11,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../constants';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loginStart } from '../features/auth/auth-slice';
+import { selectAuth } from '../features/auth/auth-selectors';
 
 const Login = () => {
   const navigate = useNavigate();

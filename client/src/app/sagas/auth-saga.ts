@@ -8,24 +8,23 @@ import {
   registrationStart,
   checkAuthStart,
 } from '../../features/auth/auth-slice';
-import axios from 'axios';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
 
 function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(logIn, payload)) as IAuthResponse;
 
+    if (userData.errors) {
+      throw userData.errors;
+    }
+
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
     yield put(authSuccess(userData));
-  } catch (error) {
+  } catch (errors) {
     localStorage.clear();
-    if (axios.isAxiosError(error)) {
-      yield put(authError(error.response?.data.errors));
-    } else {
-      yield put(authError(['Something went wrong']));
-    }
+    yield put(authError(errors));
   }
 }
 
@@ -33,17 +32,17 @@ function* registrationWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(registration, payload)) as IAuthResponse;
 
+    if (userData.errors) {
+      throw userData.errors;
+    }
+
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
     yield put(authSuccess(userData));
-  } catch (error) {
+  } catch (errors) {
     localStorage.clear();
-    if (axios.isAxiosError(error)) {
-      yield put(authError(error.response?.data.errors));
-    } else {
-      yield put(authError(['Something went wrong']));
-    }
+    yield put(authError(errors));
   }
 }
 
@@ -51,17 +50,17 @@ function* refreshWorker() {
   try {
     const userData = (yield call(checkAuth)) as IAuthResponse;
 
+    if (userData.errors) {
+      throw userData.errors;
+    }
+
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
     yield put(authSuccess(userData));
-  } catch (error) {
+  } catch (errors) {
     localStorage.clear();
-    if (axios.isAxiosError(error)) {
-      yield put(authError(error.response?.data.errors));
-    } else {
-      yield put(authError(['Something went wrong']));
-    }
+    yield put(authError(errors));
   }
 }
 

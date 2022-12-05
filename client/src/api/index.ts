@@ -13,7 +13,12 @@ export const ENDPOINTS = {
   users: '/users',
 };
 
-const $api = axios.create({ baseURL: BASE_URL });
+const $api = axios.create({
+  baseURL: BASE_URL,
+  validateStatus: function (status) {
+    return status < 500;
+  },
+});
 
 $api.interceptors.request.use((config) => {
   if (config.headers) {
