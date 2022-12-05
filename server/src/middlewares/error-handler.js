@@ -32,8 +32,6 @@ const errorHandler = (err, req, res, next) => {
       break;
   }
 
-  console.log(error);
-
   return res.status(statusCode).json(error);
 };
 

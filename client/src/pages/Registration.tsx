@@ -110,12 +110,7 @@ const Registration = () => {
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
-            <Grid item xs={6}>
-              <Link variant="body2" onClick={() => navigate('/')}>
-                {'Logged in? Home page'}
-              </Link>
-            </Grid>
-            <Grid item xs={6}>
+            <Grid item>
               <Link variant="body2" onClick={() => navigate(PATHS.login)}>
                 Already have an account? Sign in
               </Link>

@@ -92,13 +92,8 @@ const Login = () => {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs={6}>
-              <Link variant="body2" onClick={() => navigate('/')}>
-                {'Logged in? Home page'}
-              </Link>
-            </Grid>
-            <Grid item xs={6}>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
               <Link variant="body2" onClick={() => navigate(PATHS.registration)}>
                 {"Don't have an account? Sign Up"}
               </Link>

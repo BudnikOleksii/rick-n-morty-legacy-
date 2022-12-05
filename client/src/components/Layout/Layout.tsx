@@ -15,19 +15,19 @@ export const Layout = () => {
   return (
     <main className="App">
       {isLoading && <LinearProgress />}
-      {/*{authErrors && (*/}
-      {/*  <Alert*/}
-      {/*    sx={{ maxWidth: '400px', margin: '15px', position: 'sticky' }}*/}
-      {/*    severity="error"*/}
-      {/*    onClose={() => {}}*/}
-      {/*  >*/}
-      {/*    {authErrors.map((errorMsg) => (*/}
-      {/*      <ListItem disablePadding key={errorMsg}>*/}
-      {/*        <ListItemText primary={errorMsg} />*/}
-      {/*      </ListItem>*/}
-      {/*    ))}*/}
-      {/*  </Alert>*/}
-      {/*)}*/}
+      {authErrors && (
+        <Alert
+          sx={{ maxWidth: '400px', margin: '15px', position: 'sticky' }}
+          severity="error"
+          onClose={() => {}}
+        >
+          {authErrors.map((errorMsg) => (
+            <ListItem disablePadding key={errorMsg}>
+              <ListItemText primary={errorMsg} />
+            </ListItem>
+          ))}
+        </Alert>
+      )}
       <Outlet />
     </main>
   );
