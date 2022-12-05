@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getItemFromLocalStorage, setItemToLocalStorage } from '../helpers/localstorage-helpers';
-import { checkAuth } from './authService';
+import { checkAuth } from './auth-service';
 
 const PORT = process.env.PORT || 8080;
 export const BASE_URL = `http://localhost:${PORT}/v1`;

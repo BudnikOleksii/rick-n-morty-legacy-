@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../constants';
 import { useAppDispatch } from '../app/hooks';
-import { registrationStart } from '../features/userSlice';
+import { registrationStart } from '../features/auth/auth-slice';
 
 const Registration = () => {
   const navigate = useNavigate();

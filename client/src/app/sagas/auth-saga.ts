@@ -1,15 +1,15 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
-import { IAuthResponse } from '../types/auth';
-import { checkAuth, logIn, registration } from '../api/authService';
+import { IAuthResponse } from '../../types/auth';
+import { checkAuth, logIn, registration } from '../../api/auth-service';
 import {
   authError,
   loginStart,
   authSuccess,
   registrationStart,
   checkAuthStart,
-} from '../features/userSlice';
+} from '../../features/auth/auth-slice';
 import axios from 'axios';
-import { setItemToLocalStorage } from '../helpers/localstorage-helpers';
+import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
 
 function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   try {

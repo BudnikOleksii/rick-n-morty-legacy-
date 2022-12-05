@@ -2,7 +2,8 @@ import { FC, ReactNode } from 'react';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import UnauthorizedPage from '../../pages/Unauthorized';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { checkAuthStart, selectUser } from '../../features/userSlice';
+import { checkAuthStart } from '../../features/auth/auth-slice';
+import { selectAuth } from '../../features/auth/auth-selectors';
 
 interface IProps {
   children: ReactNode;
@@ -10,7 +11,7 @@ interface IProps {
 
 export const PrivateRoute: FC<IProps> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const { isLoggedIn } = useAppSelector(selectUser);
+  const { isLoggedIn } = useAppSelector(selectAuth);
 
   if (isLoggedIn) {
     return <>{children}</>;

@@ -21,6 +21,6 @@ export const checkAuth = () => {
     .then((response) => response.data);
 };
 
-export const logout = async (refreshToken: string): Promise<void> => {
+export const logout = (refreshToken: string): Promise<void> => {
   return $api.post(ENDPOINTS.logout, refreshToken);
 };

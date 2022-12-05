@@ -1,13 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import userReducer from '../features/userSlice';
+import authReducer from '../features/auth/auth-slice';
 import createSagaMiddleware from 'redux-saga';
-import IndexSaga from '../sagas';
+import IndexSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
