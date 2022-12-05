@@ -1,7 +1,6 @@
 import { Maybe } from '../../types/maybe';
-import { IUser } from '../../types/user';
+import { IRole, IUser } from '../../types/user';
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 
 const user: IUser = getItemFromLocalStorage('user');
@@ -11,6 +10,7 @@ interface AuthState {
   authIsloading: boolean;
   authErrors: Maybe<string[]>;
   isLoggedIn: boolean;
+  isAdmin: boolean;
 }
 
 const initialState: AuthState = {
@@ -18,6 +18,7 @@ const initialState: AuthState = {
   authIsloading: false,
   authErrors: null,
   isLoggedIn: false,
+  isAdmin: false,
 };
 
 const authSlice = createSlice({
@@ -41,6 +42,7 @@ const authSlice = createSlice({
       state.authIsloading = false;
       state.user = action.payload.user;
       state.isLoggedIn = true;
+      state.isAdmin = action.payload.user.roles.some((role: IRole) => role.title === 'admin');
     },
     authError: (state, action) => {
       state.authIsloading = false;
