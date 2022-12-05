@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,22 +17,33 @@ import { PATHS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loginStart } from '../features/auth/auth-slice';
 import { selectAuth } from '../features/auth/auth-selectors';
+import { ILogin } from '../types/auth';
+
+const schema = yup.object().shape({
+  login: yup.string().email().required(),
+  password: yup.string().min(4).max(15).required(),
+});
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ILogin>({ resolver: yupResolver(schema) });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const { isLoggedIn } = useAppSelector(selectAuth);
 
-    dispatch(
-      loginStart({
-        login: data.get('email'),
-        password: data.get('password'),
-      })
-    );
-  };
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn]);
+
+  const onSubmit = handleSubmit((data) => {
+    dispatch(loginStart(data));
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -48,18 +62,23 @@ const Login = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+            error={Boolean(errors.login)}
+            {...register('login')}
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="login"
             label="Email Address"
-            name="email"
+            name="login"
             autoComplete="email"
             autoFocus
+            helperText={errors.login?.message}
           />
           <TextField
+            error={Boolean(errors.password)}
+            {...register('password')}
             margin="normal"
             required
             fullWidth
@@ -68,6 +87,7 @@ const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            helperText={errors.password?.message}
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
