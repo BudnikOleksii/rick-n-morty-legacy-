@@ -11,3 +11,7 @@ export const getUserCards = (id: number, params: string = ''): Promise<ICardResp
     .get<ICardResponse>(ENDPOINTS.userCards(id) + params)
     .then((response) => response.data);
 };
+
+export const addNewRole = (id: number, role: string): Promise<IUser> => {
+  return $api.patch<IUser>(ENDPOINTS.addRoleToUser(id), { role }).then((response) => response.data);
+};

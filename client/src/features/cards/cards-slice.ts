@@ -1,6 +1,6 @@
 import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
-import { IResponseInfo } from '../../types/response-info';
+import { IResponseInfo } from '../../types/response';
 import { ICard } from '../../types/card';
 
 interface CardsState {

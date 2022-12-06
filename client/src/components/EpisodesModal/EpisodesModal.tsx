@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import { getLocalTime } from '../../helpers/date-helpers';
+import { getLocalDate } from '../../helpers/date-helpers';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -66,13 +66,13 @@ export const EpisodesModal: FC<Props> = ({ episodes }) => {
                         <ListItemIcon>
                           <LiveTvIcon />
                         </ListItemIcon>
-                        <ListItemText primary={episode.episode} />
+                        <ListItemText primary={`Code: ${episode.episode}`} />
                       </ListItem>
                       <ListItem disablePadding>
                         <ListItemIcon>
                           <EventAvailableIcon />
                         </ListItemIcon>
-                        <ListItemText primary={getLocalTime(episode.air_date)} />
+                        <ListItemText primary={`Air date: ${getLocalDate(episode.air_date)}`} />
                       </ListItem>
                     </List>
                   </AccordionDetails>

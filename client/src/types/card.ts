@@ -1,7 +1,7 @@
 import { Maybe } from './maybe';
 import { IUser } from './user';
 import { ICharacter } from './character';
-import { IResponseInfo } from './response-info';
+import { IResponseInfo } from './response';
 
 export interface ICard {
   id: number;

@@ -1,4 +1,4 @@
-import { IResponseInfo } from './response-info';
+import { IErrorResponse, ISuccessResponse } from './response';
 
 export interface IRole {
   id: number;
@@ -15,8 +15,6 @@ export interface IUser {
   roles: IRole[];
 }
 
-export interface IUserResponse {
-  info?: IResponseInfo;
-  results?: IUser[];
-  errors?: string;
-}
+export type IUsersResponse = ISuccessResponse<IUser[]> | IErrorResponse;
+
+export type IUserResponse = IUser | IErrorResponse;

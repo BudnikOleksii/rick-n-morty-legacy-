@@ -13,17 +13,29 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import DnsIcon from '@mui/icons-material/Dns';
 import EventIcon from '@mui/icons-material/Event';
 import { getLocalDate, getLocalTime } from '../../helpers/date-helpers';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectAuth } from '../../features/auth/auth-selectors';
 import { checkIsAdmin } from '../../helpers/check-is-admin';
+import { ADMIN_ROLE } from '../../constants';
+import { addNewRoleStart } from '../../features/users/users-slice';
 
 type Props = {
   user: IUser;
 };
 export const UserCard: FC<Props> = ({ user }) => {
+  const dispatch = useAppDispatch();
   const { id, username, rating, roles, ip, registration_date, last_visit_date } = user;
   const { isAdmin } = useAppSelector(selectAuth);
   const hasAdminRole = checkIsAdmin(roles);
+
+  const handleAddNewRole = (role: string = ADMIN_ROLE) => {
+    dispatch(
+      addNewRoleStart({
+        id,
+        role,
+      })
+    );
+  };
 
   return (
     <Card sx={{ maxWidth: '100%' }}>
@@ -76,7 +88,9 @@ export const UserCard: FC<Props> = ({ user }) => {
           </ListItem>
         </List>
 
-        {isAdmin && !hasAdminRole && <Button>Add admin role</Button>}
+        {isAdmin && !hasAdminRole && (
+          <Button onClick={() => handleAddNewRole()}>Add admin role</Button>
+        )}
       </CardContent>
     </Card>
   );

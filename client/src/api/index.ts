@@ -12,6 +12,7 @@ export const ENDPOINTS = {
   refresh: '/auth/refresh',
   users: '/users',
   userCards: (id: number) => `/users/${id}/cards`,
+  addRoleToUser: (id: number) => `/users/role/${id}`,
 };
 
 const $api = axios.create({
