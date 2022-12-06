@@ -14,6 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { getLocalTime } from '../../helpers/date-helpers';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -51,7 +52,7 @@ export const EpisodesModal: FC<Props> = ({ episodes }) => {
           <List>
             {episodes.map((episode) => (
               <ListItem key={episode.id}>
-                <Accordion>
+                <Accordion sx={{ width: '100%' }}>
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"
@@ -71,7 +72,7 @@ export const EpisodesModal: FC<Props> = ({ episodes }) => {
                         <ListItemIcon>
                           <EventAvailableIcon />
                         </ListItemIcon>
-                        <ListItemText primary={episode.air_date} />
+                        <ListItemText primary={getLocalTime(episode.air_date)} />
                       </ListItem>
                     </List>
                   </AccordionDetails>

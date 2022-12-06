@@ -10,7 +10,7 @@ import { selectCards } from '../features/cards/cards-selectors';
 import { cardsLoadingStart, cardsRemoveErrors } from '../features/cards/cards-slice';
 import { selectAuth } from '../features/auth/auth-selectors';
 import Grid from '@mui/material/Grid';
-import { CharacterCard } from '../components/CharacterCard/CharacterCard';
+import { CharacterCard } from '../components/CharacterCard';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../constants';
 
@@ -49,15 +49,28 @@ const Cards = () => {
         </Snackbar>
       )}
 
-      {cards && (
+      {cards && cards.length > 0 && (
         <Grid container spacing={2}>
           {cards.map((card) => (
-            <CharacterCard key={card.id} card={card} />
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              display="flex"
+              justifyContent="center"
+              key={card.id}
+            >
+              <CharacterCard card={card} />
+            </Grid>
           ))}
         </Grid>
       )}
 
-      {cardsInfo && (
+      {cards && cards.length === 0 && <h2>You don't have any cards yet:( Go to auction</h2>}
+
+      {cardsInfo && cardsInfo.total > 0 && (
         <Pagination
           sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
           count={cardsInfo.pages}

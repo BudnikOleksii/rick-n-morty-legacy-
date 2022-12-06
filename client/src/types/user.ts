@@ -1,3 +1,5 @@
+import { IResponseInfo } from './response-info';
+
 export interface IRole {
   id: number;
   title: string;
@@ -11,4 +13,10 @@ export interface IUser {
   last_visit_date: string;
   ip: string;
   roles: IRole[];
+}
+
+export interface IUserResponse {
+  info?: IResponseInfo;
+  results?: IUser[];
+  errors?: string;
 }
