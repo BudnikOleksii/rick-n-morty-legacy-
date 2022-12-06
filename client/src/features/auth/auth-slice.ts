@@ -2,6 +2,7 @@ import { Maybe } from '../../types/maybe';
 import { IRole, IUser } from '../../types/user';
 import { createSlice } from '@reduxjs/toolkit';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
+import { checkIsAdmin } from '../../helpers/check-is-admin';
 
 const user: IUser = getItemFromLocalStorage('user');
 
@@ -42,7 +43,7 @@ const authSlice = createSlice({
       state.authIsloading = false;
       state.user = action.payload.user;
       state.isLoggedIn = true;
-      state.isAdmin = action.payload.user.roles.some((role: IRole) => role.title === 'admin');
+      state.isAdmin = checkIsAdmin(action.payload.user.roles);
     },
     authError: (state, action) => {
       state.authIsloading = false;

@@ -8,3 +8,5 @@ export const PATHS = {
   chat: '/chat',
   faq: '/faq',
 };
+
+export const ADMIN_ROLE = 'admin';
