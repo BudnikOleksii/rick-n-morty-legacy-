@@ -5,7 +5,7 @@ import { cardsError, cardsLoadingStart, cardsSuccess } from '../../features/card
 
 function* cardsWorker({ payload }: ReturnType<typeof cardsLoadingStart>) {
   try {
-    const cardsData = (yield call(getUserCards, payload)) as ICardResponse;
+    const cardsData = (yield call(getUserCards, payload.userId, payload.params)) as ICardResponse;
 
     if (cardsData.errors) {
       throw cardsData.errors;

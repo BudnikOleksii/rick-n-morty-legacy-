@@ -6,6 +6,8 @@ export const getUsers = (): Promise<IUser[]> => {
   return $api.get<IUser[]>(ENDPOINTS.users).then((response) => response.data);
 };
 
-export const getUserCards = (id: number): Promise<ICardResponse> => {
-  return $api.get<ICardResponse>(ENDPOINTS.userCards(id)).then((response) => response.data);
+export const getUserCards = (id: number, params: string = ''): Promise<ICardResponse> => {
+  return $api
+    .get<ICardResponse>(ENDPOINTS.userCards(id) + params)
+    .then((response) => response.data);
 };

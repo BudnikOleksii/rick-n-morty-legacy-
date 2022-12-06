@@ -9,7 +9,6 @@ const registration = async (req, res, next) => {
 
     const ip = getIpFromRequest(req);
     const userData = await AuthService.register(req.body, ip);
-    console.log(userData);
 
     return res.status(httpStatusCodes.CREATED).json(userData);
   } catch (error) {

@@ -25,7 +25,7 @@ export const CharacterCard: FC<Props> = ({ card }) => {
   const { name, image, status, gender, type, species, origin, location } = card.character;
 
   return (
-    <Grid item xs={3} display="flex" justifyContent="center">
+    <Grid item xs={12} sm={6} md={4} lg={3} display="flex" justifyContent="center">
       <Card sx={{ maxWidth: 300 }}>
         <CardMedia component="img" height="300" image={image} alt={name} />
         <CardContent>
