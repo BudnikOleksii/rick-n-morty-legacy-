@@ -9,12 +9,13 @@ import {
   checkAuthStart,
 } from '../../features/auth/auth-slice';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
+import { instanceOfErrorResponse } from '../../types/response';
 
 function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(logIn, payload)) as IAuthResponse;
 
-    if (userData.errors) {
+    if (instanceOfErrorResponse(userData)) {
       throw userData.errors;
     }
 
@@ -32,7 +33,7 @@ function* registrationWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(registration, payload)) as IAuthResponse;
 
-    if (userData.errors) {
+    if (instanceOfErrorResponse(userData)) {
       throw userData.errors;
     }
 
@@ -50,7 +51,7 @@ function* refreshWorker() {
   try {
     const userData = (yield call(checkAuth)) as IAuthResponse;
 
-    if (userData.errors) {
+    if (instanceOfErrorResponse(userData)) {
       throw userData.errors;
     }
 

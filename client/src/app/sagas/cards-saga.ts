@@ -2,12 +2,13 @@ import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { getUserCards } from '../../api/user-service';
 import { ICardResponse } from '../../types/card';
 import { cardsError, cardsLoadingStart, cardsSuccess } from '../../features/cards/cards-slice';
+import { instanceOfErrorResponse } from '../../types/response';
 
 function* cardsWorker({ payload }: ReturnType<typeof cardsLoadingStart>) {
   try {
     const cardsData = (yield call(getUserCards, payload.userId, payload.params)) as ICardResponse;
 
-    if (cardsData.errors) {
+    if (instanceOfErrorResponse(cardsData)) {
       throw cardsData.errors;
     }
 

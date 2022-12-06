@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getItemFromLocalStorage, setItemToLocalStorage } from '../helpers/localstorage-helpers';
 import { checkAuth } from './auth-service';
+import { instanceOfErrorResponse } from '../types/response';
 
 const PORT = process.env.PORT || 8080;
 export const BASE_URL = `http://localhost:${PORT}/v1`;
@@ -39,9 +40,13 @@ $api.interceptors.response.use(
 
     if (error.response.status === 401) {
       try {
-        const { tokens } = await checkAuth();
+        const userData = await checkAuth();
 
-        setItemToLocalStorage('tokens', tokens);
+        if (instanceOfErrorResponse(userData)) {
+          throw userData.errors;
+        }
+
+        setItemToLocalStorage('tokens', userData.tokens);
 
         return $api.request(originalRequest);
       } catch (error) {
