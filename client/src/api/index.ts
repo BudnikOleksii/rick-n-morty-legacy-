@@ -11,9 +11,15 @@ export const ENDPOINTS = {
   logout: '/auth/logout',
   refresh: '/auth/refresh',
   users: '/users',
+  userCards: (id: number) => `/users/${id}/cards`,
 };
 
-const $api = axios.create({ baseURL: BASE_URL });
+const $api = axios.create({
+  baseURL: BASE_URL,
+  validateStatus: function (status) {
+    return status < 500;
+  },
+});
 
 $api.interceptors.request.use((config) => {
   if (config.headers) {

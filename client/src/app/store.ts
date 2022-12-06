@@ -1,5 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/auth-slice';
+import cardsReducer from '../features/cards/cards-slice';
+import usersReducer from '../features/users/users-slice';
 import createSagaMiddleware from 'redux-saga';
 import IndexSaga from './sagas';
 
@@ -8,6 +10,8 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    cards: cardsReducer,
+    users: usersReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

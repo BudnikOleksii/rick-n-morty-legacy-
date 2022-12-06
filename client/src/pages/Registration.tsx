@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,25 +14,37 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../constants';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { registrationStart } from '../features/auth/auth-slice';
+import { IRegistration } from '../types/auth';
+import { selectAuth } from '../features/auth/auth-selectors';
+
+const schema = yup.object().shape({
+  username: yup.string().min(4).max(15).required(),
+  login: yup.string().email().required(),
+  password: yup.string().min(4).max(15).required(),
+});
 
 const Registration = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IRegistration>({ resolver: yupResolver(schema) });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const { isLoggedIn } = useAppSelector(selectAuth);
 
-    dispatch(
-      registrationStart({
-        username: data.get('username'),
-        login: data.get('email'),
-        password: data.get('password'),
-      })
-    );
-  };
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/');
+    }
+  }, [isLoggedIn]);
+
+  const onSubmit = handleSubmit((data) => {
+    dispatch(registrationStart(data));
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -48,30 +63,38 @@ const Registration = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                error={Boolean(errors.username)}
+                {...register('username')}
                 required
                 fullWidth
                 id="username"
                 label="Username"
                 name="username"
                 autoComplete="username"
+                helperText={errors.username?.message}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                error={Boolean(errors.login)}
+                {...register('login')}
                 required
                 fullWidth
-                id="email"
+                id="login"
                 label="Email Address"
-                name="email"
+                name="login"
                 autoComplete="email"
+                helperText={errors.login?.message}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                error={Boolean(errors.password)}
+                {...register('password')}
                 required
                 fullWidth
                 name="password"
@@ -79,6 +102,7 @@ const Registration = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                helperText={errors.password?.message}
               />
             </Grid>
           </Grid>
@@ -86,12 +110,7 @@ const Registration = () => {
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
-            <Grid item xs={6}>
-              <Link variant="body2" onClick={() => navigate('/')}>
-                {'Logged in? Home page'}
-              </Link>
-            </Grid>
-            <Grid item xs={6}>
+            <Grid item>
               <Link variant="body2" onClick={() => navigate(PATHS.login)}>
                 Already have an account? Sign in
               </Link>

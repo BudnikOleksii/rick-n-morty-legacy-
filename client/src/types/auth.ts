@@ -14,6 +14,7 @@ export interface IRegistration {
 export type ILogin = Omit<IRegistration, 'username'>;
 
 export interface IAuthResponse {
-  tokens: ITokens;
-  user: IUser;
+  tokens?: ITokens;
+  user?: IUser;
+  errors?: string[];
 }
