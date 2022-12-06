@@ -1,5 +1,5 @@
 import { Maybe } from '../../types/maybe';
-import { IRole, IUser } from '../../types/user';
+import { IUser } from '../../types/user';
 import { createSlice } from '@reduxjs/toolkit';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import { checkIsAdmin } from '../../helpers/check-is-admin';
@@ -39,11 +39,21 @@ const authSlice = createSlice({
       state.authIsloading = true;
       state.authErrors = null;
     },
+    logoutStart: (state) => {
+      state.authIsloading = true;
+      state.authErrors = null;
+    },
     authSuccess: (state, action) => {
       state.authIsloading = false;
       state.user = action.payload.user;
       state.isLoggedIn = true;
       state.isAdmin = checkIsAdmin(action.payload.user.roles);
+    },
+    logoutSuccess: (state) => {
+      state.isLoggedIn = false;
+      state.authIsloading = false;
+      state.user = null;
+      state.isAdmin = false;
     },
     authError: (state, action) => {
       state.authIsloading = false;
@@ -52,7 +62,14 @@ const authSlice = createSlice({
   },
 });
 
-export const { checkAuthStart, loginStart, registrationStart, authSuccess, authError } =
-  authSlice.actions;
+export const {
+  checkAuthStart,
+  loginStart,
+  registrationStart,
+  authSuccess,
+  authError,
+  logoutStart,
+  logoutSuccess,
+} = authSlice.actions;
 
 export default authSlice.reducer;

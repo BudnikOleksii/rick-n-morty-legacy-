@@ -1,9 +1,9 @@
 import $api, { ENDPOINTS } from './index';
-import { IUser } from '../types/user';
+import { IUserResponse, IUsersResponse } from '../types/user';
 import { ICardResponse } from '../types/card';
 
-export const getUsers = (params: string = ''): Promise<IUser[]> => {
-  return $api.get<IUser[]>(ENDPOINTS.users + params).then((response) => response.data);
+export const getUsers = (params: string = ''): Promise<IUsersResponse[]> => {
+  return $api.get<IUsersResponse[]>(ENDPOINTS.users + params).then((response) => response.data);
 };
 
 export const getUserCards = (id: number, params: string = ''): Promise<ICardResponse> => {
@@ -12,6 +12,8 @@ export const getUserCards = (id: number, params: string = ''): Promise<ICardResp
     .then((response) => response.data);
 };
 
-export const addNewRole = (id: number, role: string): Promise<IUser> => {
-  return $api.patch<IUser>(ENDPOINTS.addRoleToUser(id), { role }).then((response) => response.data);
+export const addNewRole = (id: number, role: string): Promise<IUserResponse> => {
+  return $api
+    .patch<IUserResponse>(ENDPOINTS.addRoleToUser(id), { role })
+    .then((response) => response.data);
 };

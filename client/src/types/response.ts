@@ -1,5 +1,4 @@
 import { Maybe } from './maybe';
-import { IUser } from './user';
 
 export interface IErrorResponse {
   errors?: string;

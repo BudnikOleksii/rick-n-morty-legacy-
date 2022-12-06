@@ -15,8 +15,13 @@ const removeToken = (id) => {
   return Token.query().deleteById(id);
 };
 
+const removeRefreshToken = (refreshToken) => {
+  return Token.query().delete().where('refresh_token', refreshToken);
+};
+
 module.exports.TokenRepository = {
   getToken,
   createToken,
   removeToken,
+  removeRefreshToken,
 };

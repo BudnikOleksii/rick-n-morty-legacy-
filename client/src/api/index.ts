@@ -14,12 +14,13 @@ export const ENDPOINTS = {
   users: '/users',
   userCards: (id: number) => `/users/${id}/cards`,
   addRoleToUser: (id: number) => `/users/role/${id}`,
+  sets: '/sets',
 };
 
 const $api = axios.create({
   baseURL: BASE_URL,
   validateStatus: function (status) {
-    return status < 500;
+    return status < 501;
   },
 });
 

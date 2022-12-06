@@ -1,12 +1,14 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
-import { IAuthResponse } from '../../types/auth';
-import { checkAuth, logIn, registration } from '../../api/auth-service';
+import { IAuthResponse, ILogoutResponse } from '../../types/auth';
+import { checkAuth, logIn, logout, registration } from '../../api/auth-service';
 import {
   authError,
   loginStart,
   authSuccess,
   registrationStart,
   checkAuthStart,
+  logoutSuccess,
+  logoutStart,
 } from '../../features/auth/auth-slice';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
 import { instanceOfErrorResponse } from '../../types/response';
@@ -65,6 +67,24 @@ function* refreshWorker() {
   }
 }
 
+function* logoutWorker() {
+  try {
+    const responseData = (yield call(logout)) as ILogoutResponse;
+
+    if (typeof responseData === 'number') {
+      localStorage.clear();
+
+      yield put(logoutSuccess());
+    }
+
+    if (instanceOfErrorResponse(responseData)) {
+      throw responseData.errors;
+    }
+  } catch (errors) {
+    yield put(authError(errors));
+  }
+}
+
 function* loginWatcher() {
   yield takeEvery(loginStart.type, loginWorker);
 }
@@ -77,8 +97,17 @@ function* refreshWatcher() {
   yield takeEvery(checkAuthStart.type, refreshWorker);
 }
 
+function* logoutWatcher() {
+  yield takeEvery(logoutStart.type, logoutWorker);
+}
+
 function* authSaga() {
-  yield all([call(loginWatcher), call(registrationWatcher), call(refreshWatcher)]);
+  yield all([
+    call(loginWatcher),
+    call(registrationWatcher),
+    call(refreshWatcher),
+    call(logoutWatcher),
+  ]);
 }
 
 export default authSaga;

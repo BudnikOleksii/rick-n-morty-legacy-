@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAuth } from '../features/auth/auth-selectors';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -16,14 +16,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { PATHS } from '../constants';
+import { logoutStart } from '../features/auth/auth-slice';
 
 const { cards, lots, sets, chat, faq, users } = PATHS;
 const drawerWidth = 240;
 const defaultNavItems = [lots, cards, sets, chat, faq].map((item) => item.slice(1));
 
 const Home = () => {
-  const navigate = useNavigate();
   const { isAdmin } = useAppSelector(selectAuth);
+  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const navItems = isAdmin ? [users.slice(1), ...defaultNavItems] : defaultNavItems;
 
@@ -32,6 +35,10 @@ const Home = () => {
   };
 
   const handleLinkClick = (item: string) => navigate(item);
+
+  const handleLogout = () => {
+    dispatch(logoutStart());
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -47,6 +54,12 @@ const Home = () => {
             </ListItemButton>
           </ListItem>
         ))}
+
+        <ListItem disablePadding>
+          <ListItemButton sx={{ textAlign: 'center' }} onClick={handleLogout}>
+            <ListItemText primary={'Logout'} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -77,6 +90,10 @@ const Home = () => {
                 {item}
               </Button>
             ))}
+
+            <Button sx={{ color: '#fff' }} onClick={handleLogout}>
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

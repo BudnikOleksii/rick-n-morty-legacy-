@@ -20,3 +20,4 @@ interface IUserWithTokens {
 }
 
 export type IAuthResponse = IUserWithTokens | IErrorResponse;
+export type ILogoutResponse = number | IErrorResponse;

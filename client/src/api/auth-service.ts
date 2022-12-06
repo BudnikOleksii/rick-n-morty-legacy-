@@ -1,4 +1,4 @@
-import { ILogin, IAuthResponse, IRegistration } from '../types/auth';
+import { ILogin, IAuthResponse, IRegistration, ILogoutResponse } from '../types/auth';
 import $api, { BASE_URL, ENDPOINTS } from './index';
 import axios from 'axios';
 import { getItemFromLocalStorage } from '../helpers/localstorage-helpers';
@@ -11,7 +11,7 @@ export const registration = (data: IRegistration): Promise<IAuthResponse> => {
   return $api.post<IAuthResponse>(ENDPOINTS.registration, data).then((response) => response.data);
 };
 
-export const checkAuth = () => {
+export const checkAuth = (): Promise<IAuthResponse> => {
   const { refreshToken } = getItemFromLocalStorage('tokens');
 
   return axios
@@ -21,6 +21,10 @@ export const checkAuth = () => {
     .then((response) => response.data);
 };
 
-export const logout = (refreshToken: string): Promise<void> => {
-  return $api.post(ENDPOINTS.logout, refreshToken);
+export const logout = (): Promise<ILogoutResponse> => {
+  const { refreshToken } = getItemFromLocalStorage('tokens');
+
+  return $api
+    .post<ILogoutResponse>(ENDPOINTS.logout, { refreshToken })
+    .then((response) => response.data);
 };

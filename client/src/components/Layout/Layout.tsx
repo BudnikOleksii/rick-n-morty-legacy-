@@ -12,7 +12,7 @@ export const Layout = () => {
   return (
     <main className="App">
       {authIsloading && <LinearProgress />}
-      {authErrors && (
+      {authErrors && authErrors.length > 0 && (
         <Alert
           sx={{ maxWidth: '400px', margin: '15px', position: 'sticky' }}
           severity="error"
