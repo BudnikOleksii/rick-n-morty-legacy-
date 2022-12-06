@@ -17,12 +17,13 @@ import Diversity2Icon from '@mui/icons-material/Diversity2';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import PublicIcon from '@mui/icons-material/Public';
 import LanguageIcon from '@mui/icons-material/Language';
+import { EpisodesModal } from '../EpisodesModal';
 
 type Props = {
   card: ICard;
 };
 export const CharacterCard: FC<Props> = ({ card }) => {
-  const { name, image, status, gender, type, species, origin, location } = card.character;
+  const { name, image, status, gender, type, species, origin, location, episodes } = card.character;
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3} display="flex" justifyContent="center">
@@ -92,11 +93,7 @@ export const CharacterCard: FC<Props> = ({ card }) => {
           </List>
         </CardContent>
 
-        {/*<CardActions>*/}
-        {/*  <Button size="small" sx={{ color: '#777' }}>*/}
-        {/*    <CountryLink countryName={name.common} text="Learn more" />*/}
-        {/*  </Button>*/}
-        {/*</CardActions>*/}
+        <EpisodesModal episodes={episodes} />
       </Card>
     </Grid>
   );
