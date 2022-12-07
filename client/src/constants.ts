@@ -1,6 +1,6 @@
 export const PATHS = {
-  registration: 'registration',
-  login: 'login',
+  registration: '/registration',
+  login: '/login',
   users: 'users',
   cards: 'cards',
   characters: 'characters',
