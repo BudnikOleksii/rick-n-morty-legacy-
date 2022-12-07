@@ -10,6 +10,7 @@ import { selectSets } from '../features/sets/sets-selcetors';
 import { NotificationBlock } from '../components/NotificationBlock';
 import { CharactersList } from '../components/CharactersList';
 import { Heading } from '../components/Heading';
+import { SetBlock } from '../components/SetBlock';
 
 const Sets = () => {
   const search = window.location.search;
@@ -41,9 +42,7 @@ const Sets = () => {
 
       <Heading title="Sets" />
 
-      {sets &&
-        sets.length > 0 &&
-        sets.map((set) => <CharactersList key={set.id} characters={set.characters} />)}
+      {sets && sets.length > 0 && sets.map((set) => <SetBlock key={set.id} set={set} />)}
 
       {sets && sets.length === 0 && <h2>There are no sets</h2>}
 
