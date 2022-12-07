@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setsLoadingStart, setsRemoveErrors } from '../features/sets/sets-slice';
 import { selectSets } from '../features/sets/sets-selcetors';
-import { NotificationBlock } from '../components/NotificationBlock';
-import { Heading } from '../components/Heading';
-import { SetBlock } from '../components/SetBlock';
+import { NotificationBlock } from '../components/organisms/NotificationBlock';
+import { Heading } from '../components/molecules/Heading';
+import { SetBlock } from '../components/organisms/SetBlock';
 import { selectAuth } from '../features/auth/auth-selectors';
-import { BaseModal } from '../components/BaseModal';
-import { SetForm } from '../components/SetForm';
+import { BaseModal } from '../components/molecules/BaseModal';
+import { SetForm } from '../components/organisms/SetForm';
 
 const Sets = () => {
   const search = window.location.search;

@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectUsers } from '../features/users/users-selelctors';
 import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-slice';
-import { NotificationBlock } from '../components/NotificationBlock';
-import { UsersList } from '../components/UsersList';
-import { Heading } from '../components/Heading';
+import { NotificationBlock } from '../components/organisms/NotificationBlock';
+import { UsersList } from '../components/organisms/UsersList';
+import { Heading } from '../components/molecules/Heading';
 
 const Users = () => {
   const search = window.location.search;

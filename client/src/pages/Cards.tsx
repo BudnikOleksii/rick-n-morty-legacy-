@@ -8,9 +8,9 @@ import { cardsLoadingStart, cardsRemoveErrors } from '../features/cards/cards-sl
 import { selectAuth } from '../features/auth/auth-selectors';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../constants';
-import { CardsList } from '../components/CardsList';
-import { NotificationBlock } from '../components/NotificationBlock';
-import { Heading } from '../components/Heading';
+import { CardsList } from '../components/organisms/CardsList';
+import { NotificationBlock } from '../components/organisms/NotificationBlock';
+import { Heading } from '../components/molecules/Heading';
 
 const Cards = () => {
   const search = window.location.search;

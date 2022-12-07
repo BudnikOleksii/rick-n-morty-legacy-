@@ -59,6 +59,9 @@ const authSlice = createSlice({
       state.authIsloading = false;
       state.authErrors = action.payload;
     },
+    authRemoveErrors: (state) => {
+      state.authErrors = null;
+    },
   },
 });
 
@@ -70,6 +73,7 @@ export const {
   authError,
   logoutStart,
   setAuthDefaultState,
+  authRemoveErrors,
 } = authSlice.actions;
 
 export default authSlice.reducer;
