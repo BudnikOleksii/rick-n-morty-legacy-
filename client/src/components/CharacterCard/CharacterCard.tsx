@@ -7,7 +7,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { ICard } from '../../types/card';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
@@ -15,12 +14,13 @@ import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import PublicIcon from '@mui/icons-material/Public';
 import LanguageIcon from '@mui/icons-material/Language';
 import { EpisodesModal } from '../EpisodesModal';
+import { ICharacter } from '../../types/character';
 
 type Props = {
-  card: ICard;
+  character: ICharacter;
 };
-export const CharacterCard: FC<Props> = ({ card }) => {
-  const { name, image, status, gender, type, species, origin, location, episodes } = card.character;
+export const CharacterCard: FC<Props> = ({ character }) => {
+  const { name, image, status, gender, type, species, origin, location, episodes } = character;
 
   return (
     <Card sx={{ maxWidth: 300 }}>

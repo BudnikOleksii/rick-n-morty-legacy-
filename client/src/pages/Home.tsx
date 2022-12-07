@@ -18,9 +18,10 @@ import Button from '@mui/material/Button';
 import { PATHS } from '../constants';
 import { logoutStart } from '../features/auth/auth-slice';
 
-const { cards, lots, sets, chat, faq, users } = PATHS;
+const { cards, characters, lots, sets, chat, faq, users } = PATHS;
 const drawerWidth = 240;
-const defaultNavItems = [lots, cards, sets, chat, faq].map((item) => item.slice(1));
+const defaultNavItems = [lots, characters, sets, chat, faq];
+const adminNavItems = [users, cards];
 
 const Home = () => {
   const { isAdmin } = useAppSelector(selectAuth);
@@ -28,7 +29,7 @@ const Home = () => {
 
   const dispatch = useAppDispatch();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const navItems = isAdmin ? [users.slice(1), ...defaultNavItems] : defaultNavItems;
+  const navItems = isAdmin ? [...adminNavItems, ...defaultNavItems] : defaultNavItems;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -50,14 +51,14 @@ const Home = () => {
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }} onClick={() => handleLinkClick(item)}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.toUpperCase()} />
             </ListItemButton>
           </ListItem>
         ))}
 
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: 'center' }} onClick={handleLogout}>
-            <ListItemText primary={'Logout'} />
+            <ListItemText primary="LOGOUT" />
           </ListItemButton>
         </ListItem>
       </List>

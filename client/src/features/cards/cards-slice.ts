@@ -18,7 +18,7 @@ const initialState: CardsState = {
 };
 
 const cardsSlice = createSlice({
-  name: 'auth',
+  name: 'cards',
   initialState,
   reducers: {
     cardsLoadingStart: (state, action) => {

@@ -9,6 +9,7 @@ import { PATHS } from './constants';
 import { PrivateRoute } from './components/PrivateRoute';
 import Cards from './pages/Cards';
 import Users from './pages/Users';
+import Sets from './pages/Sets';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/" element={<Home />}>
             <Route index element={<Cards />} />
             <Route path={PATHS.users} element={<Users />} />
+            <Route path={PATHS.sets} element={<Sets />} />
           </Route>
         </Route>
 

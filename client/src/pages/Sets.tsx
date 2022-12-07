@@ -5,55 +5,57 @@ import { PATHS } from '../constants';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectUsers } from '../features/users/users-selelctors';
-import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-slice';
+import { setsLoadingStart, setsRemoveErrors } from '../features/sets/sets-slice';
+import { selectSets } from '../features/sets/sets-selcetors';
 import { NotificationBlock } from '../components/NotificationBlock';
-import { UsersList } from '../components/UsersList';
+import { CharactersList } from '../components/CharactersList';
 import { Heading } from '../components/Heading';
 
-const Users = () => {
+const Sets = () => {
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { users, usersInfo, usersIsloading, usersErrors } = useAppSelector(selectUsers);
+  const { sets, setsInfo, setsIsloading, setsErrors } = useAppSelector(selectSets);
 
   useEffect(() => {
     dispatch(
-      usersLoadingStart({
+      setsLoadingStart({
         params: `?page=${page || 1}`,
       })
     );
   }, [page]);
 
-  const handleCloseNotification = () => dispatch(usersRemoveErrors());
+  const handleCloseNotification = () => dispatch(setsRemoveErrors());
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
       <Toolbar />
       <NotificationBlock
-        isloading={usersIsloading}
-        errors={usersErrors}
+        isloading={setsIsloading}
+        errors={setsErrors}
         onCloseNotification={handleCloseNotification}
       />
 
-      <Heading title="Users" />
+      <Heading title="Sets" />
 
-      {users && users.length > 0 && <UsersList users={users} />}
+      {sets &&
+        sets.length > 0 &&
+        sets.map((set) => <CharactersList key={set.id} characters={set.characters} />)}
 
-      {users && users.length === 0 && <h2>No users found</h2>}
+      {sets && sets.length === 0 && <h2>There are no sets</h2>}
 
-      {usersInfo && usersInfo.total > 0 && (
+      {setsInfo && setsInfo.total > 0 && (
         <Pagination
           sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
-          count={usersInfo.pages}
+          count={setsInfo.pages}
           variant="outlined"
           shape="rounded"
           page={Number(page) || 1}
           onChange={(_, pageNumber) => {
-            navigate(`${PATHS.users}?page=${pageNumber}`);
+            navigate(`${PATHS.cards}?page=${pageNumber}`);
           }}
         />
       )}
@@ -61,4 +63,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Sets;
