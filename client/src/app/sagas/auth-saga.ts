@@ -7,8 +7,8 @@ import {
   authSuccess,
   registrationStart,
   checkAuthStart,
-  logoutSuccess,
   logoutStart,
+  setAuthDefaultState,
 } from '../../features/auth/auth-slice';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
 import { instanceOfErrorResponse } from '../../types/response';
@@ -74,7 +74,7 @@ function* logoutWorker() {
     if (typeof responseData === 'number') {
       localStorage.clear();
 
-      yield put(logoutSuccess());
+      yield put(setAuthDefaultState());
     }
 
     if (instanceOfErrorResponse(responseData)) {

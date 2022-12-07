@@ -49,7 +49,7 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.isAdmin = checkIsAdmin(action.payload.user.roles);
     },
-    logoutSuccess: (state) => {
+    setAuthDefaultState: (state) => {
       state.isLoggedIn = false;
       state.authIsloading = false;
       state.user = null;
@@ -69,7 +69,7 @@ export const {
   authSuccess,
   authError,
   logoutStart,
-  logoutSuccess,
+  setAuthDefaultState,
 } = authSlice.actions;
 
 export default authSlice.reducer;
