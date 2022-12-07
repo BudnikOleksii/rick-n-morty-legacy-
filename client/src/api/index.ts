@@ -20,7 +20,7 @@ export const ENDPOINTS = {
 const $api = axios.create({
   baseURL: BASE_URL,
   validateStatus: function (status) {
-    return status < 501;
+    return status < 501 && status !== 401;
   },
 });
 

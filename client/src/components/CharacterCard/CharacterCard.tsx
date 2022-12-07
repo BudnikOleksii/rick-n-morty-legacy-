@@ -13,8 +13,9 @@ import Diversity2Icon from '@mui/icons-material/Diversity2';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import PublicIcon from '@mui/icons-material/Public';
 import LanguageIcon from '@mui/icons-material/Language';
-import { EpisodesModal } from '../EpisodesModal';
+import { BaseModal } from '../BaseModal';
 import { ICharacter } from '../../types/character';
+import { EpisodesList } from '../EpisodesList';
 
 type Props = {
   character: ICharacter;
@@ -89,7 +90,9 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         </List>
       </CardContent>
 
-      <EpisodesModal episodes={episodes} />
+      <BaseModal openModalTitle="Episodes info">
+        <EpisodesList episodes={episodes} />
+      </BaseModal>
     </Card>
   );
 };

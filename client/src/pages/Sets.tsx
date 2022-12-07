@@ -8,9 +8,11 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { setsLoadingStart, setsRemoveErrors } from '../features/sets/sets-slice';
 import { selectSets } from '../features/sets/sets-selcetors';
 import { NotificationBlock } from '../components/NotificationBlock';
-import { CharactersList } from '../components/CharactersList';
 import { Heading } from '../components/Heading';
 import { SetBlock } from '../components/SetBlock';
+import { selectAuth } from '../features/auth/auth-selectors';
+import { BaseModal } from '../components/BaseModal';
+import { SetForm } from '../components/SetForm';
 
 const Sets = () => {
   const search = window.location.search;
@@ -20,6 +22,7 @@ const Sets = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { sets, setsInfo, setsIsloading, setsErrors } = useAppSelector(selectSets);
+  const { isAdmin } = useAppSelector(selectAuth);
 
   useEffect(() => {
     dispatch(
@@ -39,6 +42,12 @@ const Sets = () => {
         errors={setsErrors}
         onCloseNotification={handleCloseNotification}
       />
+
+      {isAdmin && (
+        <BaseModal openModalTitle="Create Set" buttonVariant="contained">
+          <SetForm />
+        </BaseModal>
+      )}
 
       <Heading title="Sets" />
 
