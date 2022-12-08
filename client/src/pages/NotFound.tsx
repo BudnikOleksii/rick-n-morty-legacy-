@@ -1,45 +1,21 @@
 import React from 'react';
-import Box from '@mui/material/Box';
+import { ErrorPage } from '../components/templates/ErrorPage';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-      }}
+    <ErrorPage
+      errorNumber={404}
+      text="The page you’re looking for doesn’t exist."
+      image="https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg"
     >
-      <Container maxWidth="md">
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Typography variant="h1">404</Typography>
-
-            <Typography variant="h6">The page you’re looking for doesn’t exist.</Typography>
-
-            <Button variant="contained" onClick={() => navigate('/')}>
-              Back Home
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <img
-              src="https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg"
-              alt="404 error"
-              width={500}
-              height={250}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+      <Button variant="contained" onClick={() => navigate('/')}>
+        Back Home
+      </Button>
+    </ErrorPage>
   );
 };
 

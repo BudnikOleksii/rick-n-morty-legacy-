@@ -3,6 +3,7 @@ export const PATHS = {
   login: '/login',
   users: '/users',
   cards: '/cards',
+  characters: '/characters',
   sets: '/sets',
   lots: '/lots',
   chat: '/chat',

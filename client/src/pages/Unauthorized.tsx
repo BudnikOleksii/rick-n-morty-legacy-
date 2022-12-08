@@ -1,53 +1,30 @@
 import React from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-
-import unauthorizedImage from '../images/401-error.jpg';
 import { PATHS } from '../constants';
+import { ErrorPage } from '../components/templates/ErrorPage';
 
 const UnauthorizedPage = () => {
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-      }}
+    <ErrorPage
+      errorNumber={401}
+      text="Unauthorized, please sign up or login if you have account."
+      image="https://bloggersprout.b-cdn.net/wp-content/uploads/2021/04/401.jpg.webp"
     >
-      <Container maxWidth="md">
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <Typography variant="h1">401</Typography>
+      <Button
+        variant="contained"
+        onClick={() => navigate(PATHS.login)}
+        sx={{ marginRight: '20px' }}
+      >
+        Login
+      </Button>
 
-            <Typography variant="h6">
-              Unauthorized, please sign up or login if you have account.
-            </Typography>
-
-            <Button
-              variant="contained"
-              onClick={() => navigate(PATHS.login)}
-              sx={{ marginRight: '20px' }}
-            >
-              Login
-            </Button>
-
-            <Button variant="contained" onClick={() => navigate(PATHS.registration)}>
-              Sign Up
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <img src={unauthorizedImage} alt="401 error" width={500} height={250} />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+      <Button variant="contained" onClick={() => navigate(PATHS.registration)}>
+        Sign Up
+      </Button>
+    </ErrorPage>
   );
 };
 

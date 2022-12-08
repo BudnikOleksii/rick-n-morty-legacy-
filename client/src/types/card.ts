@@ -1,7 +1,7 @@
 import { Maybe } from './maybe';
 import { IUser } from './user';
 import { ICharacter } from './character';
-import { IResponseInfo } from './response-info';
+import { IErrorResponse, ISuccessResponse } from './response';
 
 export interface ICard {
   id: number;
@@ -9,8 +9,4 @@ export interface ICard {
   character: ICharacter;
 }
 
-export interface ICardResponse {
-  info?: IResponseInfo;
-  results?: ICard[];
-  errors?: string;
-}
+export type ICardResponse = ISuccessResponse<ICard[]> | IErrorResponse;
