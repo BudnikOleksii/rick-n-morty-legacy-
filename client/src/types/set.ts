@@ -1,9 +1,9 @@
 import { ICharacter } from './character';
-import { IErrorResponse, ISuccessResponse } from './response';
+import { ISuccessResponse } from './response';
 
 export interface ISet {
   id: number;
   name: string;
   characters: ICharacter[];
 }
-export type ISetResponse = ISuccessResponse<ISet[]> | IErrorResponse;
+export type ISetsResponse = ISuccessResponse<ISet[]>;

@@ -1,9 +1,5 @@
 import { Maybe } from './maybe';
 
-export interface IErrorResponse {
-  errors?: string;
-}
-
 export interface IResponseInfo {
   total: number;
   next: Maybe<string>;
@@ -14,8 +10,4 @@ export interface IResponseInfo {
 export interface ISuccessResponse<T> {
   info: IResponseInfo;
   results: T;
-}
-
-export function instanceOfErrorResponse(object: any): object is IErrorResponse {
-  return 'errors' in object;
 }

@@ -11,15 +11,10 @@ import {
   setAuthDefaultState,
 } from '../../features/auth/auth-slice';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
-import { instanceOfErrorResponse } from '../../types/response';
 
 function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(logIn, payload)) as IAuthResponse;
-
-    if (instanceOfErrorResponse(userData)) {
-      throw userData.errors;
-    }
 
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
@@ -35,10 +30,6 @@ function* registrationWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
     const userData = (yield call(registration, payload)) as IAuthResponse;
 
-    if (instanceOfErrorResponse(userData)) {
-      throw userData.errors;
-    }
-
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
@@ -52,10 +43,6 @@ function* registrationWorker({ payload }: ReturnType<typeof loginStart>) {
 function* refreshWorker() {
   try {
     const userData = (yield call(checkAuth)) as IAuthResponse;
-
-    if (instanceOfErrorResponse(userData)) {
-      throw userData.errors;
-    }
 
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
@@ -71,15 +58,9 @@ function* logoutWorker() {
   try {
     const responseData = (yield call(logout)) as ILogoutResponse;
 
-    if (typeof responseData === 'number') {
-      localStorage.clear();
+    localStorage.clear();
 
-      yield put(setAuthDefaultState());
-    }
-
-    if (instanceOfErrorResponse(responseData)) {
-      throw responseData.errors;
-    }
+    yield put(setAuthDefaultState());
   } catch (errors) {
     yield put(authError(errors));
   }

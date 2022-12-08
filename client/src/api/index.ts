@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { getItemFromLocalStorage, setItemToLocalStorage } from '../helpers/localstorage-helpers';
-import { checkAuth } from './auth-service';
-import { instanceOfErrorResponse } from '../types/response';
 import { store } from '../app/store';
 import { setAuthDefaultState } from '../features/auth/auth-slice';
 
@@ -23,10 +21,8 @@ const UNAUTHORIZED = 401;
 
 const $api = axios.create({
   baseURL: BASE_URL,
-  validateStatus: function (status) {
-    return status < 501 && status !== 401;
-  },
 });
+
 $api.interceptors.request.use((config) => {
   if (config.headers) {
     config.headers.Authorization = `Bearer ${getItemFromLocalStorage('tokens')?.accessToken}`;
@@ -37,26 +33,32 @@ $api.interceptors.request.use((config) => {
 
 $api.interceptors.response.use(
   (config) => {
-    return config;
+    return config.data;
   },
   async (error) => {
     const originalRequest = error.config;
 
     if (error.response.status === UNAUTHORIZED) {
       try {
-        const userData = await checkAuth();
+        const tokens = getItemFromLocalStorage('tokens');
 
-        if (instanceOfErrorResponse(userData)) {
-          throw userData.errors;
+        if (!tokens) {
+          return;
         }
 
-        setItemToLocalStorage('tokens', userData.tokens);
+        const userData = await axios.post(BASE_URL + ENDPOINTS.refresh, {
+          refreshToken: tokens.refreshToken,
+        });
+
+        setItemToLocalStorage('tokens', userData.data.tokens);
 
         return $api.request(originalRequest);
       } catch (error) {
         console.error(error);
         store.dispatch(setAuthDefaultState());
       }
+    } else {
+      throw error.response.data.errors;
     }
   }
 );
