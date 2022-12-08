@@ -3,6 +3,7 @@ const Species = require('./species');
 const Type = require('./types');
 const Location = require('./locations');
 const Episode = require('./episodes');
+const Sets = require('./sets');
 
 class Character extends Model {
   static get tableName() {
@@ -16,7 +17,7 @@ class Character extends Model {
       join: {
         from: 'characters.species_id',
         to: 'species.id',
-      }
+      },
     },
     type: {
       relation: Model.BelongsToOneRelation,
@@ -24,7 +25,7 @@ class Character extends Model {
       join: {
         from: 'characters.type_id',
         to: 'types.id',
-      }
+      },
     },
     origin: {
       relation: Model.BelongsToOneRelation,
@@ -32,7 +33,7 @@ class Character extends Model {
       join: {
         from: 'characters.origin_id',
         to: 'locations.id',
-      }
+      },
     },
     location: {
       relation: Model.BelongsToOneRelation,
@@ -40,7 +41,7 @@ class Character extends Model {
       join: {
         from: 'characters.location_id',
         to: 'locations.id',
-      }
+      },
     },
     episodes: {
       relation: Model.ManyToManyRelation,
@@ -49,15 +50,29 @@ class Character extends Model {
         from: 'characters.id',
         through: {
           from: 'characters_episodes.character_id',
-          to: 'characters_episodes.episode_id'
+          to: 'characters_episodes.episode_id',
         },
-        to: 'episodes.id'
-      }
-    }
+        to: 'episodes.id',
+      },
+    },
+    sets: {
+      relation: Model.ManyToManyRelation,
+      modelClass: Sets,
+      join: {
+        from: 'characters.id',
+        through: {
+          from: 'sets_characters.character_id',
+          to: 'sets_characters.set_id',
+        },
+        to: 'sets.id',
+      },
+    },
   };
 
-  static getCharacter (id) {
-    return this.query().withGraphFetched('[species, type, origin, location, episodes]').findById(id)
+  static getCharacter(id) {
+    return this.query()
+      .withGraphFetched('[species, type, origin, location, episodes]')
+      .findById(id);
   }
 
   $formatJson(json) {

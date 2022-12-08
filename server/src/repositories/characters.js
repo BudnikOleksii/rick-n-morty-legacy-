@@ -2,7 +2,7 @@ const Character = require('../models/characters');
 
 const getCharacters = (page, limit) => {
   return Character.query()
-    .withGraphFetched('[species, type, origin, location, episodes]')
+    .withGraphFetched('[species, type, origin, location, episodes, sets]')
     .page(page - 1, limit);
 };
 

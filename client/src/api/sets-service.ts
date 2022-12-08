@@ -13,3 +13,10 @@ export const createSet = (name: string): Promise<AxiosResponse<ISet>> => {
 export const deleteSet = (id: number): Promise<AxiosResponse<number>> => {
   return $api.delete<number>(ENDPOINTS.setById(id));
 };
+
+export const toggleCharacterInSet = (
+  setId: number,
+  characterId: number
+): Promise<AxiosResponse<ISet>> => {
+  return $api.patch<ISet>(ENDPOINTS.setById(setId), { characterId });
+};

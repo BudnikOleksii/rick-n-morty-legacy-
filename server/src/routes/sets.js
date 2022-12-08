@@ -12,6 +12,7 @@ const setsRouter = express.Router();
 setsRouter.use(authGuard);
 setsRouter.use(updateLastVisitDate);
 setsRouter.get('/', SetsController.getSets);
+setsRouter.get('/all', SetsController.getSetsInfo);
 setsRouter.post('/', roleGuard(adminRole), SetsController.createSet);
 setsRouter.patch('/:id', roleGuard(adminRole), SetsController.toggleCharactersInSet);
 setsRouter.delete('/:id', roleGuard(adminRole), SetsController.deleteSet);

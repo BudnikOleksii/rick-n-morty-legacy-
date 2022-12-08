@@ -2,6 +2,7 @@ import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
 import { IResponseInfo } from '../../types/response';
 import { ISet } from '../../types/set';
+import { toggleCharacterInSet } from '../../api/sets-service';
 
 interface SetsState {
   sets: Maybe<ISet[]>;
@@ -53,6 +54,13 @@ const setsSlice = createSlice({
       state.setsIsloading = false;
       state.sets = state.sets?.filter((set) => set.id !== action.payload) || null;
     },
+    toggleCharacterInSetStart: (state, action) => {
+      state.setsIsloading = true;
+      state.setsErrors = null;
+    },
+    toggleCharacterInSetSuccess: (state) => {
+      state.setsIsloading = false;
+    },
   },
 });
 
@@ -65,6 +73,8 @@ export const {
   createSetSuccess,
   deleteSetStart,
   deleteSetSuccess,
+  toggleCharacterInSetStart,
+  toggleCharacterInSetSuccess,
 } = setsSlice.actions;
 
 export default setsSlice.reducer;

@@ -7,9 +7,11 @@ import {
   setsError,
   setsLoadingStart,
   setsSuccess,
+  toggleCharacterInSetStart,
+  toggleCharacterInSetSuccess,
 } from '../../features/sets/sets-slice';
 import { ISet, ISetsResponse } from '../../types/set';
-import { createSet, deleteSet, getSets } from '../../api/sets-service';
+import { createSet, deleteSet, getSets, toggleCharacterInSet } from '../../api/sets-service';
 
 function* setsWorker({ payload }: ReturnType<typeof setsLoadingStart>) {
   try {
@@ -41,6 +43,16 @@ function* deleteSetWorker({ payload }: ReturnType<typeof deleteSetStart>) {
   }
 }
 
+function* toggleCharacterInSetWorker({ payload }: ReturnType<typeof toggleCharacterInSetStart>) {
+  try {
+    yield call(toggleCharacterInSet, payload.setId, payload.characterId);
+
+    yield put(toggleCharacterInSetSuccess());
+  } catch (errors) {
+    yield put(setsError(errors));
+  }
+}
+
 function* setsWatcher() {
   yield takeEvery(setsLoadingStart.type, setsWorker);
 }
@@ -53,8 +65,17 @@ function* deleteSetWatcher() {
   yield takeEvery(deleteSetStart.type, deleteSetWorker);
 }
 
+function* toggleCharacterInSetWatcher() {
+  yield takeEvery(toggleCharacterInSetStart.type, toggleCharacterInSetWorker);
+}
+
 function* setsSaga() {
-  yield all([call(setsWatcher), call(createSetWatcher), call(deleteSetWatcher)]);
+  yield all([
+    call(setsWatcher),
+    call(createSetWatcher),
+    call(deleteSetWatcher),
+    call(toggleCharacterInSetWatcher),
+  ]);
 }
 
 export default setsSaga;

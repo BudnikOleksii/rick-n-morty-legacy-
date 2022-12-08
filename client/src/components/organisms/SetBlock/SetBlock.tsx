@@ -15,13 +15,14 @@ interface Props {
 }
 
 export const SetBlock: FC<Props> = ({ set }) => {
+  const { id, name, characters } = set;
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(selectAuth);
 
   const handleSetDelete = () => {
     dispatch(
       deleteSetStart({
-        id: set.id,
+        id,
       })
     );
   };
@@ -29,12 +30,14 @@ export const SetBlock: FC<Props> = ({ set }) => {
   return (
     <Paper elevation={12} sx={{ padding: '20px', margin: '20px 0' }}>
       <Typography component="h2" variant="h4" align="center" color="text.primary" gutterBottom>
-        {set.name}
+        {name}
       </Typography>
 
       <Divider sx={{ margin: '20px' }} />
 
-      {set.characters?.length > 0 && <CharactersList key={set.id} characters={set.characters} />}
+      {characters && characters?.length > 0 && (
+        <CharactersList key={set.id} characters={characters} />
+      )}
 
       <Divider sx={{ margin: '20px' }}>{set.name} end</Divider>
 

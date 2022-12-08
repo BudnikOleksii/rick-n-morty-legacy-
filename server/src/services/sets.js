@@ -1,4 +1,4 @@
-const { BadRequestError, NotFoundError} = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 const { SetsRepository } = require('../repositories/sets');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
@@ -27,6 +27,21 @@ const getSet = async (columnName, value) => {
   return set;
 };
 
+const getSetsInfo = async () => {
+  const { total, results } = await SetsRepository.getSetsInfo();
+  const info = {
+    total,
+    next: null,
+    prev: null,
+    pages: 1,
+  };
+
+  return {
+    info,
+    results,
+  };
+};
+
 const createSet = async (name) => {
   checkNameLength(name);
 
@@ -53,7 +68,9 @@ const deleteSet = async (id) => {
 const toggleCharactersInSet = async (setId, characterId) => {
   const set = await getSet('id', setId);
   const character = await CharactersService.getCharacterById(characterId);
-  const isSetHaveExistingCharacter = set.characters.some(character => character.id === Number(characterId));
+  const isSetHaveExistingCharacter = set.characters.some(
+    (character) => character.id === Number(characterId)
+  );
 
   if (isSetHaveExistingCharacter) {
     return SetsRepository.removeCharacterFromSet(set, character);
@@ -69,12 +86,12 @@ const getUserSets = async (userId) => {
   const userSets = [];
   let ratingBonus = 0;
 
-  (await CardsService.getAllUserCards(userId)).forEach(card => {
-    userCardsIds.add(card.character.id)
+  (await CardsService.getAllUserCards(userId)).forEach((card) => {
+    userCardsIds.add(card.character.id);
   });
 
-  sets.forEach(set => {
-    set.characters.forEach(character => {
+  sets.forEach((set) => {
+    set.characters.forEach((character) => {
       if (userCardsIds.has(character.id)) {
         const usersSet = userSetsMap.get(set.name);
 
@@ -91,7 +108,7 @@ const getUserSets = async (userId) => {
     });
   });
 
-  userSetsMap.forEach(set => {
+  userSetsMap.forEach((set) => {
     const { setName, setLength, userCards } = set;
     const isCompleted = userCards.length >= setLength;
 
@@ -116,6 +133,7 @@ const getUserSets = async (userId) => {
 module.exports.SetsService = {
   getSets,
   getSet,
+  getSetsInfo,
   createSet,
   deleteSet,
   toggleCharactersInSet,

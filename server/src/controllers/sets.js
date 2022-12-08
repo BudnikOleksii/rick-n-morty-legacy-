@@ -17,6 +17,16 @@ const getSets = async (req, res, next) => {
   }
 };
 
+const getSetsInfo = async (req, res, next) => {
+  try {
+    const setsData = await SetsService.getSetsInfo();
+
+    return res.status(httpStatusCodes.OK).json(setsData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createSet = async (req, res, next) => {
   const { name } = req.body;
 
@@ -56,6 +66,7 @@ const toggleCharactersInSet = async (req, res, next) => {
 
 module.exports.SetsController = {
   getSets,
+  getSetsInfo,
   createSet,
   deleteSet,
   toggleCharactersInSet,

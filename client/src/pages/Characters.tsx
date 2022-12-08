@@ -13,6 +13,7 @@ import {
 import { CharactersList } from '../components/organisms/CharactersList';
 import Pagination from '@mui/material/Pagination';
 import { useNavigate } from 'react-router-dom';
+import { setsLoadingStart } from '../features/sets/sets-slice';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -30,6 +31,14 @@ const Characters = () => {
       })
     );
   }, [page]);
+
+  useEffect(() => {
+    dispatch(
+      setsLoadingStart({
+        params: `/all`,
+      })
+    );
+  }, []);
 
   const handleCloseNotification = () => dispatch(charactersRemoveErrors());
 
