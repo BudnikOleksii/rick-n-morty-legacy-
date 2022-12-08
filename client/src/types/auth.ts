@@ -1,5 +1,4 @@
 import { IUser } from './user';
-import { IErrorResponse } from './response';
 
 export interface ITokens {
   accessToken: string;
@@ -14,10 +13,9 @@ export interface IRegistration {
 
 export type ILogin = Omit<IRegistration, 'username'>;
 
-interface IUserWithTokens {
+export interface IAuthResponse {
   tokens: ITokens;
   user: IUser;
 }
 
-export type IAuthResponse = IUserWithTokens | IErrorResponse;
-export type ILogoutResponse = number | IErrorResponse;
+export type ILogoutResponse = number;
