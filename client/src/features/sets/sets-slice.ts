@@ -37,9 +37,34 @@ const setsSlice = createSlice({
     setsRemoveErrors: (state) => {
       state.setsErrors = null;
     },
+    createSetStart: (state, action) => {
+      state.setsIsloading = true;
+      state.setsErrors = null;
+    },
+    createSetSuccess: (state, action) => {
+      state.setsIsloading = false;
+      state.sets?.push(action.payload);
+    },
+    deleteSetStart: (state, action) => {
+      state.setsIsloading = true;
+      state.setsErrors = null;
+    },
+    deleteSetSuccess: (state, action) => {
+      state.setsIsloading = false;
+      state.sets = state.sets?.filter((set) => set.id !== action.payload) || null;
+    },
   },
 });
 
-export const { setsLoadingStart, setsSuccess, setsError, setsRemoveErrors } = setsSlice.actions;
+export const {
+  setsLoadingStart,
+  setsSuccess,
+  setsError,
+  setsRemoveErrors,
+  createSetStart,
+  createSetSuccess,
+  deleteSetStart,
+  deleteSetSuccess,
+} = setsSlice.actions;
 
 export default setsSlice.reducer;

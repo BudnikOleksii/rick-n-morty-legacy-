@@ -13,6 +13,7 @@ import { BaseModal } from '../components/molecules/BaseModal';
 import { SetForm } from '../components/organisms/SetForm';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
+import Typography from '@mui/material/Typography';
 
 const Sets = () => {
   const navigate = useNavigate();
@@ -44,6 +45,9 @@ const Sets = () => {
 
       {isAdmin && (
         <BaseModal openModalTitle="Create Set" buttonVariant="contained">
+          <Typography component="h1" variant="h5" textAlign="center">
+            Create new set
+          </Typography>
           <SetForm />
         </BaseModal>
       )}

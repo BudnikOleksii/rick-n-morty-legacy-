@@ -6,4 +6,7 @@ export interface ISet {
   name: string;
   characters: ICharacter[];
 }
+
+export type INewSet = Pick<ISet, 'name'>;
+
 export type ISetsResponse = ISuccessResponse<ISet[]>;

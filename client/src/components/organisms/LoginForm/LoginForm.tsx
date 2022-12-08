@@ -11,7 +11,7 @@ import { loginStart } from '../../../features/auth/auth-slice';
 
 const schema = yup.object().shape({
   login: yup.string().email().required(),
-  password: yup.string().min(4).max(15).required(),
+  password: yup.string().trim().min(4).max(15).required(),
 });
 
 interface Props {}
