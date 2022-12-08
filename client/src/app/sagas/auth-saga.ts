@@ -62,7 +62,6 @@ function* logoutWorker() {
 
     yield put(setAuthDefaultState());
   } catch (errors) {
-    console.log(errors);
     yield put(authError(errors));
   }
 }

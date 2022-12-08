@@ -14,7 +14,7 @@ export const registration = (data: IRegistration): Promise<AxiosResponse<IAuthRe
 export const checkAuth = (): Promise<AxiosResponse<IAuthResponse>> => {
   const { refreshToken } = getItemFromLocalStorage('tokens');
 
-  return axios.post<IAuthResponse>(BASE_URL + ENDPOINTS.refresh, {
+  return $api.post<IAuthResponse>(BASE_URL + ENDPOINTS.refresh, {
     refreshToken,
   });
 };

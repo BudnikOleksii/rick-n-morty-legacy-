@@ -1,7 +1,7 @@
 import $api, { ENDPOINTS } from './index';
-import { ISetResponse } from '../types/set';
+import { ISetsResponse } from '../types/set';
 import { AxiosResponse } from 'axios';
 
-export const getSets = (params: string = ''): Promise<AxiosResponse<ISetResponse[]>> => {
-  return $api.get<ISetResponse[]>(ENDPOINTS.sets + params);
+export const getSets = (params: string = ''): Promise<AxiosResponse<ISetsResponse[]>> => {
+  return $api.get<ISetsResponse[]>(ENDPOINTS.sets + params);
 };

@@ -6,4 +6,4 @@ export interface ISet {
   name: string;
   characters: ICharacter[];
 }
-export type ISetResponse = ISuccessResponse<ISet[]>;
+export type ISetsResponse = ISuccessResponse<ISet[]>;

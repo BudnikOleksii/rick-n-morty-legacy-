@@ -48,11 +48,12 @@ $api.interceptors.response.use(
 
         return $api.request(originalRequest);
       } catch (error) {
+        console.error(error);
         store.dispatch(setAuthDefaultState());
       }
+    } else {
+      throw error.response.data.errors;
     }
-
-    throw error.response.data.errors;
   }
 );
 

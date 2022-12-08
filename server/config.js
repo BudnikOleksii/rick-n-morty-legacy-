@@ -39,7 +39,7 @@ const development = {
     },
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',
-    accessTokenExpiresIn: '10m',
+    accessTokenExpiresIn: '30s',
     refreshTokenExpiresIn: '30d',
   },
   db: {

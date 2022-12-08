@@ -1,6 +1,6 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import { addNewRole, getUsers } from '../../api/user-service';
-import { IUserResponse, IUsersResponse } from '../../types/user';
+import { IUser, IUsersResponse } from '../../types/user';
 import {
   addNewRoleStart,
   addNewRoleSuccess,
@@ -8,15 +8,10 @@ import {
   usersLoadingStart,
   usersSuccess,
 } from '../../features/users/users-slice';
-import { instanceOfErrorResponse } from '../../types/response';
 
 function* usersWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
   try {
     const usersData = (yield call(getUsers, payload.params)) as IUsersResponse;
-
-    if (instanceOfErrorResponse(usersData)) {
-      throw usersData.errors;
-    }
 
     yield put(usersSuccess(usersData));
   } catch (errors) {
@@ -26,11 +21,7 @@ function* usersWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
 
 function* addNewRoleWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
   try {
-    const userData = (yield call(addNewRole, payload.id, payload.role)) as IUserResponse;
-
-    if (instanceOfErrorResponse(userData)) {
-      throw userData.errors;
-    }
+    const userData = (yield call(addNewRole, payload.id, payload.role)) as IUser;
 
     yield put(addNewRoleSuccess(userData));
   } catch (errors) {

@@ -1,4 +1,4 @@
-import { IErrorResponse, ISuccessResponse } from './response';
+import { ISuccessResponse } from './response';
 
 export interface IRole {
   id: number;
@@ -15,6 +15,4 @@ export interface IUser {
   roles: IRole[];
 }
 
-export type IUsersResponse = ISuccessResponse<IUser[]> | IErrorResponse;
-
-export type IUserResponse = IUser | IErrorResponse;
+export type IUsersResponse = ISuccessResponse<IUser[]>;
