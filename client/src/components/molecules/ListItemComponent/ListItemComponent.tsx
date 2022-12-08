@@ -12,7 +12,7 @@ interface Props {
 export const ListItemComponent: FC<Props> = ({ name, value, icon }) => {
   return (
     <ListItem disablePadding>
-      <ListItemIcon>{icon}</ListItemIcon>
+      {icon && <ListItemIcon>{icon}</ListItemIcon>}
       <ListItemText primary={`${name}: ${value}`} />
     </ListItem>
   );

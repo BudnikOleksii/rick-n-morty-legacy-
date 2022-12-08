@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -10,14 +10,14 @@ import { ListItemLink } from '../../atoms/ListItemLink';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  open: boolean | undefined;
+  open?: boolean;
   onDrawerToggle: () => void;
   navItems: string[];
 }
 
 const drawerWidth = 240;
 
-export const BurgerMenu: FC<Props> = ({ open, onDrawerToggle, navItems }) => {
+export const BurgerMenu: FC<Props> = memo(({ open, onDrawerToggle, navItems }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -57,4 +57,4 @@ export const BurgerMenu: FC<Props> = ({ open, onDrawerToggle, navItems }) => {
       </Drawer>
     </Box>
   );
-};
+});

@@ -21,6 +21,7 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Cards />} />
+            <Route path={PATHS.cards} element={<Cards />} />
             <Route path={PATHS.users} element={<Users />} />
             <Route path={PATHS.sets} element={<Sets />} />
           </Route>

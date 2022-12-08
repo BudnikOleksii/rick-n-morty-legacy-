@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -15,7 +15,7 @@ interface Props {
   navItems: string[];
 }
 
-export const NavMenu: FC<Props> = ({ onDrawerToggle, navItems }) => {
+export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -54,4 +54,4 @@ export const NavMenu: FC<Props> = ({ onDrawerToggle, navItems }) => {
       </Toolbar>
     </AppBar>
   );
-};
+});
