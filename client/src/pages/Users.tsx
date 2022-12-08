@@ -8,9 +8,11 @@ import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-sl
 import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { UsersList } from '../components/organisms/UsersList';
 import { Heading } from '../components/molecules/Heading';
-import { BasePagination } from '../components/molecules/BasePagination';
+import Pagination from '@mui/material/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 const Users = () => {
+  const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
@@ -43,10 +45,15 @@ const Users = () => {
       {users && users.length === 0 && <h2>No users found</h2>}
 
       {usersInfo && usersInfo.total > 0 && (
-        <BasePagination
-          pages={usersInfo.pages}
-          currentPage={Number(page)}
-          baseEndpoint={PATHS.users}
+        <Pagination
+          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
+          count={usersInfo.pages}
+          variant="outlined"
+          shape="rounded"
+          page={Number(page) || 1}
+          onChange={(_, pageNumber) => {
+            navigate(`${PATHS.users}?page=${pageNumber}`);
+          }}
         />
       )}
     </Box>

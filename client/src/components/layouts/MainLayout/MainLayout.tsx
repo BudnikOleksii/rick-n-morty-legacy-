@@ -8,8 +8,8 @@ import { BurgerMenu } from '../../organisms/BurgerMenu';
 import { NavMenu } from '../../organisms/NavMenu';
 
 const { cards, characters, lots, sets, chat, faq, users } = PATHS;
-const defaultNavItems = [lots, characters, sets, chat, faq].map((item) => item.slice(1));
-const adminNavItems = [users, cards].map((item) => item.slice(1));
+const defaultNavItems = [lots, characters, sets, cards, chat, faq].map((item) => item.slice(1));
+const adminNavItems = [users].map((item) => item.slice(1));
 
 export const MainLayout = () => {
   const { isAdmin } = useAppSelector(selectAuth);

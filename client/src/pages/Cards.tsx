@@ -9,9 +9,11 @@ import { PATHS } from '../constants';
 import { CardsList } from '../components/organisms/CardsList';
 import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { Heading } from '../components/molecules/Heading';
-import { BasePagination } from '../components/molecules/BasePagination';
+import { useNavigate } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 
 const Cards = () => {
+  const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
@@ -48,10 +50,15 @@ const Cards = () => {
       {cards && cards.length === 0 && <h2>You don't have any cards yet:( Go to auction</h2>}
 
       {cardsInfo && cardsInfo.total > 0 && (
-        <BasePagination
-          pages={cardsInfo.pages}
-          currentPage={Number(page)}
-          baseEndpoint={PATHS.cards}
+        <Pagination
+          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
+          count={cardsInfo.pages}
+          variant="outlined"
+          shape="rounded"
+          page={Number(page) || 1}
+          onChange={(_, pageNumber) => {
+            navigate(`${PATHS.cards}?page=${pageNumber}`);
+          }}
         />
       )}
     </Box>

@@ -11,9 +11,11 @@ import { SetBlock } from '../components/organisms/SetBlock';
 import { selectAuth } from '../features/auth/auth-selectors';
 import { BaseModal } from '../components/molecules/BaseModal';
 import { SetForm } from '../components/organisms/SetForm';
-import { BasePagination } from '../components/molecules/BasePagination';
+import { useNavigate } from 'react-router-dom';
+import Pagination from '@mui/material/Pagination';
 
 const Sets = () => {
+  const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
@@ -53,10 +55,15 @@ const Sets = () => {
       {sets && sets.length === 0 && <h2>There are no sets</h2>}
 
       {setsInfo && setsInfo.total > 0 && (
-        <BasePagination
-          pages={setsInfo.pages}
-          currentPage={Number(page)}
-          baseEndpoint={PATHS.cards}
+        <Pagination
+          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
+          count={setsInfo.pages}
+          variant="outlined"
+          shape="rounded"
+          page={Number(page) || 1}
+          onChange={(_, pageNumber) => {
+            navigate(`${PATHS.sets}?page=${pageNumber}`);
+          }}
         />
       )}
     </Box>

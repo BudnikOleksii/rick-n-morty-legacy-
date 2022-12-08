@@ -1,5 +1,5 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
-import { IAuthResponse, ILogoutResponse } from '../../types/auth';
+import { IAuthResponse } from '../../types/auth';
 import { checkAuth, logIn, logout, registration } from '../../api/auth-service';
 import {
   authError,
@@ -56,7 +56,7 @@ function* refreshWorker() {
 
 function* logoutWorker() {
   try {
-    const responseData = (yield call(logout)) as ILogoutResponse;
+    yield call(logout);
 
     localStorage.clear();
 

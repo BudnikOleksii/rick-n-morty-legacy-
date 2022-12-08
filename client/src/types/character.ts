@@ -1,6 +1,7 @@
 import { IEpisode } from './episode';
 import { Maybe } from './maybe';
 import { ILocation } from './location';
+import { ISuccessResponse } from './response';
 
 export interface ICharacter {
   id: number;
@@ -15,3 +16,5 @@ export interface ICharacter {
   location: Maybe<ILocation>;
   episodes: IEpisode[];
 }
+
+export type ICharactersResponse = ISuccessResponse<ICharacter[]>;
