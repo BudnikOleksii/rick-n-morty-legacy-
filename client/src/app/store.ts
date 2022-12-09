@@ -5,6 +5,7 @@ import usersReducer from '../features/users/users-slice';
 import setsReducer from '../features/sets/sets-slice';
 import charactersReducer from '../features/characters/characters-slice';
 import lotsReducer from '../features/lots/lots-slice';
+import notificationInfoReducer from '../features/notification-info/notification-info-slice';
 import createSagaMiddleware from 'redux-saga';
 import IndexSaga from './sagas';
 
@@ -12,6 +13,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
+    notifications: notificationInfoReducer,
     auth: authReducer,
     cards: cardsReducer,
     users: usersReducer,

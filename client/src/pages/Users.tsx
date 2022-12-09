@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { PATHS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectUsers } from '../features/users/users-selelctors';
-import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-slice';
+import { usersLoadingStart } from '../features/users/users-slice';
 import { UsersList } from '../components/organisms/UsersList';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
+import { startLoading } from '../features/notification-info/notification-info-slice';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -13,9 +14,10 @@ const Users = () => {
   const params = new URLSearchParams(search);
   const page = params.get('page');
   const dispatch = useAppDispatch();
-  const { users, usersInfo, usersIsloading, usersErrors } = useAppSelector(selectUsers);
+  const { users, usersInfo } = useAppSelector(selectUsers);
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(
       usersLoadingStart({
         params: `?page=${page || 1}`,
@@ -23,7 +25,6 @@ const Users = () => {
     );
   }, [page]);
 
-  const handleCloseNotification = () => dispatch(usersRemoveErrors());
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.users}?page=${pageNumber}`);
   };
@@ -31,9 +32,6 @@ const Users = () => {
   return (
     <PageTemplate
       title="Your cards"
-      isLoading={usersIsloading}
-      errors={usersErrors}
-      onCloseNotification={handleCloseNotification}
       info={usersInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}

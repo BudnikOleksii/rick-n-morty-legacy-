@@ -2,14 +2,12 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { PATHS } from '../constants';
 import { selectCharacters } from '../features/characters/characters-selectors';
-import {
-  charactersLoadingStart,
-  charactersRemoveErrors,
-} from '../features/characters/characters-slice';
+import { charactersLoadingStart } from '../features/characters/characters-slice';
 import { CharactersList } from '../components/organisms/CharactersList';
 import { useNavigate } from 'react-router-dom';
 import { setsLoadingStart } from '../features/sets/sets-slice';
 import { PageTemplate } from '../components/templates/PageTemplate';
+import { startLoading } from '../features/notification-info/notification-info-slice';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -17,10 +15,10 @@ const Characters = () => {
   const params = new URLSearchParams(search);
   const page = params.get('page');
   const dispatch = useAppDispatch();
-  const { characters, charactersInfo, charactersIsloading, charactersErrors } =
-    useAppSelector(selectCharacters);
+  const { characters, charactersInfo } = useAppSelector(selectCharacters);
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(
       charactersLoadingStart({
         params: `?page=${page || 1}`,
@@ -29,6 +27,7 @@ const Characters = () => {
   }, [page]);
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(
       setsLoadingStart({
         params: `/all`,
@@ -36,17 +35,13 @@ const Characters = () => {
     );
   }, []);
 
-  const handleCloseNotification = () => dispatch(charactersRemoveErrors());
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.characters}?page=${pageNumber}`);
   };
 
   return (
     <PageTemplate
-      title="Your cards"
-      isLoading={charactersIsloading}
-      errors={charactersErrors}
-      onCloseNotification={handleCloseNotification}
+      title="All characters"
       info={charactersInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}

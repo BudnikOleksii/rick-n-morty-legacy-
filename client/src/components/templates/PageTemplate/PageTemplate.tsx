@@ -3,15 +3,15 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { NotificationBlock } from '../../organisms/NotificationBlock';
 import { Heading } from '../../molecules/Heading';
-import { IErrors, IResponseInfo } from '../../../types/response';
+import { IResponseInfo } from '../../../types/response';
 import Pagination from '@mui/material/Pagination';
 import { Maybe } from '../../../types/maybe';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectNotificationInfo } from '../../../features/notification-info/notification-info-selector';
+import { removeErrors } from '../../../features/notification-info/notification-info-slice';
 
 interface Props {
   title: string;
-  isLoading: boolean;
-  errors: IErrors;
-  onCloseNotification: () => void;
   info: Maybe<IResponseInfo>;
   currentPage: number;
   onPageChange: (page: number) => void;
@@ -19,16 +19,11 @@ interface Props {
 }
 
 export const PageTemplate: FC<Props> = (props) => {
-  const {
-    title,
-    isLoading,
-    errors,
-    onCloseNotification,
-    info,
-    currentPage,
-    onPageChange,
-    children,
-  } = props;
+  const { title, info, currentPage, onPageChange, children } = props;
+  const dispatch = useAppDispatch();
+  const { isLoading, errors } = useAppSelector(selectNotificationInfo);
+
+  const handleCloseNotification = () => dispatch(removeErrors());
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -36,7 +31,7 @@ export const PageTemplate: FC<Props> = (props) => {
       <NotificationBlock
         isloading={isLoading}
         errors={errors}
-        onCloseNotification={onCloseNotification}
+        onCloseNotification={handleCloseNotification}
       />
 
       <Heading title={title} />

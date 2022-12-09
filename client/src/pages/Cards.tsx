@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
-import { cardsLoadingStart, cardsRemoveErrors } from '../features/cards/cards-slice';
+import { cardsLoadingStart } from '../features/cards/cards-slice';
 import { selectAuth } from '../features/auth/auth-selectors';
 import { PATHS } from '../constants';
 import { CardsList } from '../components/organisms/CardsList';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
+import { startLoading } from '../features/notification-info/notification-info-slice';
 
 const Cards = () => {
   const navigate = useNavigate();
@@ -15,10 +16,11 @@ const Cards = () => {
   const page = params.get('page');
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
-  const { cards, cardsInfo, cardsIsloading, cardsErrors } = useAppSelector(selectCards);
+  const { cards, cardsInfo } = useAppSelector(selectCards);
 
   useEffect(() => {
     if (user) {
+      dispatch(startLoading());
       dispatch(
         cardsLoadingStart({
           userId: user.id,
@@ -28,7 +30,6 @@ const Cards = () => {
     }
   }, [page]);
 
-  const handleCloseNotification = () => dispatch(cardsRemoveErrors());
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.cards}?page=${pageNumber}`);
   };
@@ -36,9 +37,6 @@ const Cards = () => {
   return (
     <PageTemplate
       title="Your cards"
-      isLoading={cardsIsloading}
-      errors={cardsErrors}
-      onCloseNotification={handleCloseNotification}
       info={cardsInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}

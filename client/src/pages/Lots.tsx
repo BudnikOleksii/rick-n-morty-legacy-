@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { lotsLoadingStart, lotsRemoveErrors } from '../features/lots/lots-slice';
+import { lotsLoadingStart } from '../features/lots/lots-slice';
 import { selectLots } from '../features/lots/lots-selectors';
 import { PATHS } from '../constants';
 import { PageTemplate } from '../components/templates/PageTemplate';
+import { startLoading } from '../features/notification-info/notification-info-slice';
 
 const Lots = () => {
   const navigate = useNavigate();
@@ -12,14 +13,13 @@ const Lots = () => {
   const params = new URLSearchParams(search);
   const page = params.get('page');
   const dispatch = useAppDispatch();
-  const { lots, lotsInfo, lotsErrors, lotsIsloading } = useAppSelector(selectLots);
-
-  const handleCloseNotification = () => dispatch(lotsRemoveErrors());
+  const { lots, lotsInfo } = useAppSelector(selectLots);
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.lots}?page=${pageNumber}`);
   };
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(
       lotsLoadingStart({
         params: `?page=${page || 1}`,
@@ -30,9 +30,6 @@ const Lots = () => {
   return (
     <PageTemplate
       title="Auction"
-      isLoading={lotsIsloading}
-      errors={lotsErrors}
-      onCloseNotification={handleCloseNotification}
       info={lotsInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}
