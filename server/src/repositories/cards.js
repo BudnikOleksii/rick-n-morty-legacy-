@@ -11,7 +11,7 @@ const getCardById = (id) => {
   return Card.query()
     .whereNotDeleted()
     .withGraphFetched('[character.[species, type, origin, location, episodes], owner]')
-    .findById(id)
+    .findById(id);
 };
 
 const createCard = async (character) => {
@@ -21,9 +21,7 @@ const createCard = async (character) => {
 };
 
 const changeOwner = async (card, owner) => {
-  await card
-    .$relatedQuery('owner')
-    .relate(owner);
+  await card.$relatedQuery('owner').relate(owner);
 
   return getCardById(card.id);
 };
@@ -32,7 +30,7 @@ const getUserCards = (page, limit, userId) => {
   return Card.query()
     .whereNotDeleted()
     .where('owner_id', userId)
-    .withGraphFetched('[character.[species, type, origin, location, episodes]]')
+    .withGraphFetched('[character.[species, type, origin, location, episodes, sets]]')
     .page(page - 1, limit);
 };
 
