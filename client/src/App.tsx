@@ -10,6 +10,7 @@ import { PrivateRoute } from './components/layouts/PrivateRoute';
 import Cards from './pages/Cards';
 import Users from './pages/Users';
 import Sets from './pages/Sets';
+import Characters from './pages/Characters';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             <Route path={PATHS.cards} element={<Cards />} />
             <Route path={PATHS.users} element={<Users />} />
             <Route path={PATHS.sets} element={<Sets />} />
+            <Route path={PATHS.characters} element={<Characters />} />
           </Route>
         </Route>
 

@@ -1,6 +1,6 @@
 import { ILogin, IAuthResponse, IRegistration, ILogoutResponse } from '../types/auth';
-import $api, { BASE_URL, ENDPOINTS } from './index';
-import axios, { AxiosResponse } from 'axios';
+import $api, { ENDPOINTS } from './index';
+import { AxiosResponse } from 'axios';
 import { getItemFromLocalStorage } from '../helpers/localstorage-helpers';
 
 export const logIn = (data: ILogin): Promise<AxiosResponse<IAuthResponse>> => {

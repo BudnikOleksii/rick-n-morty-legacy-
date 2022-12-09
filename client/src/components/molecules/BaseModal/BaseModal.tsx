@@ -20,17 +20,23 @@ const style = {
 interface Props {
   openModalTitle: string;
   buttonVariant?: 'outlined' | 'text' | 'contained';
+  buttonColor?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
   children: ReactNode;
 }
 
-export const BaseModal: FC<Props> = ({ openModalTitle, children, buttonVariant }) => {
+export const BaseModal: FC<Props> = ({ openModalTitle, children, buttonVariant, buttonColor }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button variant={buttonVariant} onClick={handleOpen}>
+      <Button
+        sx={{ display: 'block', margin: '15px auto' }}
+        variant={buttonVariant}
+        color={buttonColor}
+        onClick={handleOpen}
+      >
         {openModalTitle}
       </Button>
       <Modal

@@ -8,9 +8,11 @@ import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-sl
 import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { UsersList } from '../components/organisms/UsersList';
 import { Heading } from '../components/molecules/Heading';
+import { useNavigate } from 'react-router-dom';
 import { BasePagination } from '../components/molecules/BasePagination';
 
 const Users = () => {
+  const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
@@ -26,6 +28,9 @@ const Users = () => {
   }, [page]);
 
   const handleCloseNotification = () => dispatch(usersRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.users}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -46,7 +51,7 @@ const Users = () => {
         <BasePagination
           pages={usersInfo.pages}
           currentPage={Number(page)}
-          baseEndpoint={PATHS.users}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>

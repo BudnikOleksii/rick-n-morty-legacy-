@@ -9,9 +9,11 @@ import { PATHS } from '../constants';
 import { CardsList } from '../components/organisms/CardsList';
 import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { Heading } from '../components/molecules/Heading';
+import { useNavigate } from 'react-router-dom';
 import { BasePagination } from '../components/molecules/BasePagination';
 
 const Cards = () => {
+  const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
@@ -31,6 +33,9 @@ const Cards = () => {
   }, [page]);
 
   const handleCloseNotification = () => dispatch(cardsRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.cards}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -51,7 +56,7 @@ const Cards = () => {
         <BasePagination
           pages={cardsInfo.pages}
           currentPage={Number(page)}
-          baseEndpoint={PATHS.cards}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>

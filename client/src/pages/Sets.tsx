@@ -11,9 +11,12 @@ import { SetBlock } from '../components/organisms/SetBlock';
 import { selectAuth } from '../features/auth/auth-selectors';
 import { BaseModal } from '../components/molecules/BaseModal';
 import { SetForm } from '../components/organisms/SetForm';
+import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
 import { BasePagination } from '../components/molecules/BasePagination';
 
 const Sets = () => {
+  const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
@@ -30,6 +33,9 @@ const Sets = () => {
   }, [page]);
 
   const handleCloseNotification = () => dispatch(setsRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.sets}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -42,6 +48,9 @@ const Sets = () => {
 
       {isAdmin && (
         <BaseModal openModalTitle="Create Set" buttonVariant="contained">
+          <Typography component="h1" variant="h5" textAlign="center">
+            Create new set
+          </Typography>
           <SetForm />
         </BaseModal>
       )}
@@ -56,7 +65,7 @@ const Sets = () => {
         <BasePagination
           pages={setsInfo.pages}
           currentPage={Number(page)}
-          baseEndpoint={PATHS.cards}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>

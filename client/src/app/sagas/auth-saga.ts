@@ -1,5 +1,5 @@
-import { call, put, takeEvery, all } from 'redux-saga/effects';
-import { IAuthResponse, ILogoutResponse } from '../../types/auth';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { IAuthResponse } from '../../types/auth';
 import { checkAuth, logIn, logout, registration } from '../../api/auth-service';
 import {
   authError,
@@ -56,7 +56,7 @@ function* refreshWorker() {
 
 function* logoutWorker() {
   try {
-    const responseData = (yield call(logout)) as ILogoutResponse;
+    yield call(logout);
 
     localStorage.clear();
 
@@ -66,29 +66,11 @@ function* logoutWorker() {
   }
 }
 
-function* loginWatcher() {
-  yield takeEvery(loginStart.type, loginWorker);
-}
-
-function* registrationWatcher() {
-  yield takeEvery(registrationStart.type, registrationWorker);
-}
-
-function* refreshWatcher() {
-  yield takeEvery(checkAuthStart.type, refreshWorker);
-}
-
-function* logoutWatcher() {
-  yield takeEvery(logoutStart.type, logoutWorker);
-}
-
 function* authSaga() {
-  yield all([
-    call(loginWatcher),
-    call(registrationWatcher),
-    call(refreshWatcher),
-    call(logoutWatcher),
-  ]);
+  yield takeEvery(loginStart.type, loginWorker);
+  yield takeEvery(registrationStart.type, registrationWorker);
+  yield takeEvery(checkAuthStart.type, refreshWorker);
+  yield takeEvery(logoutStart.type, logoutWorker);
 }
 
 export default authSaga;

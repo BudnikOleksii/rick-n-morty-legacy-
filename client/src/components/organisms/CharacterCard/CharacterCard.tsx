@@ -14,12 +14,34 @@ import { BaseModal } from '../../molecules/BaseModal';
 import { ICharacter } from '../../../types/character';
 import { EpisodesList } from '../EpisodesList';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
+import Button from '@mui/material/Button';
+import { ListItemBase } from '../../atoms/ListItemBase';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectAuth } from '../../../features/auth/auth-selectors';
+import { SetsList } from '../SetsList';
+import { toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../../constants';
 
 type Props = {
   character: ICharacter;
 };
 export const CharacterCard: FC<Props> = ({ character }) => {
-  const { name, image, status, gender, type, species, origin, location, episodes } = character;
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { isAdmin } = useAppSelector(selectAuth);
+  const { name, image, status, gender, type, species, origin, location, episodes, sets } =
+    character;
+
+  const handleToggleCharacterInSet = (setId: number) => {
+    dispatch(
+      toggleCharacterInSetStart({
+        setId,
+        characterId: character.id,
+      })
+    );
+    navigate(PATHS.sets);
+  };
 
   return (
     <Card sx={{ maxWidth: 300 }}>
@@ -47,6 +69,30 @@ export const CharacterCard: FC<Props> = ({ character }) => {
       <BaseModal openModalTitle="Episodes info">
         <EpisodesList episodes={episodes} />
       </BaseModal>
+
+      {sets && sets.length > 0 && (
+        <BaseModal openModalTitle="Sets info" buttonVariant="contained" buttonColor="info">
+          {sets.map((set) => (
+            <ListItemBase key={set.id} text={set.name}>
+              {isAdmin && (
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  onClick={() => handleToggleCharacterInSet(set.id)}
+                >
+                  Remove
+                </Button>
+              )}
+            </ListItemBase>
+          ))}
+        </BaseModal>
+      )}
+
+      {isAdmin && (
+        <BaseModal openModalTitle="Add to set" buttonVariant="contained" buttonColor="success">
+          <SetsList onToggleCharacterInSet={handleToggleCharacterInSet} />
+        </BaseModal>
+      )}
     </Card>
   );
 };

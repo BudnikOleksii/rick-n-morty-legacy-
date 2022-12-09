@@ -15,6 +15,8 @@ export const ENDPOINTS = {
   userCards: (id: number) => `/users/${id}/cards`,
   addRoleToUser: (id: number) => `/users/role/${id}`,
   sets: '/sets',
+  setById: (id: number) => `/sets/${id}`,
+  characters: '/characters',
 };
 
 const UNAUTHORIZED = 401;
