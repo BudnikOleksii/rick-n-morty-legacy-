@@ -1,13 +1,13 @@
 import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
-import { IResponseInfo } from '../../types/response';
+import { IErrors, IResponseInfo } from '../../types/response';
 import { IUser } from '../../types/user';
 
 interface UsersState {
   users: Maybe<IUser[]>;
   usersInfo: Maybe<IResponseInfo>;
   usersIsloading: boolean;
-  usersErrors: Maybe<string[]>;
+  usersErrors: IErrors;
 }
 
 const initialState: UsersState = {

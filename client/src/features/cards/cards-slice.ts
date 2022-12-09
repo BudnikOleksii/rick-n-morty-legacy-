@@ -1,13 +1,13 @@
 import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
-import { IResponseInfo } from '../../types/response';
+import { IErrors, IResponseInfo } from '../../types/response';
 import { ICard } from '../../types/card';
 
 interface CardsState {
   cards: Maybe<ICard[]>;
   cardsInfo: Maybe<IResponseInfo>;
   cardsIsloading: boolean;
-  cardsErrors: Maybe<string[]>;
+  cardsErrors: IErrors;
 }
 
 const initialState: CardsState = {

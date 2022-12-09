@@ -1,13 +1,13 @@
 import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
-import { IResponseInfo } from '../../types/response';
+import { IErrors, IResponseInfo } from '../../types/response';
 import { ISet } from '../../types/set';
 
 interface SetsState {
   sets: Maybe<ISet[]>;
   setsInfo: Maybe<IResponseInfo>;
   setsIsloading: boolean;
-  setsErrors: Maybe<string[]>;
+  setsErrors: IErrors;
 }
 
 const initialState: SetsState = {

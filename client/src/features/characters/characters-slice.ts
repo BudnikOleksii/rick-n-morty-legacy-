@@ -1,13 +1,13 @@
 import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
-import { IResponseInfo } from '../../types/response';
+import { IErrors, IResponseInfo } from '../../types/response';
 import { ICharacter } from '../../types/character';
 
 interface CharactersState {
   characters: Maybe<ICharacter[]>;
   charactersInfo: Maybe<IResponseInfo>;
   charactersIsloading: boolean;
-  charactersErrors: Maybe<string[]>;
+  charactersErrors: IErrors;
 }
 
 const initialState: CharactersState = {

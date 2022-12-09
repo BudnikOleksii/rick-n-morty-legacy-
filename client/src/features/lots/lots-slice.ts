@@ -1,13 +1,13 @@
 import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
-import { IResponseInfo } from '../../types/response';
+import { IErrors, IResponseInfo } from '../../types/response';
 import { ILot } from '../../types/lot';
 
 interface LotsState {
   lots: Maybe<ILot[]>;
   lotsInfo: Maybe<IResponseInfo>;
   lotsIsloading: boolean;
-  lotsErrors: Maybe<string[]>;
+  lotsErrors: IErrors;
 }
 
 const initialState: LotsState = {
