@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react';
-import Toolbar from '@mui/material/Toolbar';
 import { PATHS } from '../constants';
-import Box from '@mui/material/Box';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectUsers } from '../features/users/users-selelctors';
 import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-slice';
-import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { UsersList } from '../components/organisms/UsersList';
-import { Heading } from '../components/molecules/Heading';
 import { useNavigate } from 'react-router-dom';
-import { BasePagination } from '../components/molecules/BasePagination';
+import { PageTemplate } from '../components/templates/PageTemplate';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -33,28 +29,19 @@ const Users = () => {
   };
 
   return (
-    <Box component="main" sx={{ p: 3, width: '100%' }}>
-      <Toolbar />
-      <NotificationBlock
-        isloading={usersIsloading}
-        errors={usersErrors}
-        onCloseNotification={handleCloseNotification}
-      />
-
-      <Heading title="Users" />
-
+    <PageTemplate
+      title="Your cards"
+      isLoading={usersIsloading}
+      errors={usersErrors}
+      onCloseNotification={handleCloseNotification}
+      info={usersInfo}
+      currentPage={Number(page)}
+      onPageChange={handlePageChange}
+    >
       {users && users.length > 0 && <UsersList users={users} />}
 
       {users && users.length === 0 && <h2>No users found</h2>}
-
-      {usersInfo && usersInfo.total > 0 && (
-        <BasePagination
-          pages={usersInfo.pages}
-          currentPage={Number(page)}
-          onPageChange={handlePageChange}
-        />
-      )}
-    </Box>
+    </PageTemplate>
   );
 };
 

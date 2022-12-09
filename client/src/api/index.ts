@@ -17,6 +17,7 @@ export const ENDPOINTS = {
   sets: '/sets',
   setById: (id: number) => `/sets/${id}`,
   characters: '/characters',
+  lots: '/lots',
 };
 
 const UNAUTHORIZED = 401;

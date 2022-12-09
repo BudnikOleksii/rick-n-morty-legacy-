@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import { NotificationBlock } from '../components/organisms/NotificationBlock';
-import { Heading } from '../components/molecules/Heading';
 import { PATHS } from '../constants';
 import { selectCharacters } from '../features/characters/characters-selectors';
 import {
@@ -13,7 +9,7 @@ import {
 import { CharactersList } from '../components/organisms/CharactersList';
 import { useNavigate } from 'react-router-dom';
 import { setsLoadingStart } from '../features/sets/sets-slice';
-import { BasePagination } from '../components/molecules/BasePagination';
+import { PageTemplate } from '../components/templates/PageTemplate';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -46,30 +42,21 @@ const Characters = () => {
   };
 
   return (
-    <Box component="main" sx={{ p: 3, width: '100%' }}>
-      <Toolbar />
-      <NotificationBlock
-        isloading={charactersIsloading}
-        errors={charactersErrors}
-        onCloseNotification={handleCloseNotification}
-      />
-
-      <Heading title="All characters" />
-
+    <PageTemplate
+      title="Your cards"
+      isLoading={charactersIsloading}
+      errors={charactersErrors}
+      onCloseNotification={handleCloseNotification}
+      info={charactersInfo}
+      currentPage={Number(page)}
+      onPageChange={handlePageChange}
+    >
       {characters && characters.length > 0 && <CharactersList characters={characters} />}
 
       {characters && characters.length === 0 && (
         <h2>You don't have any cards yet:( Go to auction</h2>
       )}
-
-      {charactersInfo && charactersInfo.total > 0 && (
-        <BasePagination
-          pages={charactersInfo.pages}
-          currentPage={Number(page)}
-          onPageChange={handlePageChange}
-        />
-      )}
-    </Box>
+    </PageTemplate>
   );
 };
 

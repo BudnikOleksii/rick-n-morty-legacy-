@@ -5,11 +5,11 @@ import ListItem from '@mui/material/ListItem';
 
 interface Props {
   name: string;
-  value: string | number;
+  value?: string | number;
   icon?: ReactNode;
 }
 
-export const ListItemComponent: FC<Props> = ({ name, value, icon }) => {
+export const ListItemComponent: FC<Props> = ({ name, value = 'Unknown', icon }) => {
   return (
     <ListItem disablePadding>
       {icon && <ListItemIcon>{icon}</ListItemIcon>}

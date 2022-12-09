@@ -11,3 +11,5 @@ export interface ISuccessResponse<T> {
   info: IResponseInfo;
   results: T;
 }
+
+export type IErrors = Maybe<string[]>;

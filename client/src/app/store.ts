@@ -4,6 +4,7 @@ import cardsReducer from '../features/cards/cards-slice';
 import usersReducer from '../features/users/users-slice';
 import setsReducer from '../features/sets/sets-slice';
 import charactersReducer from '../features/characters/characters-slice';
+import lotsReducer from '../features/lots/lots-slice';
 import createSagaMiddleware from 'redux-saga';
 import IndexSaga from './sagas';
 
@@ -16,6 +17,7 @@ export const store = configureStore({
     users: usersReducer,
     sets: setsReducer,
     characters: charactersReducer,
+    lots: lotsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
