@@ -49,6 +49,7 @@ export const LotCard: FC<Props> = ({ lot }) => {
     bet: yup
       .number()
       .min(current_price + min_step)
+      .max(max_price)
       .required(),
   });
   const {
