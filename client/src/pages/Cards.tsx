@@ -10,7 +10,7 @@ import { CardsList } from '../components/organisms/CardsList';
 import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { Heading } from '../components/molecules/Heading';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
+import { BasePagination } from '../components/molecules/BasePagination';
 
 const Cards = () => {
   const navigate = useNavigate();
@@ -33,6 +33,9 @@ const Cards = () => {
   }, [page]);
 
   const handleCloseNotification = () => dispatch(cardsRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.cards}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -50,15 +53,10 @@ const Cards = () => {
       {cards && cards.length === 0 && <h2>You don't have any cards yet:( Go to auction</h2>}
 
       {cardsInfo && cardsInfo.total > 0 && (
-        <Pagination
-          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
-          count={cardsInfo.pages}
-          variant="outlined"
-          shape="rounded"
-          page={Number(page) || 1}
-          onChange={(_, pageNumber) => {
-            navigate(`${PATHS.cards}?page=${pageNumber}`);
-          }}
+        <BasePagination
+          pages={cardsInfo.pages}
+          currentPage={Number(page)}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>

@@ -2,7 +2,6 @@ import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
 import { IResponseInfo } from '../../types/response';
 import { ISet } from '../../types/set';
-import { toggleCharacterInSet } from '../../api/sets-service';
 
 interface SetsState {
   sets: Maybe<ISet[]>;

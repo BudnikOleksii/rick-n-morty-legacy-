@@ -12,8 +12,8 @@ import { selectAuth } from '../features/auth/auth-selectors';
 import { BaseModal } from '../components/molecules/BaseModal';
 import { SetForm } from '../components/organisms/SetForm';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
+import { BasePagination } from '../components/molecules/BasePagination';
 
 const Sets = () => {
   const navigate = useNavigate();
@@ -33,6 +33,9 @@ const Sets = () => {
   }, [page]);
 
   const handleCloseNotification = () => dispatch(setsRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.sets}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -59,15 +62,10 @@ const Sets = () => {
       {sets && sets.length === 0 && <h2>There are no sets</h2>}
 
       {setsInfo && setsInfo.total > 0 && (
-        <Pagination
-          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
-          count={setsInfo.pages}
-          variant="outlined"
-          shape="rounded"
-          page={Number(page) || 1}
-          onChange={(_, pageNumber) => {
-            navigate(`${PATHS.sets}?page=${pageNumber}`);
-          }}
+        <BasePagination
+          pages={setsInfo.pages}
+          currentPage={Number(page)}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>

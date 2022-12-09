@@ -10,6 +10,7 @@ import { UsersList } from '../components/organisms/UsersList';
 import { Heading } from '../components/molecules/Heading';
 import Pagination from '@mui/material/Pagination';
 import { useNavigate } from 'react-router-dom';
+import { BasePagination } from '../components/molecules/BasePagination';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -28,6 +29,9 @@ const Users = () => {
   }, [page]);
 
   const handleCloseNotification = () => dispatch(usersRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.users}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -45,15 +49,10 @@ const Users = () => {
       {users && users.length === 0 && <h2>No users found</h2>}
 
       {usersInfo && usersInfo.total > 0 && (
-        <Pagination
-          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
-          count={usersInfo.pages}
-          variant="outlined"
-          shape="rounded"
-          page={Number(page) || 1}
-          onChange={(_, pageNumber) => {
-            navigate(`${PATHS.users}?page=${pageNumber}`);
-          }}
+        <BasePagination
+          pages={usersInfo.pages}
+          currentPage={Number(page)}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>

@@ -11,9 +11,9 @@ import {
   charactersRemoveErrors,
 } from '../features/characters/characters-slice';
 import { CharactersList } from '../components/organisms/CharactersList';
-import Pagination from '@mui/material/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { setsLoadingStart } from '../features/sets/sets-slice';
+import { BasePagination } from '../components/molecules/BasePagination';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -41,6 +41,9 @@ const Characters = () => {
   }, []);
 
   const handleCloseNotification = () => dispatch(charactersRemoveErrors());
+  const handlePageChange = (pageNumber: number) => {
+    navigate(`${PATHS.characters}?page=${pageNumber}`);
+  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
@@ -60,15 +63,10 @@ const Characters = () => {
       )}
 
       {charactersInfo && charactersInfo.total > 0 && (
-        <Pagination
-          sx={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}
-          count={charactersInfo.pages}
-          variant="outlined"
-          shape="rounded"
-          page={Number(page) || 1}
-          onChange={(_, pageNumber) => {
-            navigate(`${PATHS.characters}?page=${pageNumber}`);
-          }}
+        <BasePagination
+          pages={charactersInfo.pages}
+          currentPage={Number(page)}
+          onPageChange={handlePageChange}
         />
       )}
     </Box>
