@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { addNewRole, getUsers } from '../../api/user-service';
 import { IUser, IUsersResponse } from '../../types/user';
 import {
@@ -29,16 +29,9 @@ function* addNewRoleWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
   }
 }
 
-function* usersWatcher() {
-  yield takeEvery(usersLoadingStart.type, usersWorker);
-}
-
-function* addNewRoleWatcher() {
-  yield takeEvery(addNewRoleStart.type, addNewRoleWorker);
-}
-
 function* usersSaga() {
-  yield all([call(usersWatcher), call(addNewRoleWatcher)]);
+  yield takeEvery(usersLoadingStart.type, usersWorker);
+  yield takeEvery(addNewRoleStart.type, addNewRoleWorker);
 }
 
 export default usersSaga;

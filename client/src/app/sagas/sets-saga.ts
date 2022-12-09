@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import {
   createSetStart,
   createSetSuccess,
@@ -53,29 +53,11 @@ function* toggleCharacterInSetWorker({ payload }: ReturnType<typeof toggleCharac
   }
 }
 
-function* setsWatcher() {
-  yield takeEvery(setsLoadingStart.type, setsWorker);
-}
-
-function* createSetWatcher() {
-  yield takeEvery(createSetStart.type, createSetWorker);
-}
-
-function* deleteSetWatcher() {
-  yield takeEvery(deleteSetStart.type, deleteSetWorker);
-}
-
-function* toggleCharacterInSetWatcher() {
-  yield takeEvery(toggleCharacterInSetStart.type, toggleCharacterInSetWorker);
-}
-
 function* setsSaga() {
-  yield all([
-    call(setsWatcher),
-    call(createSetWatcher),
-    call(deleteSetWatcher),
-    call(toggleCharacterInSetWatcher),
-  ]);
+  yield takeEvery(setsLoadingStart.type, setsWorker);
+  yield takeEvery(createSetStart.type, createSetWorker);
+  yield takeEvery(deleteSetStart.type, deleteSetWorker);
+  yield takeEvery(toggleCharacterInSetStart.type, toggleCharacterInSetWorker);
 }
 
 export default setsSaga;

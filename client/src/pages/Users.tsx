@@ -8,7 +8,6 @@ import { usersLoadingStart, usersRemoveErrors } from '../features/users/users-sl
 import { NotificationBlock } from '../components/organisms/NotificationBlock';
 import { UsersList } from '../components/organisms/UsersList';
 import { Heading } from '../components/molecules/Heading';
-import Pagination from '@mui/material/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { BasePagination } from '../components/molecules/BasePagination';
 

@@ -1,4 +1,4 @@
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { ICardResponse } from '../../types/card';
 import {
   charactersError,
@@ -17,12 +17,8 @@ function* charactersWorker({ payload }: ReturnType<typeof charactersLoadingStart
   }
 }
 
-function* charactersWatcher() {
-  yield takeEvery(charactersLoadingStart.type, charactersWorker);
-}
-
 function* charactersSaga() {
-  yield all([call(charactersWatcher)]);
+  yield takeEvery(charactersLoadingStart.type, charactersWorker);
 }
 
 export default charactersSaga;
