@@ -1,7 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { lotsLoadingStart, lotsSuccess } from '../../features/lots/lots-slice';
-import { ILotResponse } from '../../types/lot';
-import { getLots } from '../../api/lots-service';
+import {
+  betForLot,
+  betSuccess,
+  lotsLoadingStart,
+  lotsSuccess,
+} from '../../features/lots/lots-slice';
+import { ILot, ILotResponse } from '../../types/lot';
+import { getLots, handleBet } from '../../api/lots-service';
 import {
   loadingSuccess,
   setErrors,
@@ -18,8 +23,20 @@ function* lotsWorker({ payload }: ReturnType<typeof lotsLoadingStart>) {
   }
 }
 
+function* betWorker({ payload }: ReturnType<typeof betForLot>) {
+  try {
+    const lot = (yield call(handleBet, payload.id, payload.bet)) as ILot;
+
+    yield put(loadingSuccess());
+    yield put(betSuccess(lot));
+  } catch (errors) {
+    yield put(setErrors(errors));
+  }
+}
+
 function* lotsSaga() {
   yield takeEvery(lotsLoadingStart.type, lotsWorker);
+  yield takeEvery(betForLot.type, betWorker);
 }
 
 export default lotsSaga;

@@ -14,7 +14,7 @@ export interface ILot {
   min_step: number;
   max_price: number;
   lastPersonToBet: Maybe<IUser>;
-  card: Maybe<ICard>;
+  card: ICard;
 }
 
 export interface NewLot {

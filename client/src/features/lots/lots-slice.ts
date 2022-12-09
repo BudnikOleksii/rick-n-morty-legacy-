@@ -22,9 +22,15 @@ const lotsSlice = createSlice({
       state.lots = action.payload.results;
       state.lotsInfo = action.payload.info;
     },
+    betForLot: (state, action) => {},
+    betSuccess: (state, action) => {
+      state.lots =
+        state.lots?.map((lot) => (lot.id === action.payload.id ? action.payload : lot)) ||
+        state.lots;
+    },
   },
 });
 
-export const { lotsLoadingStart, lotsSuccess } = lotsSlice.actions;
+export const { lotsLoadingStart, lotsSuccess, betForLot, betSuccess } = lotsSlice.actions;
 
 export default lotsSlice.reducer;
