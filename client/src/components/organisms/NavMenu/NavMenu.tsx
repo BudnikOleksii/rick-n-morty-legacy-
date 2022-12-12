@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import { ButtonLink } from '../../atoms/ButtonLink';
 import { useNavigate } from 'react-router-dom';
-import { FaqDropdown } from '../FaqDropdown';
+import { ProfileDropdown } from '../ProfileDropdown';
 
 interface Props {
   onDrawerToggle: () => void;
@@ -44,7 +44,7 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
           ))}
         </Box>
 
-        <FaqDropdown />
+        <ProfileDropdown />
       </Toolbar>
     </AppBar>
   );

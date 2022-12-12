@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   sets: '/sets',
   setById: (id: number) => `/sets/${id}`,
   characters: '/characters',
+  cards: '/cards',
   lots: '/lots',
   lotById: (id: number) => `/lots/${id}`,
 };

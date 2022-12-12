@@ -8,7 +8,7 @@ import { selectAuth } from '../../../features/auth/auth-selectors';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../constants';
 
-export const FaqDropdown = () => {
+export const ProfileDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
@@ -27,12 +27,13 @@ export const FaqDropdown = () => {
     dispatch(logoutStart());
   };
 
-  const handleTransactionsLink = () => {
-    navigate(PATHS.transactions);
+  const handleLinkClick = (path: string) => {
+    handleClose();
+    navigate(path);
   };
 
   return (
-    <div>
+    <div style={{ marginLeft: 'auto' }}>
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -55,7 +56,8 @@ export const FaqDropdown = () => {
       >
         <MenuItem>{`Rating: ${user?.rating || 0}`}</MenuItem>
         <MenuItem>{`Balance: ${user?.balance || 0}`}</MenuItem>
-        <MenuItem onClick={handleTransactionsLink}>History</MenuItem>
+        <MenuItem onClick={() => handleLinkClick('/')}>Your cards</MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.transactions)}>History</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
