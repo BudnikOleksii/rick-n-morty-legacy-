@@ -3,13 +3,14 @@ import { IUser } from '../../types/user';
 import { createSlice } from '@reduxjs/toolkit';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import { checkIsAdmin } from '../../helpers/check-is-admin';
+import { IErrors } from '../../types/response';
 
 const user: IUser = getItemFromLocalStorage('user');
 
 interface AuthState {
   user: Maybe<IUser>;
   authIsloading: boolean;
-  authErrors: Maybe<string[]>;
+  authErrors: IErrors;
   isLoggedIn: boolean;
   isAdmin: boolean;
 }

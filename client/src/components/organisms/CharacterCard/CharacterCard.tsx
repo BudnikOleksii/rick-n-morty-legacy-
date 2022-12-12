@@ -22,6 +22,7 @@ import { SetsList } from '../SetsList';
 import { toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../constants';
+import { CardActions } from '@mui/material';
 
 type Props = {
   character: ICharacter;
@@ -54,15 +55,10 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         <List>
           <ListItemComponent name="Status" value={status} icon={<MonitorHeartIcon />} />
           <ListItemComponent name="Gender" value={gender} icon={<TransgenderIcon />} />
-
-          {type && <ListItemComponent name="Type" value={type} icon={<Diversity3Icon />} />}
-          {species && (
-            <ListItemComponent name="Species" value={species} icon={<Diversity2Icon />} />
-          )}
-          {origin && <ListItemComponent name="Origin" value={origin.name} icon={<PublicIcon />} />}
-          {location && (
-            <ListItemComponent name="Location" value={location.name} icon={<LanguageIcon />} />
-          )}
+          <ListItemComponent name="Type" value={type} icon={<Diversity3Icon />} />
+          <ListItemComponent name="Species" value={species} icon={<Diversity2Icon />} />
+          <ListItemComponent name="Origin" value={origin?.name} icon={<PublicIcon />} />
+          <ListItemComponent name="Location" value={location?.name} icon={<LanguageIcon />} />
         </List>
       </CardContent>
 
@@ -70,29 +66,31 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         <EpisodesList episodes={episodes} />
       </BaseModal>
 
-      {sets && sets.length > 0 && (
-        <BaseModal openModalTitle="Sets info" buttonVariant="contained" buttonColor="info">
-          {sets.map((set) => (
-            <ListItemBase key={set.id} text={set.name}>
-              {isAdmin && (
-                <Button
-                  variant="outlined"
-                  color="warning"
-                  onClick={() => handleToggleCharacterInSet(set.id)}
-                >
-                  Remove
-                </Button>
-              )}
-            </ListItemBase>
-          ))}
-        </BaseModal>
-      )}
+      <CardActions>
+        {sets && sets.length > 0 && (
+          <BaseModal openModalTitle="Sets info" buttonVariant="contained" buttonColor="info">
+            {sets.map((set) => (
+              <ListItemBase key={set.id} text={set.name}>
+                {isAdmin && (
+                  <Button
+                    variant="outlined"
+                    color="warning"
+                    onClick={() => handleToggleCharacterInSet(set.id)}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </ListItemBase>
+            ))}
+          </BaseModal>
+        )}
 
-      {isAdmin && (
-        <BaseModal openModalTitle="Add to set" buttonVariant="contained" buttonColor="success">
-          <SetsList onToggleCharacterInSet={handleToggleCharacterInSet} />
-        </BaseModal>
-      )}
+        {isAdmin && (
+          <BaseModal openModalTitle="Add to set" buttonVariant="contained" buttonColor="success">
+            <SetsList onToggleCharacterInSet={handleToggleCharacterInSet} />
+          </BaseModal>
+        )}
+      </CardActions>
     </Card>
   );
 };

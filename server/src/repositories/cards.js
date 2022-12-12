@@ -30,7 +30,7 @@ const getUserCards = (page, limit, userId) => {
   return Card.query()
     .whereNotDeleted()
     .where('owner_id', userId)
-    .withGraphFetched('[character.[species, type, origin, location, episodes, sets]]')
+    .withGraphFetched('[character.[species, type, origin, location, episodes, sets], owner]')
     .page(page - 1, limit);
 };
 

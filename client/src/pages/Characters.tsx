@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import { NotificationBlock } from '../components/organisms/NotificationBlock';
-import { Heading } from '../components/molecules/Heading';
 import { PATHS } from '../constants';
 import { selectCharacters } from '../features/characters/characters-selectors';
-import {
-  charactersLoadingStart,
-  charactersRemoveErrors,
-} from '../features/characters/characters-slice';
+import { charactersLoadingStart } from '../features/characters/characters-slice';
 import { CharactersList } from '../components/organisms/CharactersList';
 import { useNavigate } from 'react-router-dom';
 import { setsLoadingStart } from '../features/sets/sets-slice';
-import { BasePagination } from '../components/molecules/BasePagination';
+import { PageTemplate } from '../components/templates/PageTemplate';
+import { startLoading } from '../features/notification-info/notification-info-slice';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -21,10 +15,10 @@ const Characters = () => {
   const params = new URLSearchParams(search);
   const page = params.get('page');
   const dispatch = useAppDispatch();
-  const { characters, charactersInfo, charactersIsloading, charactersErrors } =
-    useAppSelector(selectCharacters);
+  const { characters, charactersInfo } = useAppSelector(selectCharacters);
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(
       charactersLoadingStart({
         params: `?page=${page || 1}`,
@@ -33,6 +27,7 @@ const Characters = () => {
   }, [page]);
 
   useEffect(() => {
+    dispatch(startLoading());
     dispatch(
       setsLoadingStart({
         params: `/all`,
@@ -40,36 +35,23 @@ const Characters = () => {
     );
   }, []);
 
-  const handleCloseNotification = () => dispatch(charactersRemoveErrors());
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.characters}?page=${pageNumber}`);
   };
 
   return (
-    <Box component="main" sx={{ p: 3, width: '100%' }}>
-      <Toolbar />
-      <NotificationBlock
-        isloading={charactersIsloading}
-        errors={charactersErrors}
-        onCloseNotification={handleCloseNotification}
-      />
-
-      <Heading title="All characters" />
-
+    <PageTemplate
+      title="All characters"
+      info={charactersInfo}
+      currentPage={Number(page)}
+      onPageChange={handlePageChange}
+    >
       {characters && characters.length > 0 && <CharactersList characters={characters} />}
 
       {characters && characters.length === 0 && (
         <h2>You don't have any cards yet:( Go to auction</h2>
       )}
-
-      {charactersInfo && charactersInfo.total > 0 && (
-        <BasePagination
-          pages={charactersInfo.pages}
-          currentPage={Number(page)}
-          onPageChange={handlePageChange}
-        />
-      )}
-    </Box>
+    </PageTemplate>
   );
 };
 

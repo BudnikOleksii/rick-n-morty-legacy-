@@ -1,15 +1,20 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getUserCards } from '../../api/user-service';
 import { ICardResponse } from '../../types/card';
-import { cardsError, cardsLoadingStart, cardsSuccess } from '../../features/cards/cards-slice';
+import { cardsLoadingStart, cardsSuccess } from '../../features/cards/cards-slice';
+import {
+  loadingSuccess,
+  setErrors,
+} from '../../features/notification-info/notification-info-slice';
 
 function* cardsWorker({ payload }: ReturnType<typeof cardsLoadingStart>) {
   try {
     const cardsData = (yield call(getUserCards, payload.userId, payload.params)) as ICardResponse;
 
+    yield put(loadingSuccess());
     yield put(cardsSuccess(cardsData));
   } catch (errors) {
-    yield put(cardsError(errors));
+    yield put(setErrors(errors));
   }
 }
 

@@ -11,9 +11,8 @@ const { CharactersRepository } = require('../repositories/characters');
 const { TransactionService } = require('./transactions');
 const { auctionFinished } = require('./auction-finished-subject');
 
-const {
-  defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice
-} = config.server;
+const { defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice } =
+  config.server;
 
 const getLots = async (page, limit, endpoint) => {
   checkLimitForRequest(limit, 'lots');
@@ -38,9 +37,7 @@ const getLotById = async (id) => {
 };
 
 const createLot = async (body, tokenData) => {
-  const {
-    cardId, initialPrice, endDate, minActionDuration, minStep, maxPrice
-  } = body;
+  const { cardId, initialPrice, endDate, minActionDuration, minStep, maxPrice } = body;
 
   const card = await CardsService.getCardById(cardId);
   let canStarAuction;
@@ -48,7 +45,7 @@ const createLot = async (body, tokenData) => {
   if (card.owner) {
     canStarAuction = card.owner.id === tokenData.id;
   } else {
-    canStarAuction = tokenData.roles.some(role => role.title === 'admin');
+    canStarAuction = tokenData.roles.some((role) => role.title === 'admin');
   }
 
   if (!canStarAuction) {
@@ -95,9 +92,7 @@ const handleBet = async (lotId, bet, tokenData) => {
     throw new BadRequestError(['Incorrect bet']);
   }
   const lot = await getLotById(lotId);
-  const {
-    end_date, card, current_price, max_price, min_step, min_action_duration,
-  } = lot;
+  const { end_date, card, current_price, max_price, min_step, min_action_duration } = lot;
 
   if (new Date() > end_date) {
     await finishAuction(lot);
@@ -118,14 +113,16 @@ const handleBet = async (lotId, bet, tokenData) => {
     throw new BadRequestError(['Bet step must be more than minimum']);
   }
 
-  const { balance } = await TransactionService.getUserBalance(tokenData.id);
-
-  if (balance < bet) {
-    throw new BadRequestError(['User don`t have enough money']);
-  }
+  // TODO return balance check after tests
+  // const { balance } = await TransactionService.getUserBalance(tokenData.id);
+  //
+  // if (balance < bet) {
+  //   throw new BadRequestError(['User don`t have enough money']);
+  // }
 
   const timeToAuctionEnd = end_date - new Date();
-  const newEndDate = timeToAuctionEnd < min_action_duration ? generateEndDate(min_action_duration) : end_date;
+  const newEndDate =
+    timeToAuctionEnd < min_action_duration ? generateEndDate(min_action_duration) : end_date;
 
   const user = await UserService.getUserById(tokenData.id);
 
