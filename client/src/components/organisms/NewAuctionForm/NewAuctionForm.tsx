@@ -6,15 +6,25 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
-import { INewSet } from '../../../types/set';
-import { createSetStart } from '../../../features/sets/sets-slice';
+import { INewLot } from '../../../types/lot';
+import { getLocalTime } from '../../../helpers/date-helpers';
+import { DEFAULT_MAX_PRICE } from '../../../constants';
+import { createNewLot } from '../../../features/lots/lots-slice';
 
 interface Props {
   cardId: number;
 }
 
 const schema = yup.object().shape({
-  name: yup.string().trim().min(4).max(15).required(),
+  initialPrice: yup.number().min(1),
+  endDate: yup.date().min(new Date()),
+  minAuctionDuration: yup.number().min(100),
+  minStep: yup.number().min(10),
+  maxPrice: yup
+    .number()
+    .min(0)
+    .nullable(true)
+    .transform((_, val) => (val === Number(val) ? val : null)),
 });
 
 export const NewAuctionForm: FC<Props> = ({ cardId }) => {
@@ -23,25 +33,84 @@ export const NewAuctionForm: FC<Props> = ({ cardId }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<INewSet>({ resolver: yupResolver(schema) });
+  } = useForm<INewLot>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
-    dispatch(createSetStart(data));
+    // dispatch(createSetStart(data));
+    dispatch(
+      createNewLot({
+        ...data,
+        cardId,
+        endDate: getLocalTime(data.endDate || ''),
+        maxPrice: data.maxPrice || DEFAULT_MAX_PRICE,
+      })
+    );
   });
+
+  const defaultData = new Date().toISOString().split(':');
 
   return (
     <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
       <TextField
-        error={Boolean(errors.name)}
-        {...register('name')}
+        error={Boolean(errors.initialPrice)}
+        {...register('initialPrice')}
         margin="normal"
-        required
         fullWidth
-        id="name"
-        label="Set name"
-        name="name"
-        autoFocus
-        helperText={errors.name?.message}
+        id="initialPrice"
+        label="Initial price"
+        name="initialPrice"
+        type="number"
+        helperText={errors.initialPrice?.message}
+      />
+
+      <TextField
+        error={Boolean(errors.endDate)}
+        {...register('endDate')}
+        id="datetime-local"
+        label="End date"
+        type="datetime-local"
+        defaultValue={defaultData[0] + ':' + defaultData[1]}
+        fullWidth
+        InputLabelProps={{
+          shrink: true,
+        }}
+        helperText={errors.endDate?.message}
+      />
+
+      <TextField
+        error={Boolean(errors.minAuctionDuration)}
+        {...register('minAuctionDuration')}
+        margin="normal"
+        fullWidth
+        id="minAuctionDuration"
+        label="Min auction duration"
+        name="minAuctionDuration"
+        type="number"
+        helperText={errors.minAuctionDuration?.message}
+      />
+
+      <TextField
+        error={Boolean(errors.minStep)}
+        {...register('minStep')}
+        margin="normal"
+        fullWidth
+        id="minStep"
+        label="Min step"
+        name="minStep"
+        type="number"
+        helperText={errors.minStep?.message}
+      />
+
+      <TextField
+        error={Boolean(errors.maxPrice)}
+        {...register('maxPrice')}
+        margin="normal"
+        fullWidth
+        id="maxPrice"
+        label="Max price"
+        name="maxPrice"
+        type="number"
+        helperText={errors.maxPrice?.message}
       />
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

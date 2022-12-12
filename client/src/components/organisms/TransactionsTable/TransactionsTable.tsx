@@ -49,7 +49,7 @@ export const TransactionsTable: FC<Props> = ({ transactions }) => {
               <TableCell align="center">{tran.lot_id}</TableCell>
               <TableCell align="center">{tran.amount}</TableCell>
               <TableCell align="center">{tran.system_fee}</TableCell>
-              <TableCell align="center">{tran.seller_id || 'Admin'}</TableCell>
+              <TableCell align="center">{tran.seller_id}</TableCell>
               <TableCell align="center">{tran.purchaser_id}</TableCell>
             </TableRow>
           ))}

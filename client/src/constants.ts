@@ -11,3 +11,4 @@ export const PATHS = {
 };
 
 export const ADMIN_ROLE = 'admin';
+export const DEFAULT_MAX_PRICE = 2 ** 31 - 1;
