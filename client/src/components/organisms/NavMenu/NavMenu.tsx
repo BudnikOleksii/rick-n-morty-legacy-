@@ -5,8 +5,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-import { useAppDispatch } from '../../../app/hooks';
-import { logoutStart } from '../../../features/auth/auth-slice';
 import { ButtonLink } from '../../atoms/ButtonLink';
 import { useNavigate } from 'react-router-dom';
 import { FaqDropdown } from '../FaqDropdown';
@@ -17,14 +15,9 @@ interface Props {
 }
 
 export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleLinkClick = (item: string = '/') => navigate(item);
-
-  const handleLogout = () => {
-    dispatch(logoutStart());
-  };
 
   return (
     <AppBar component="nav">

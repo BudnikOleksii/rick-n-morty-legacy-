@@ -36,7 +36,6 @@ export const NewAuctionForm: FC<Props> = ({ cardId }) => {
   } = useForm<INewLot>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
-    // dispatch(createSetStart(data));
     dispatch(
       createNewLot({
         ...data,

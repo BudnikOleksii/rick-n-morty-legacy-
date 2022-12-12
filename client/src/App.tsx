@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AuthLayout } from './components/layouts/AuthLayout';
+import { Layout } from './components/layouts/Layout';
 import NotFoundPage from './pages/NotFound';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
@@ -17,7 +17,7 @@ import Transactions from './pages/Transactions';
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<AuthLayout />}>
+      <Route path="/" element={<Layout />}>
         <Route path={PATHS.registration} element={<Registration />} />
         <Route path={PATHS.login} element={<Login />} />
 

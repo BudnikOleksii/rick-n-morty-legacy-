@@ -1,38 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IErrors } from '../../types/response';
+import { Status } from '../../types/status';
 
 interface NotificationInfo {
-  isLoading: boolean;
+  status: Status;
   errors: IErrors;
 }
 
 const initialState: NotificationInfo = {
-  isLoading: false,
+  status: 'SUCCEEDED',
   errors: null,
 };
 
 const notificationInfoSlice = createSlice({
-  name: 'errors',
+  name: 'info',
   initialState,
   reducers: {
     startLoading: (state) => {
       state.errors = null;
-      state.isLoading = true;
+      state.status = 'PENDING';
     },
     loadingSuccess: (state) => {
-      state.isLoading = false;
+      state.status = 'SUCCEEDED';
     },
     setErrors: (state, action) => {
       state.errors = action.payload;
-      state.isLoading = false;
+      state.status = 'FAILED';
     },
-    removeErrors: (state) => {
+    setDefaultStatus: (state) => {
       state.errors = null;
+      state.status = 'IDLE';
     },
   },
 });
 
-export const { startLoading, loadingSuccess, setErrors, removeErrors } =
+export const { startLoading, loadingSuccess, setErrors, setDefaultStatus } =
   notificationInfoSlice.actions;
 
 export default notificationInfoSlice.reducer;

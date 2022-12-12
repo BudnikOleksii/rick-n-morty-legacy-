@@ -23,6 +23,7 @@ import { toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../constants';
 import { CardActions } from '@mui/material';
+import { selectSets } from '../../../features/sets/sets-selcetors';
 
 type Props = {
   character: ICharacter;
@@ -33,6 +34,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   const { isAdmin } = useAppSelector(selectAuth);
   const { name, image, status, gender, type, species, origin, location, episodes, sets } =
     character;
+  const { sets: allSets } = useAppSelector(selectSets);
 
   const handleToggleCharacterInSet = (setId: number) => {
     dispatch(
@@ -85,9 +87,9 @@ export const CharacterCard: FC<Props> = ({ character }) => {
           </BaseModal>
         )}
 
-        {isAdmin && (
+        {isAdmin && allSets && allSets.length > 0 && (
           <BaseModal openModalTitle="Add to set" buttonVariant="contained" buttonColor="success">
-            <SetsList onToggleCharacterInSet={handleToggleCharacterInSet} />
+            <SetsList sets={allSets} onToggleCharacterInSet={handleToggleCharacterInSet} />
           </BaseModal>
         )}
       </CardActions>
