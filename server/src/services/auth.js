@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const { BadRequestError } = require('../utils/errors/api-errors');
 const { UserService } = require('./users');
 const { TokenService } = require('./tokens');
+const { TransactionService } = require('./transactions');
 
 const register = async (body, ip) => {
   const user = await UserService.createUser(body, ip);
@@ -9,7 +10,10 @@ const register = async (body, ip) => {
 
   return {
     tokens,
-    user,
+    user: {
+      ...user,
+      balance: 0,
+    },
   };
 };
 
@@ -24,10 +28,14 @@ const login = async (body) => {
   }
 
   const tokens = await TokenService.createTokens(user.id, user.roles);
+  const { balance } = await TransactionService.getUserBalance(user.id);
 
   return {
     tokens,
-    user,
+    user: {
+      ...user,
+      balance,
+    },
   };
 };
 
@@ -41,10 +49,14 @@ const refreshToken = async (refreshToken) => {
   const userData = await TokenService.getCheckedDataFromToken(refreshToken);
   const user = await UserService.getUserById(userData.id);
   const tokens = await TokenService.createTokens(user.id, user.roles);
+  const { balance } = await TransactionService.getUserBalance(user.id);
 
   return {
     tokens,
-    user,
+    user: {
+      ...user,
+      balance,
+    },
   };
 };
 

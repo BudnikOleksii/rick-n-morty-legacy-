@@ -4,8 +4,6 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Drawer from '@mui/material/Drawer';
-import { useAppDispatch } from '../../../app/hooks';
-import { logoutStart } from '../../../features/auth/auth-slice';
 import { ListItemLink } from '../../atoms/ListItemLink';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,14 +16,9 @@ interface Props {
 const drawerWidth = 240;
 
 export const BurgerMenu: FC<Props> = memo(({ open, onDrawerToggle, navItems }) => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleLinkClick = (item: string = '/') => navigate(item);
-
-  const handleLogout = () => {
-    dispatch(logoutStart());
-  };
 
   return (
     <Box component="nav">
@@ -50,8 +43,6 @@ export const BurgerMenu: FC<Props> = memo(({ open, onDrawerToggle, navItems }) =
             {navItems.map((item) => (
               <ListItemLink key={item} item={item} onClick={handleLinkClick} />
             ))}
-
-            <ListItemLink item="LOGOUT" onClick={handleLogout} />
           </List>
         </Box>
       </Drawer>

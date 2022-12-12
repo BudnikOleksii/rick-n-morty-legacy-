@@ -13,6 +13,7 @@ export const ENDPOINTS = {
   refresh: '/auth/refresh',
   users: '/users',
   userCards: (id: number) => `/users/${id}/cards`,
+  userTransactions: (id: number) => `/users/${id}/transactions`,
   addRoleToUser: (id: number) => `/users/role/${id}`,
   sets: '/sets',
   setById: (id: number) => `/sets/${id}`,

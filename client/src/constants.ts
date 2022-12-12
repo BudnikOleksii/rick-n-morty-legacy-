@@ -7,7 +7,7 @@ export const PATHS = {
   sets: '/sets',
   lots: '/lots',
   chat: '/chat',
-  faq: '/faq',
+  transactions: '/transactions',
 };
 
 export const ADMIN_ROLE = 'admin';

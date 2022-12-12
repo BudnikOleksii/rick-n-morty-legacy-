@@ -5,7 +5,16 @@ import usersSaga from './users-saga';
 import setsSaga from './sets-saga';
 import charactersSaga from './characters-saga';
 import lotsSaga from './lots-saga';
+import transactionsSaga from './transactions-saga';
 
 export default function* IndexSaga() {
-  yield all([authSaga(), cardsSaga(), usersSaga(), setsSaga(), charactersSaga(), lotsSaga()]);
+  yield all([
+    authSaga(),
+    cardsSaga(),
+    usersSaga(),
+    setsSaga(),
+    charactersSaga(),
+    lotsSaga(),
+    transactionsSaga(),
+  ]);
 }

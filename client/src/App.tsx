@@ -12,6 +12,7 @@ import Users from './pages/Users';
 import Sets from './pages/Sets';
 import Characters from './pages/Characters';
 import Lots from './pages/Lots';
+import Transactions from './pages/Transactions';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
             <Route path={PATHS.sets} element={<Sets />} />
             <Route path={PATHS.characters} element={<Characters />} />
             <Route path={PATHS.lots} element={<Lots />} />
+            <Route path={PATHS.transactions} element={<Transactions />} />
           </Route>
         </Route>
 

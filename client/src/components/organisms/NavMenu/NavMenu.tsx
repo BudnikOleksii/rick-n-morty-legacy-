@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../../app/hooks';
 import { logoutStart } from '../../../features/auth/auth-slice';
 import { ButtonLink } from '../../atoms/ButtonLink';
 import { useNavigate } from 'react-router-dom';
+import { FaqDropdown } from '../FaqDropdown';
 
 interface Props {
   onDrawerToggle: () => void;
@@ -48,9 +49,9 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
           {navItems.map((item) => (
             <ButtonLink key={item} item={item} onClick={handleLinkClick} />
           ))}
-
-          <ButtonLink item="Logout" onClick={handleLogout} />
         </Box>
+
+        <FaqDropdown />
       </Toolbar>
     </AppBar>
   );

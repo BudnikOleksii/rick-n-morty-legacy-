@@ -63,7 +63,7 @@ const getUserCards = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const cardsData = await CardsService.getUserCards(page, limit, endpoint, id)
+    const cardsData = await CardsService.getUserCards(page, limit, endpoint, id);
 
     return res.status(httpStatusCodes.OK).json(cardsData);
   } catch (error) {
@@ -107,6 +107,20 @@ const getUserChats = async (req, res, next) => {
   }
 };
 
+const getUserTransactions = async (req, res, next) => {
+  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl + req.path;
+  const { id } = req.params;
+
+  try {
+    const userTransactions = await TransactionService.getUserTransactions(page, limit, endpoint, id);
+
+    return res.status(httpStatusCodes.OK).json(userTransactions);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.UserController = {
   getAllUsers,
   getUserById,
@@ -116,4 +130,5 @@ module.exports.UserController = {
   getUserSets,
   getUserBalance,
   getUserChats,
+  getUserTransactions,
 };

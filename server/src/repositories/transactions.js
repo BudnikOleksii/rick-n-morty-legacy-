@@ -14,10 +14,7 @@ const createTransaction = async (payload) => {
 };
 
 const getUserDebitSum = (userId) => {
-  return Transaction.query()
-    .where('seller_id', userId)
-    .sum('amount as debit')
-    .first();
+  return Transaction.query().where('seller_id', userId).sum('amount as debit').first();
 };
 
 const getUserCreditSum = (userId) => {
@@ -28,9 +25,17 @@ const getUserCreditSum = (userId) => {
     .first();
 };
 
+const getUserTransactions = (page, limit, userId) => {
+  return Transaction.query()
+    .where('seller_id', userId)
+    .orWhere('purchaser_id', userId)
+    .page(page - 1, limit);
+};
+
 module.exports.TransactionRepository = {
   getTransaction,
   createTransaction,
   getUserDebitSum,
   getUserCreditSum,
+  getUserTransactions,
 };
