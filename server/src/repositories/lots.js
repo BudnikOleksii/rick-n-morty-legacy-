@@ -28,6 +28,10 @@ const getLots = (queryParams) => {
     .page(queryParams.page - 1, queryParams.limit);
 };
 
+const getLotsPriceRange = () => {
+  return Lot.query().min('current_price as minPrice').max('current_price as maxPrice').first();
+};
+
 const getLot = (columnName, value) => {
   return Lot.query()
     .whereNotDeleted()
@@ -59,4 +63,5 @@ module.exports.LotsRepository = {
   createLot,
   updateLot,
   finishAuction,
+  getLotsPriceRange,
 };

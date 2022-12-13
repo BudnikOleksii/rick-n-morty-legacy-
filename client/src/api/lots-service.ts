@@ -1,9 +1,14 @@
 import { AxiosResponse } from 'axios';
 import $api, { ENDPOINTS } from './index';
 import { ILot, ILotResponse, INewLot } from '../types/lot';
+import { IPricesRange } from '../types/prices-range';
 
 export const getLots = (params: string = ''): Promise<AxiosResponse<ILotResponse[]>> => {
   return $api.get<ILotResponse[]>(ENDPOINTS.lots + params);
+};
+
+export const getLotsPriceRange = (): Promise<AxiosResponse<IPricesRange>> => {
+  return $api.get<IPricesRange>(ENDPOINTS.lotsPricesRange);
 };
 
 export const handleBet = (id: number, bet: number): Promise<AxiosResponse<ILot>> => {

@@ -7,18 +7,25 @@ import {
   lotsSuccess,
 } from '../../features/lots/lots-slice';
 import { ILot, ILotResponse } from '../../types/lot';
-import { createLot, getLots, handleBet } from '../../api/lots-service';
+import { createLot, getLots, getLotsPriceRange, handleBet } from '../../api/lots-service';
 import {
   loadingSuccess,
   setErrors,
 } from '../../features/notification-info/notification-info-slice';
+import { IPricesRange } from '../../types/prices-range';
 
 function* lotsWorker({ payload }: ReturnType<typeof lotsLoadingStart>) {
   try {
+    const pricesRange = (yield call(getLotsPriceRange)) as IPricesRange;
     const lotsData = (yield call(getLots, payload.params)) as ILotResponse;
 
     yield put(loadingSuccess());
-    yield put(lotsSuccess(lotsData));
+    yield put(
+      lotsSuccess({
+        ...lotsData,
+        pricesRange,
+      })
+    );
   } catch (errors) {
     yield put(setErrors(errors));
   }

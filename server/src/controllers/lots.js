@@ -74,9 +74,20 @@ const handleBet = async (req, res, next) => {
   }
 };
 
+const getLotsPriceRange = async (req, res, next) => {
+  try {
+    const pricesData = await LotsService.getLotsPriceRange();
+
+    return res.status(httpStatusCodes.OK).json(pricesData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.LotsController = {
   getLots,
   getLotById,
   createLot,
   handleBet,
+  getLotsPriceRange,
 };

@@ -142,10 +142,13 @@ const closeAllFinishedAuctions = async () => {
   }
 };
 
+const getLotsPriceRange = () => LotsRepository.getLotsPriceRange();
+
 module.exports.LotsService = {
   getLots,
   getLotById,
   createLot,
   handleBet,
   closeAllFinishedAuctions,
+  getLotsPriceRange,
 };

@@ -9,6 +9,7 @@ const lotsRouter = express.Router();
 lotsRouter.use(authGuard);
 lotsRouter.use(updateLastVisitDate);
 lotsRouter.get('/', LotsController.getLots);
+lotsRouter.get('/prices', LotsController.getLotsPriceRange);
 lotsRouter.get('/:id', LotsController.getLotById);
 lotsRouter.post('/', newLotValidations, LotsController.createLot);
 lotsRouter.patch('/:id', LotsController.handleBet);

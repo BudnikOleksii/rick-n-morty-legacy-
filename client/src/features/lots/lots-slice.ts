@@ -2,15 +2,21 @@ import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
 import { IResponseInfo } from '../../types/response';
 import { ILot } from '../../types/lot';
+import { IPricesRange } from '../../types/prices-range';
 
 interface LotsState {
   lots: Maybe<ILot[]>;
   lotsInfo: Maybe<IResponseInfo>;
+  pricesRange: IPricesRange;
 }
 
 const initialState: LotsState = {
   lots: null,
   lotsInfo: null,
+  pricesRange: {
+    minPrice: 0,
+    maxPrice: 1000,
+  },
 };
 
 const lotsSlice = createSlice({
@@ -21,6 +27,7 @@ const lotsSlice = createSlice({
     lotsSuccess: (state, action) => {
       state.lots = action.payload.results;
       state.lotsInfo = action.payload.info;
+      state.pricesRange = action.payload.pricesRange;
     },
     betForLot: (state, action) => {},
     betSuccess: (state, action) => {
