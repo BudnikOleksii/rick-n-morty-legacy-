@@ -7,6 +7,7 @@ import charactersReducer from '../features/characters/characters-slice';
 import lotsReducer from '../features/lots/lots-slice';
 import transactionsReducer from '../features/transactions/transactions-slice';
 import notificationInfoReducer from '../features/notification-info/notification-info-slice';
+import locationsReducer from '../features/locations/locations-slice';
 import createSagaMiddleware from 'redux-saga';
 import IndexSaga from './sagas';
 
@@ -22,6 +23,7 @@ export const store = configureStore({
     characters: charactersReducer,
     lots: lotsReducer,
     transactions: transactionsReducer,
+    locations: locationsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

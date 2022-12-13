@@ -21,6 +21,7 @@ export const ENDPOINTS = {
   cards: '/cards',
   lots: '/lots',
   lotById: (id: number) => `/lots/${id}`,
+  locations: '/locations',
 };
 
 const UNAUTHORIZED = 401;
