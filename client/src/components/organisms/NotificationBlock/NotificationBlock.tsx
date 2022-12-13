@@ -15,7 +15,13 @@ export const NotificationBlock = () => {
 
   return (
     <>
-      {status === 'PENDING' && <LinearProgress />}
+      {status === 'PENDING' && (
+        <LinearProgress
+          color="secondary"
+          sx={{ position: 'fixed', top: '0', zIndex: 99999999999, width: '100vw' }}
+        />
+      )}
+
       {status === 'SUCCEEDED' && (
         <Snackbar
           open={status === 'SUCCEEDED'}
@@ -27,6 +33,7 @@ export const NotificationBlock = () => {
           </Alert>
         </Snackbar>
       )}
+
       {errors && errors.length > 0 && (
         <ErrorAlert errors={errors} onClose={handleCloseNotification} />
       )}

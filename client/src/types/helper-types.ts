@@ -3,8 +3,6 @@ export interface IAutocomplete {
   id: number;
 }
 
-export type IOrder = 'asc' | 'desc';
-
 export enum OrderEnum {
   asc = 'asc',
   desc = 'desc',

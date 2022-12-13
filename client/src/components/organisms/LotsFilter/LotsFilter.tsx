@@ -5,13 +5,15 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectLocations } from '../../../features/locations/locations-selectors';
 import { locationsLoadingStart } from '../../../features/locations/locations-slice';
 import { IAutocomplete, OrderEnum } from '../../../types/helper-types';
 import { selectLots } from '../../../features/lots/lots-selectors';
-import { FormControl, InputLabel, Select } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
 
 interface Props {
   setQuery: (query: string) => void;
@@ -72,7 +74,7 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
   };
 
   return (
-    <Grid container spacing={2} sx={{ padding: '20px' }} alignItems="center">
+    <Grid container spacing={4} sx={{ padding: '20px' }} alignItems="center">
       <Grid item xs={12} sm={5} md={2}>
         <TextField
           fullWidth
