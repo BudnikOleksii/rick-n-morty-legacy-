@@ -17,6 +17,7 @@ const cardsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
+    userCardsLoadingStart: (state, action) => {},
     cardsLoadingStart: (state, action) => {},
     cardsSuccess: (state, action) => {
       state.cards = action.payload.results;
@@ -25,6 +26,6 @@ const cardsSlice = createSlice({
   },
 });
 
-export const { cardsLoadingStart, cardsSuccess } = cardsSlice.actions;
+export const { cardsLoadingStart, userCardsLoadingStart, cardsSuccess } = cardsSlice.actions;
 
 export default cardsSlice.reducer;

@@ -17,13 +17,13 @@ export interface ILot {
   card: ICard;
 }
 
-export interface NewLot {
+export interface INewLot {
   cardId: number;
-  initialPrice?: number;
-  endDate?: string;
-  minActionDuration?: number;
-  minStep?: number;
-  maxPrice?: number;
+  initialPrice: number;
+  endDate: string;
+  minAuctionDuration: number;
+  minStep: number;
+  maxPrice: number;
 }
 
 export type ILotResponse = ISuccessResponse<ILot[]>;

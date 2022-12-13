@@ -1,13 +1,14 @@
 const config = require('../../config');
 const { TransactionRepository } = require('../repositories/transactions');
 const { BadRequestError } = require('../utils/errors/api-errors');
+const { checkId } = require('../utils/check-id');
+const { checkLimitForRequest } = require('../utils/check-limit-for-request');
+const { createInfoData } = require('../utils/create-info-data');
 
 const { systemFee } = config.server;
 
 const createTransaction = async (lot) => {
-  const {
-    current_price, owner, lastPersonToBet
-  } = lot;
+  const { current_price, owner, lastPersonToBet } = lot;
 
   const transaction = await TransactionRepository.getTransaction('lot_id', lot.id);
 
@@ -38,7 +39,19 @@ const getUserBalance = async (userId) => {
   };
 };
 
+const getUserTransactions = async (page, limit, endpoint, userId) => {
+  checkId(userId);
+  checkLimitForRequest(limit, 'transactions');
+  const { results, total } = await TransactionRepository.getUserTransactions(page, limit, userId);
+
+  return {
+    info: createInfoData(total, page, limit, endpoint),
+    results,
+  };
+};
+
 module.exports.TransactionService = {
   createTransaction,
   getUserBalance,
+  getUserTransactions,
 };

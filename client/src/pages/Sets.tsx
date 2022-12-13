@@ -36,7 +36,7 @@ const Sets = () => {
 
   return (
     <PageTemplate
-      title="Your cards"
+      title="Sets"
       info={setsInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}

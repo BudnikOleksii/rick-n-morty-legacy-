@@ -7,8 +7,8 @@ import { PATHS } from '../../../constants';
 import { BurgerMenu } from '../../organisms/BurgerMenu';
 import { NavMenu } from '../../organisms/NavMenu';
 
-const { cards, characters, lots, sets, chat, faq, users } = PATHS;
-const defaultNavItems = [lots, characters, sets, cards, chat, faq].map((item) => item.slice(1));
+const { cards, characters, lots, sets, chat, users } = PATHS;
+const defaultNavItems = [lots, characters, sets, cards, chat].map((item) => item.slice(1));
 const adminNavItems = [users].map((item) => item.slice(1));
 
 export const MainLayout = () => {

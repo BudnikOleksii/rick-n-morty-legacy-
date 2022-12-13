@@ -31,7 +31,7 @@ const Users = () => {
 
   return (
     <PageTemplate
-      title="Your cards"
+      title="Users"
       info={usersInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}

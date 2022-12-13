@@ -3,22 +3,17 @@ import { IUser } from '../../types/user';
 import { createSlice } from '@reduxjs/toolkit';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import { checkIsAdmin } from '../../helpers/check-is-admin';
-import { IErrors } from '../../types/response';
 
 const user: IUser = getItemFromLocalStorage('user');
 
 interface AuthState {
   user: Maybe<IUser>;
-  authIsloading: boolean;
-  authErrors: IErrors;
   isLoggedIn: boolean;
   isAdmin: boolean;
 }
 
 const initialState: AuthState = {
   user,
-  authIsloading: false,
-  authErrors: null,
   isLoggedIn: false,
   isAdmin: false,
 };
@@ -28,40 +23,20 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     checkAuthStart: (state) => {
-      state.authIsloading = true;
-      state.authErrors = null;
       state.isLoggedIn = false;
     },
-    loginStart: (state, action) => {
-      state.authIsloading = true;
-      state.authErrors = null;
-    },
-    registrationStart: (state, action) => {
-      state.authIsloading = true;
-      state.authErrors = null;
-    },
-    logoutStart: (state) => {
-      state.authIsloading = true;
-      state.authErrors = null;
-    },
+    loginStart: (state, action) => {},
+    registrationStart: (state, action) => {},
+    logoutStart: (state) => {},
     authSuccess: (state, action) => {
-      state.authIsloading = false;
       state.user = action.payload.user;
       state.isLoggedIn = true;
       state.isAdmin = checkIsAdmin(action.payload.user.roles);
     },
     setAuthDefaultState: (state) => {
       state.isLoggedIn = false;
-      state.authIsloading = false;
       state.user = null;
       state.isAdmin = false;
-    },
-    authError: (state, action) => {
-      state.authIsloading = false;
-      state.authErrors = action.payload;
-    },
-    authRemoveErrors: (state) => {
-      state.authErrors = null;
     },
   },
 });
@@ -71,10 +46,8 @@ export const {
   loginStart,
   registrationStart,
   authSuccess,
-  authError,
   logoutStart,
   setAuthDefaultState,
-  authRemoveErrors,
 } = authSlice.actions;
 
 export default authSlice.reducer;

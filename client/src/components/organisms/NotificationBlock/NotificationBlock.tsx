@@ -1,19 +1,35 @@
-import { FC } from 'react';
+import React from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Maybe } from '../../../types/maybe';
 import { ErrorAlert } from '../../molecules/ErrorAlert';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectNotificationInfo } from '../../../features/notification-info/notification-info-selector';
+import { setDefaultStatus } from '../../../features/notification-info/notification-info-slice';
 
-interface Props {
-  isloading: boolean;
-  errors: Maybe<string[]>;
-  onCloseNotification: () => void;
-}
+export const NotificationBlock = () => {
+  const dispatch = useAppDispatch();
+  const { status, errors } = useAppSelector(selectNotificationInfo);
 
-export const NotificationBlock: FC<Props> = ({ isloading, errors, onCloseNotification }) => {
+  const handleCloseNotification = () => dispatch(setDefaultStatus());
+
   return (
     <>
-      {isloading && <LinearProgress />}
-      {errors && errors.length > 0 && <ErrorAlert errors={errors} onClose={onCloseNotification} />}
+      {status === 'PENDING' && <LinearProgress />}
+      {status === 'SUCCEEDED' && (
+        <Snackbar
+          open={status === 'SUCCEEDED'}
+          autoHideDuration={3000}
+          onClose={handleCloseNotification}
+        >
+          <Alert onClose={handleCloseNotification} severity="success" sx={{ width: '100%' }}>
+            Success
+          </Alert>
+        </Snackbar>
+      )}
+      {errors && errors.length > 0 && (
+        <ErrorAlert errors={errors} onClose={handleCloseNotification} />
+      )}
     </>
   );
 };

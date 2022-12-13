@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ISet } from '../../../types/set';
+import { ISetWithCharacters } from '../../../types/set';
 import { CharactersList } from '../CharactersList';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -11,7 +11,7 @@ import { BaseModal } from '../../molecules/BaseModal';
 import { deleteSetStart } from '../../../features/sets/sets-slice';
 
 interface Props {
-  set: ISet;
+  set: ISetWithCharacters;
 }
 
 export const SetBlock: FC<Props> = ({ set }) => {

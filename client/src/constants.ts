@@ -7,7 +7,8 @@ export const PATHS = {
   sets: '/sets',
   lots: '/lots',
   chat: '/chat',
-  faq: '/faq',
+  transactions: '/transactions',
 };
 
 export const ADMIN_ROLE = 'admin';
+export const DEFAULT_MAX_PRICE = 2 ** 31 - 1;

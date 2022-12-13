@@ -7,6 +7,7 @@ import { selectAuth } from '../../../features/auth/auth-selectors';
 import { Paper } from '@mui/material';
 import { BaseModal } from '../../molecules/BaseModal';
 import { NewAuctionForm } from '../NewAuctionForm';
+import { indigo } from '@mui/material/colors';
 
 interface Props {
   card: ICard;
@@ -20,7 +21,10 @@ export const CardItem: FC<Props> = ({ card }) => {
 
   return (
     <GridItem>
-      <Paper elevation={12} sx={{ padding: '10px' }}>
+      <Paper
+        elevation={12}
+        sx={{ padding: '10px', backgroundColor: isUsersCard ? indigo[300] : 'white' }}
+      >
         {isHavePermision && (
           <BaseModal
             openModalTitle="Start auction"

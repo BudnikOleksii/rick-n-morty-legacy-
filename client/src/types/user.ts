@@ -13,6 +13,7 @@ export interface IUser {
   last_visit_date: string;
   ip: string;
   roles: IRole[];
+  balance: number;
 }
 
 export type IUsersResponse = ISuccessResponse<IUser[]>;
