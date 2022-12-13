@@ -14,6 +14,7 @@ import { selectLocations } from '../../../features/locations/locations-selectors
 import { locationsLoadingStart } from '../../../features/locations/locations-slice';
 import { IAutocomplete, OrderEnum } from '../../../types/helper-types';
 import { selectLots } from '../../../features/lots/lots-selectors';
+import { Paper } from '@mui/material';
 
 interface Props {
   setQuery: (query: string) => void;
@@ -74,73 +75,76 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
   };
 
   return (
-    <Grid container spacing={4} sx={{ padding: '20px' }} alignItems="center">
-      <Grid item xs={12} sm={5} md={2}>
-        <TextField
-          fullWidth
-          label="Character Name"
-          variant="outlined"
-          value={characterName}
-          onChange={(event) => setCharacterName(event.target.value)}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={5} md={2}>
-        <Autocomplete
-          disablePortal
-          id="location"
-          options={locationsAutocomplete}
-          value={location}
-          onChange={handleTagsChange}
-          renderInput={(params) => <TextField {...params} label="Location" />}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={5} md={2}>
-        <Box sx={{ textAlign: 'center' }}>
-          Price range
-          <Slider
-            getAriaLabel={() => 'Temperature range'}
-            value={priceRange}
-            onChange={handlePriceRangeChange}
-            valueLabelDisplay="auto"
-            min={minPrice}
-            max={maxPrice}
-            getAriaValueText={valuetext}
+    <Paper elevation={6} sx={{ margin: '20px', padding: '20px' }}>
+      <Grid container rowSpacing={2} alignContent="center" justifyContent="space-between">
+        <Grid item xs={12} sm={5} md={3} lg={2}>
+          <TextField
+            fullWidth
+            label="Character Name"
+            variant="outlined"
+            value={characterName}
+            onChange={(event) => setCharacterName(event.target.value)}
           />
-        </Box>
-      </Grid>
+        </Grid>
 
-      <Grid item xs={12} sm={5} md={2}>
-        <FormControl fullWidth>
-          <InputLabel id="sortOrder">Sort order</InputLabel>
-          <Select
-            labelId="sortOrder"
-            id="sortOrder"
-            value={sortOrder}
-            label="Sort order"
-            onChange={(event) => setSortOrder(event.target.value as OrderEnum)}
-          >
-            <MenuItem value={OrderEnum.asc}>Cheapest at first</MenuItem>
-            <MenuItem value={OrderEnum.desc}>Expensive at first</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
+        <Grid item xs={12} sm={5} md={3} lg={2}>
+          <Autocomplete
+            disablePortal
+            id="location"
+            options={locationsAutocomplete}
+            value={location}
+            onChange={handleTagsChange}
+            renderInput={(params) => <TextField {...params} label="Location" />}
+          />
+        </Grid>
 
-      <Grid item xs={12} sm={5} md={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleFiltersSubmit}
-          sx={{ marginRight: '10px' }}
+        <Grid item xs={12} sm={5} md={3} lg={2}>
+          <Box sx={{ textAlign: 'center' }}>
+            Price range
+            <Slider
+              getAriaLabel={() => 'Temperature range'}
+              value={priceRange}
+              onChange={handlePriceRangeChange}
+              valueLabelDisplay="auto"
+              min={minPrice}
+              max={maxPrice}
+              getAriaValueText={valuetext}
+            />
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} sm={5} md={2}>
+          <FormControl fullWidth>
+            <InputLabel id="sortOrder">Sort order</InputLabel>
+            <Select
+              labelId="sortOrder"
+              id="sortOrder"
+              value={sortOrder}
+              label="Sort order"
+              onChange={(event) => setSortOrder(event.target.value as OrderEnum)}
+            >
+              <MenuItem value={OrderEnum.asc}>Cheapest at first</MenuItem>
+              <MenuItem value={OrderEnum.desc}>Expensive at first</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid
+          item
+          sm={12}
+          md={5}
+          lg={3}
+          sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}
         >
-          Apply filters
-        </Button>
+          <Button variant="contained" color="primary" onClick={handleFiltersSubmit}>
+            Apply filters
+          </Button>
 
-        <Button variant="contained" color="secondary" onClick={handleClearInputs}>
-          Clear filters
-        </Button>
+          <Button variant="contained" color="secondary" onClick={handleClearInputs}>
+            Clear filters
+          </Button>
+        </Grid>
       </Grid>
-    </Grid>
+    </Paper>
   );
 });
