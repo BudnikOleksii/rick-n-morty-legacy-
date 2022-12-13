@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
 import { ILogin } from '../../../types/auth';
 import { loginStart } from '../../../features/auth/auth-slice';
+import { startLoading } from '../../../features/notification-info/notification-info-slice';
 
 const schema = yup.object().shape({
   login: yup.string().email().required(),
@@ -25,6 +26,7 @@ export const LoginForm: FC<Props> = () => {
   } = useForm<ILogin>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
+    dispatch(startLoading());
     dispatch(loginStart(data));
   });
 
