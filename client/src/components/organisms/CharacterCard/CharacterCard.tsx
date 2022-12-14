@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../constants';
 import { CardActions } from '@mui/material';
 import { selectSets } from '../../../features/sets/sets-selcetors';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 type Props = {
   character: ICharacter;
@@ -37,6 +38,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   const { sets: allSets } = useAppSelector(selectSets);
 
   const handleToggleCharacterInSet = (setId: number) => {
+    dispatch(registerAction(toggleCharacterInSetStart.type));
     dispatch(
       toggleCharacterInSetStart({
         setId,

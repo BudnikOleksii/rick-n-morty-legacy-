@@ -7,7 +7,7 @@ import { PATHS } from '../constants';
 import { CardsList } from '../components/organisms/CardsList';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { registerAction } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
 
 const Home = () => {
   const navigate = useNavigate();

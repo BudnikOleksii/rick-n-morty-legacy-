@@ -1,18 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IErrors } from '../../types/response';
-import { Status } from '../../types/status';
 
-interface NotificationInfo {
+interface ActionsInfo {
   errors: IErrors;
   actions: string[];
 }
 
-const initialState: NotificationInfo = {
+const initialState: ActionsInfo = {
   errors: null,
   actions: [],
 };
 
-const notificationInfoSlice = createSlice({
+const actionsInfoSlice = createSlice({
   name: 'info',
   initialState,
   reducers: {
@@ -24,7 +23,6 @@ const notificationInfoSlice = createSlice({
     },
     setErrors: (state, action) => {
       state.errors = action.payload;
-      state.actions = [];
     },
     setDefaultStatus: (state) => {
       state.errors = null;
@@ -33,6 +31,6 @@ const notificationInfoSlice = createSlice({
 });
 
 export const { registerAction, finishAction, setErrors, setDefaultStatus } =
-  notificationInfoSlice.actions;
+  actionsInfoSlice.actions;
 
-export default notificationInfoSlice.reducer;
+export default actionsInfoSlice.reducer;

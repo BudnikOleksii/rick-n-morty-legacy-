@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { BaseModal } from '../../molecules/BaseModal';
 import { deleteSetStart } from '../../../features/sets/sets-slice';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 interface Props {
   set: ISetWithCharacters;
@@ -20,6 +21,7 @@ export const SetBlock: FC<Props> = ({ set }) => {
   const { isAdmin } = useAppSelector(selectAuth);
 
   const handleSetDelete = () => {
+    dispatch(registerAction(deleteSetStart.type));
     dispatch(
       deleteSetStart({
         id,

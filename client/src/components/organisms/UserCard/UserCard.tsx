@@ -16,6 +16,7 @@ import { checkIsAdmin } from '../../../helpers/check-is-admin';
 import { ADMIN_ROLE } from '../../../constants';
 import { addNewRoleStart } from '../../../features/users/users-slice';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 type Props = {
   user: IUser;
@@ -28,6 +29,7 @@ export const UserCard: FC<Props> = ({ user }) => {
   const hasAdminRole = checkIsAdmin(roles);
 
   const handleAddNewRole = (role: string = ADMIN_ROLE) => {
+    dispatch(registerAction(addNewRoleStart.type));
     dispatch(
       addNewRoleStart({
         id,

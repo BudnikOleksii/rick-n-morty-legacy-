@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
 import { ILogin } from '../../../types/auth';
 import { loginStart } from '../../../features/auth/auth-slice';
-import { registerAction } from '../../../features/notification-info/notification-info-slice';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 const schema = yup.object().shape({
   login: yup.string().email().required(),

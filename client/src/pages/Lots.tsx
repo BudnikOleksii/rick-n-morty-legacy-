@@ -7,7 +7,7 @@ import { PATHS } from '../constants';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { LotsList } from '../components/organisms/LotsList';
 import { LotsFilter } from '../components/organisms/LotsFilter';
-import { registerAction } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
 
 const Lots = () => {
   const navigate = useNavigate();

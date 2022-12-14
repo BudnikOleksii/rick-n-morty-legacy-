@@ -4,8 +4,8 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { ErrorAlert } from '../../molecules/ErrorAlert';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectNotificationInfo } from '../../../features/notification-info/notification-info-selector';
-import { setDefaultStatus } from '../../../features/notification-info/notification-info-slice';
+import { selectNotificationInfo } from '../../../features/actions-info/actions-info-selector';
+import { setDefaultStatus } from '../../../features/actions-info/actions-info-slice';
 import { MATERIAL_NAV_Z_INDEX } from '../../../constants';
 
 export const NotificationBlock = () => {

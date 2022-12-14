@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
-import { registerAction } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
 import { cardsLoadingStart } from '../features/cards/cards-slice';
 import { PATHS } from '../constants';
 import { PageTemplate } from '../components/templates/PageTemplate';

@@ -15,6 +15,7 @@ import { locationsLoadingStart } from '../../../features/locations/locations-sli
 import { IAutocomplete, OrderEnum } from '../../../types/helper-types';
 import { selectLots } from '../../../features/lots/lots-selectors';
 import { Paper } from '@mui/material';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 interface Props {
   setQuery: (query: string) => void;
@@ -36,6 +37,7 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
   const [sortOrder, setSortOrder] = useState<OrderEnum>(OrderEnum.asc);
 
   useEffect(() => {
+    dispatch(registerAction(locationsLoadingStart.type));
     dispatch(locationsLoadingStart());
   }, []);
 

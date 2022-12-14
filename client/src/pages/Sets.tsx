@@ -10,7 +10,7 @@ import { SetForm } from '../components/organisms/SetForm';
 import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { registerAction } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
 
 const Sets = () => {
   const navigate = useNavigate();

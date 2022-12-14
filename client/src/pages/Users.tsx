@@ -6,7 +6,7 @@ import { usersLoadingStart } from '../features/users/users-slice';
 import { UsersList } from '../components/organisms/UsersList';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { registerAction } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
 
 const Users = () => {
   const navigate = useNavigate();

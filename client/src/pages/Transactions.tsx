@@ -7,7 +7,7 @@ import { selectTransactions } from '../features/transactions/transactions-select
 import { transactionsLoadingStart } from '../features/transactions/transactions-slice';
 import { selectAuth } from '../features/auth/auth-selectors';
 import { TransactionsTable } from '../components/organisms/TransactionsTable';
-import { registerAction } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
 
 const Transactions = () => {
   const navigate = useNavigate();
