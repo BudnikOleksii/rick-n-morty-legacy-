@@ -1,4 +1,4 @@
-import { Maybe } from './maybe';
+import { Maybe } from './helper-types';
 import { ISuccessResponse } from './response';
 
 export interface ITransaction {

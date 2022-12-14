@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { Heading } from '../../molecules/Heading';
 import { IResponseInfo } from '../../../types/response';
 import Pagination from '@mui/material/Pagination';
-import { Maybe } from '../../../types/maybe';
+import { Maybe } from '../../../types/helper-types';
 
 interface Props {
   title: string;

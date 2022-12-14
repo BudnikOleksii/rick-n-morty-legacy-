@@ -1,8 +1,8 @@
 import React from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
-import { ErrorAlert } from '../../molecules/ErrorAlert';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { ErrorAlert } from '../../molecules/ErrorAlert';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectNotificationInfo } from '../../../features/notification-info/notification-info-selector';
 import { setDefaultStatus } from '../../../features/notification-info/notification-info-slice';

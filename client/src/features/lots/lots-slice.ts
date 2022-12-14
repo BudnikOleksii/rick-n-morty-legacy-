@@ -1,8 +1,7 @@
-import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
+import { Maybe } from '../../types/helper-types';
 import { IResponseInfo } from '../../types/response';
-import { ILot } from '../../types/lot';
-import { IPricesRange } from '../../types/prices-range';
+import { ILot, IPricesRange } from '../../types/lot';
 
 interface LotsState {
   lots: Maybe<ILot[]>;

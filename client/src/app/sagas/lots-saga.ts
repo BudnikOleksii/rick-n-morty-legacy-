@@ -6,13 +6,12 @@ import {
   lotsLoadingStart,
   lotsSuccess,
 } from '../../features/lots/lots-slice';
-import { ILot, ILotResponse } from '../../types/lot';
+import { ILot, ILotResponse, IPricesRange } from '../../types/lot';
 import { createLot, getLots, getLotsPriceRange, handleBet } from '../../api/lots-service';
 import {
   loadingSuccess,
   setErrors,
 } from '../../features/notification-info/notification-info-slice';
-import { IPricesRange } from '../../types/prices-range';
 
 function* lotsWorker({ payload }: ReturnType<typeof lotsLoadingStart>) {
   try {

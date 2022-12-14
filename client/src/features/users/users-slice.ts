@@ -1,5 +1,5 @@
-import { Maybe } from '../../types/maybe';
 import { createSlice } from '@reduxjs/toolkit';
+import { Maybe } from '../../types/helper-types';
 import { IResponseInfo } from '../../types/response';
 import { IUser } from '../../types/user';
 
