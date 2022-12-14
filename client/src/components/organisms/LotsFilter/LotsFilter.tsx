@@ -9,13 +9,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import Paper from '@mui/material/Paper';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectLocations } from '../../../features/locations/locations-selectors';
 import { locationsLoadingStart } from '../../../features/locations/locations-slice';
-import { IAutocomplete, OrderEnum } from '../../../types/helper-types';
 import { selectLots } from '../../../features/lots/lots-selectors';
-import { Paper } from '@mui/material';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { IAutocomplete, OrderEnum } from '../../../types/helper-types';
 
 interface Props {
   setQuery: (query: string) => void;

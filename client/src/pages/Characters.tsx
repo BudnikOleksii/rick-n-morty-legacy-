@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PageTemplate } from '../components/templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { PATHS } from '../constants';
 import { selectCharacters } from '../features/characters/characters-selectors';
 import { charactersLoadingStart } from '../features/characters/characters-slice';
 import { CharactersList } from '../components/organisms/CharactersList';
-import { useNavigate } from 'react-router-dom';
 import { setsLoadingStart } from '../features/sets/sets-slice';
-import { PageTemplate } from '../components/templates/PageTemplate';
 import { registerAction } from '../features/actions-info/actions-info-slice';
+import { PATHS } from '../constants';
 
 const Characters = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { getItemFromLocalStorage } from '../../../helpers/localstorage-helpers';
+import { Outlet } from 'react-router-dom';
 import UnauthorizedPage from '../../../pages/Unauthorized';
+import { getItemFromLocalStorage } from '../../../helpers/localstorage-helpers';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { checkAuthStart } from '../../../features/auth/auth-slice';
 import { selectAuth } from '../../../features/auth/auth-selectors';
-import { Outlet } from 'react-router-dom';
 
 export const PrivateRoute: FC = () => {
   const dispatch = useAppDispatch();

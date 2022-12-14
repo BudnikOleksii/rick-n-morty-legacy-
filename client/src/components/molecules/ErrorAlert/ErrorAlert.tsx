@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { ListItem, ListItemText } from '@mui/material';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
 interface Props {
   errors: string[];

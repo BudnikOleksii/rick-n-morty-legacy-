@@ -4,19 +4,19 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
-import { IUser } from '../../../types/user';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import DnsIcon from '@mui/icons-material/Dns';
 import EventIcon from '@mui/icons-material/Event';
-import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
+import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
-import { checkIsAdmin } from '../../../helpers/check-is-admin';
-import { ADMIN_ROLE } from '../../../constants';
 import { addNewRoleStart } from '../../../features/users/users-slice';
-import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { checkIsAdmin } from '../../../helpers/check-is-admin';
+import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
+import { ADMIN_ROLE } from '../../../constants';
+import { IUser } from '../../../types/user';
 
 type Props = {
   user: IUser;

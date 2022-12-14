@@ -1,16 +1,14 @@
 import React, { FC } from 'react';
-import { ISetWithCharacters } from '../../../types/set';
-import { CharactersList } from '../CharactersList';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { Paper } from '@mui/material';
-import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import { CharactersList } from '../CharactersList';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
-import { BaseModal } from '../../molecules/BaseModal';
 import { deleteSetStart } from '../../../features/sets/sets-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { ConfirmModal } from '../../molecules/ConfirmModal';
+import { ISetWithCharacters } from '../../../types/set';
 
 interface Props {
   set: ISetWithCharacters;

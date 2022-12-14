@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { ICard } from '../../../types/card';
 import Grid from '@mui/material/Grid';
 import { CardItem } from '../CardItem';
+import { ICard } from '../../../types/card';
 
 type Props = {
   cards: ICard[];

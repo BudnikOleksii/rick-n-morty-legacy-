@@ -6,9 +6,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
-import { ILogin } from '../../../types/auth';
 import { loginStart } from '../../../features/auth/auth-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { ILogin } from '../../../types/auth';
 
 const schema = yup.object().shape({
   login: yup.string().email().required(),

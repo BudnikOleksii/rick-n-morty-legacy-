@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { ITransaction } from '../../../types/transaction';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,9 +6,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { orange, lightGreen, indigo } from '@mui/material/colors';
 import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
+import { orange, lightGreen, indigo } from '@mui/material/colors';
+import { ITransaction } from '../../../types/transaction';
 
 const colorCredit = orange[400];
 const colorDebit = lightGreen[500];

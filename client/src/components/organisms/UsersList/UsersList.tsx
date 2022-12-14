@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { IUser } from '../../../types/user';
 import Grid from '@mui/material/Grid';
 import { UserCard } from '../UserCard';
 import { GridItem } from '../../atoms/GridItem';
+import { IUser } from '../../../types/user';
 
 interface Props {
   users: IUser[];

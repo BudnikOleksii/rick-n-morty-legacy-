@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import List from '@mui/material/List';
-import { IEpisode } from '../../../types/episode';
 import { EpisodeItem } from '../EpisodeItem';
+import { IEpisode } from '../../../types/episode';
 
 interface Props {
   episodes: IEpisode[];

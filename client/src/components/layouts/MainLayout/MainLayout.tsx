@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector } from '../../../app/hooks';
-import { selectAuth } from '../../../features/auth/auth-selectors';
 import Box from '@mui/material/Box';
-import { PATHS } from '../../../constants';
 import { BurgerMenu } from '../../organisms/BurgerMenu';
 import { NavMenu } from '../../organisms/NavMenu';
+import { useAppSelector } from '../../../app/hooks';
+import { selectAuth } from '../../../features/auth/auth-selectors';
+import { PATHS } from '../../../constants';
 
-const { cards, characters, lots, sets, chat, users } = PATHS;
-const defaultNavItems = [lots, characters, sets, cards, chat].map((item) => item.slice(1));
+const { lots, chat, users } = PATHS;
+const defaultNavItems = [lots, chat].map((item) => item.slice(1));
 const adminNavItems = [users].map((item) => item.slice(1));
 
 export const MainLayout = () => {

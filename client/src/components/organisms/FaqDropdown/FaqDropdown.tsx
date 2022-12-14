@@ -1,18 +1,12 @@
 import { useState, MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { logoutStart } from '../../../features/auth/auth-slice';
-import { selectAuth } from '../../../features/auth/auth-selectors';
-import { useNavigate } from 'react-router-dom';
-import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { PATHS } from '../../../constants';
 
-export const ProfileDropdown = () => {
+export const FaqDropdown = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector(selectAuth);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -24,18 +18,13 @@ export const ProfileDropdown = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    dispatch(registerAction(logoutStart.type));
-    dispatch(logoutStart());
-  };
-
   const handleLinkClick = (path: string) => {
     handleClose();
     navigate(path);
   };
 
   return (
-    <div>
+    <div style={{ marginRight: '10px', marginLeft: 'auto' }}>
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -45,7 +34,7 @@ export const ProfileDropdown = () => {
         variant="contained"
         color="secondary"
       >
-        Profile
+        FAQ
       </Button>
       <Menu
         id="basic-menu"
@@ -56,11 +45,9 @@ export const ProfileDropdown = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem>{`Rating: ${user?.rating || 0}`}</MenuItem>
-        <MenuItem>{`Balance: ${user?.balance || 0}`}</MenuItem>
-        <MenuItem onClick={() => handleLinkClick('/')}>Your cards</MenuItem>
-        <MenuItem onClick={() => handleLinkClick(PATHS.transactions)}>History</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.characters)}>Characters</MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.sets)}>Sets</MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.cards)}>All cards</MenuItem>
       </Menu>
     </div>
   );

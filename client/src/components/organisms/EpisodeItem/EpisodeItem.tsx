@@ -1,16 +1,16 @@
 import { FC } from 'react';
-import { IEpisode } from '../../../types/episode';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import List from '@mui/material/List';
-import { ListItemComponent } from '../../molecules/ListItemComponent';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
-import { getLocalDate } from '../../../helpers/date-helpers';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import ListItem from '@mui/material/ListItem';
+import { ListItemComponent } from '../../molecules/ListItemComponent';
+import { getLocalDate } from '../../../helpers/date-helpers';
+import { IEpisode } from '../../../types/episode';
 
 interface Props {
   episode: IEpisode;

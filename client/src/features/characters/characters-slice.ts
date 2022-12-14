@@ -23,7 +23,7 @@ const charactersSlice = createSlice({
     charactersSuccess: (state, action) => {
       state.characters = action.payload.results;
       state.charactersInfo = action.payload.info;
-      state.allCharactersUsed = action.payload.unusedCount === 817;
+      state.allCharactersUsed = action.payload.unusedCount === 0;
     },
   },
 });

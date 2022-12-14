@@ -1,9 +1,9 @@
 import React, { FC, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
+import Pagination from '@mui/material/Pagination';
 import { Heading } from '../../molecules/Heading';
 import { IResponseInfo } from '../../../types/response';
-import Pagination from '@mui/material/Pagination';
 import { Maybe } from '../../../types/helper-types';
 
 interface Props {
