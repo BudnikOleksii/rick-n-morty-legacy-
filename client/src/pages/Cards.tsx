@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
-import { startLoading } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/notification-info/notification-info-slice';
 import { cardsLoadingStart } from '../features/cards/cards-slice';
 import { PATHS } from '../constants';
 import { PageTemplate } from '../components/templates/PageTemplate';
@@ -17,7 +17,7 @@ const Cards = () => {
   const { cards, cardsInfo } = useAppSelector(selectCards);
 
   useEffect(() => {
-    dispatch(startLoading());
+    dispatch(registerAction(cardsLoadingStart.type));
     dispatch(
       cardsLoadingStart({
         params: `?page=${page || 1}`,

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,16 +8,14 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
 import { ILogin } from '../../../types/auth';
 import { loginStart } from '../../../features/auth/auth-slice';
-import { startLoading } from '../../../features/notification-info/notification-info-slice';
+import { registerAction } from '../../../features/notification-info/notification-info-slice';
 
 const schema = yup.object().shape({
   login: yup.string().email().required(),
   password: yup.string().trim().min(4).max(15).required(),
 });
 
-interface Props {}
-
-export const LoginForm: FC<Props> = () => {
+export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const {
     register,
@@ -26,7 +24,7 @@ export const LoginForm: FC<Props> = () => {
   } = useForm<ILogin>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
-    dispatch(startLoading());
+    dispatch(registerAction(loginStart.type));
     dispatch(loginStart(data));
   });
 

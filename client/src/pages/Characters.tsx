@@ -7,7 +7,7 @@ import { CharactersList } from '../components/organisms/CharactersList';
 import { useNavigate } from 'react-router-dom';
 import { setsLoadingStart } from '../features/sets/sets-slice';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { startLoading } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/notification-info/notification-info-slice';
 
 const Characters = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Characters = () => {
   const { characters, charactersInfo } = useAppSelector(selectCharacters);
 
   useEffect(() => {
-    dispatch(startLoading());
+    dispatch(registerAction(charactersLoadingStart.type));
     dispatch(
       charactersLoadingStart({
         params: `?page=${page || 1}`,
@@ -27,7 +27,7 @@ const Characters = () => {
   }, [page]);
 
   useEffect(() => {
-    dispatch(startLoading());
+    dispatch(registerAction(setsLoadingStart.type));
     dispatch(
       setsLoadingStart({
         params: `/all`,

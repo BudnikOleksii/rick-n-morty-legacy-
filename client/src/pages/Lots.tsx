@@ -5,9 +5,9 @@ import { lotsLoadingStart } from '../features/lots/lots-slice';
 import { selectLots } from '../features/lots/lots-selectors';
 import { PATHS } from '../constants';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { startLoading } from '../features/notification-info/notification-info-slice';
 import { LotsList } from '../components/organisms/LotsList';
 import { LotsFilter } from '../components/organisms/LotsFilter';
+import { registerAction } from '../features/notification-info/notification-info-slice';
 
 const Lots = () => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Lots = () => {
   };
 
   useEffect(() => {
-    dispatch(startLoading());
+    dispatch(registerAction(lotsLoadingStart.type));
     dispatch(
       lotsLoadingStart({
         params: `?page=${page || 1}${query}`,

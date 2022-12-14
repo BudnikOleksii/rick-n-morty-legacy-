@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
 import { IRegistration } from '../../../types/auth';
 import { registrationStart } from '../../../features/auth/auth-slice';
-import { startLoading } from '../../../features/notification-info/notification-info-slice';
+import { registerAction } from '../../../features/notification-info/notification-info-slice';
 
 const schema = yup.object().shape({
   username: yup.string().trim().min(4).max(15).required(),
@@ -26,7 +26,7 @@ export const SignUpForm = () => {
   } = useForm<IRegistration>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
-    dispatch(startLoading());
+    dispatch(registerAction(registrationStart.type));
     dispatch(registrationStart(data));
   });
 

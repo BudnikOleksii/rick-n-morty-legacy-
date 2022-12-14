@@ -6,7 +6,7 @@ import { usersLoadingStart } from '../features/users/users-slice';
 import { UsersList } from '../components/organisms/UsersList';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { startLoading } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/notification-info/notification-info-slice';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Users = () => {
   const { users, usersInfo } = useAppSelector(selectUsers);
 
   useEffect(() => {
-    dispatch(startLoading());
+    dispatch(registerAction(usersLoadingStart.type));
     dispatch(
       usersLoadingStart({
         params: `?page=${page || 1}`,

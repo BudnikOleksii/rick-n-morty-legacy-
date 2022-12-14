@@ -1,9 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { getUserTransactions } from '../../api/user-service';
-import {
-  loadingSuccess,
-  setErrors,
-} from '../../features/notification-info/notification-info-slice';
+import { finishAction, setErrors } from '../../features/notification-info/notification-info-slice';
 import {
   transactionsLoadingStart,
   transactionsSuccess,
@@ -18,7 +15,7 @@ function* transactionsWorker({ payload }: ReturnType<typeof transactionsLoadingS
       payload.params
     )) as ITransactionResponse;
 
-    yield put(loadingSuccess());
+    yield put(finishAction(transactionsLoadingStart.type));
     yield put(transactionsSuccess(cardsData));
   } catch (errors) {
     yield put(setErrors(errors));

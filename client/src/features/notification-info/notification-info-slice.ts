@@ -3,38 +3,36 @@ import { IErrors } from '../../types/response';
 import { Status } from '../../types/status';
 
 interface NotificationInfo {
-  status: Status;
   errors: IErrors;
+  actions: string[];
 }
 
 const initialState: NotificationInfo = {
-  status: 'SUCCEEDED',
   errors: null,
+  actions: [],
 };
 
 const notificationInfoSlice = createSlice({
   name: 'info',
   initialState,
   reducers: {
-    startLoading: (state) => {
-      state.errors = null;
-      state.status = 'PENDING';
+    registerAction: (state, action) => {
+      state.actions.push(action.payload);
     },
-    loadingSuccess: (state) => {
-      state.status = 'SUCCEEDED';
+    finishAction: (state, action) => {
+      state.actions = state.actions.filter((act) => act !== action.payload);
     },
     setErrors: (state, action) => {
       state.errors = action.payload;
-      state.status = 'FAILED';
+      state.actions = [];
     },
     setDefaultStatus: (state) => {
       state.errors = null;
-      state.status = 'IDLE';
     },
   },
 });
 
-export const { startLoading, loadingSuccess, setErrors, setDefaultStatus } =
+export const { registerAction, finishAction, setErrors, setDefaultStatus } =
   notificationInfoSlice.actions;
 
 export default notificationInfoSlice.reducer;

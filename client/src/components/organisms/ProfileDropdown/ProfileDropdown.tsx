@@ -7,6 +7,7 @@ import { logoutStart } from '../../../features/auth/auth-slice';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../constants';
+import { registerAction } from '../../../features/notification-info/notification-info-slice';
 
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ export const ProfileDropdown = () => {
   };
 
   const handleLogout = () => {
+    dispatch(registerAction(logoutStart.type));
     dispatch(logoutStart());
   };
 

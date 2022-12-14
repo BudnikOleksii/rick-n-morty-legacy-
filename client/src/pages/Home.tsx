@@ -7,7 +7,7 @@ import { PATHS } from '../constants';
 import { CardsList } from '../components/organisms/CardsList';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
-import { startLoading } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/notification-info/notification-info-slice';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(startLoading());
+      dispatch(registerAction(userCardsLoadingStart.type));
       dispatch(
         userCardsLoadingStart({
           userId: user.id,

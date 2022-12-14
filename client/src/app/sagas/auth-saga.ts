@@ -10,10 +10,7 @@ import {
   setAuthDefaultState,
 } from '../../features/auth/auth-slice';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
-import {
-  loadingSuccess,
-  setErrors,
-} from '../../features/notification-info/notification-info-slice';
+import { finishAction, setErrors } from '../../features/notification-info/notification-info-slice';
 
 function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
@@ -22,7 +19,7 @@ function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
-    yield put(loadingSuccess());
+    yield put(finishAction(loginStart.type));
     yield put(authSuccess(userData));
   } catch (errors) {
     localStorage.clear();
@@ -30,14 +27,14 @@ function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   }
 }
 
-function* registrationWorker({ payload }: ReturnType<typeof loginStart>) {
+function* registrationWorker({ payload }: ReturnType<typeof registrationStart>) {
   try {
     const userData = (yield call(registration, payload)) as IAuthResponse;
 
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
-    yield put(loadingSuccess());
+    yield put(finishAction(registrationStart.type));
     yield put(authSuccess(userData));
   } catch (errors) {
     localStorage.clear();
@@ -52,7 +49,7 @@ function* refreshWorker() {
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
-    yield put(loadingSuccess());
+    yield put(finishAction(checkAuthStart.type));
     yield put(authSuccess(userData));
   } catch (errors) {
     localStorage.clear();
@@ -66,7 +63,7 @@ function* logoutWorker() {
 
     localStorage.clear();
 
-    yield put(loadingSuccess());
+    yield put(finishAction(logoutStart.type));
     yield put(setAuthDefaultState());
   } catch (errors) {
     yield put(setErrors(errors));

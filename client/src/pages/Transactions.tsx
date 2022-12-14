@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { PATHS } from '../constants';
-import { startLoading } from '../features/notification-info/notification-info-slice';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { selectTransactions } from '../features/transactions/transactions-selectors';
 import { transactionsLoadingStart } from '../features/transactions/transactions-slice';
 import { selectAuth } from '../features/auth/auth-selectors';
 import { TransactionsTable } from '../components/organisms/TransactionsTable';
+import { registerAction } from '../features/notification-info/notification-info-slice';
 
 const Transactions = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const Transactions = () => {
   };
 
   useEffect(() => {
-    dispatch(startLoading());
+    dispatch(registerAction(transactionsLoadingStart.type));
     dispatch(
       transactionsLoadingStart({
         userId: user?.id || 0,
