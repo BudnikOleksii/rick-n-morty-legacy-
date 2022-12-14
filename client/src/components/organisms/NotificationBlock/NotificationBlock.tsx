@@ -6,6 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectNotificationInfo } from '../../../features/notification-info/notification-info-selector';
 import { setDefaultStatus } from '../../../features/notification-info/notification-info-slice';
+import { MATERIAL_NAV_Z_INDEX } from '../../../constants';
 
 export const NotificationBlock = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +19,7 @@ export const NotificationBlock = () => {
       {status === 'PENDING' && (
         <LinearProgress
           color="secondary"
-          sx={{ position: 'fixed', top: '0', zIndex: 99999999999, width: '100vw' }}
+          sx={{ position: 'fixed', top: '0', zIndex: MATERIAL_NAV_Z_INDEX + 1, width: '100vw' }}
         />
       )}
 
