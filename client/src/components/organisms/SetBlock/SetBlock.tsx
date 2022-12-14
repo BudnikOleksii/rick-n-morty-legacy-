@@ -10,6 +10,7 @@ import { selectAuth } from '../../../features/auth/auth-selectors';
 import { BaseModal } from '../../molecules/BaseModal';
 import { deleteSetStart } from '../../../features/sets/sets-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { ConfirmModal } from '../../molecules/ConfirmModal';
 
 interface Props {
   set: ISetWithCharacters;
@@ -44,17 +45,12 @@ export const SetBlock: FC<Props> = ({ set }) => {
       <Divider sx={{ margin: '20px' }}>{set.name} end</Divider>
 
       {isAdmin && (
-        <BaseModal openModalTitle="Delete set" buttonVariant="contained" buttonColor="error">
-          Are you sure you want delete current set?
-          <Button
-            variant="contained"
-            sx={{ display: 'block', margin: '15px auto' }}
-            color="error"
-            onClick={handleSetDelete}
-          >
-            Confirm
-          </Button>
-        </BaseModal>
+        <ConfirmModal
+          buttonTitle="Delete set"
+          buttonColor="error"
+          confirmText="Are you sure you want delete current set?"
+          onConfirm={handleSetDelete}
+        />
       )}
     </Paper>
   );

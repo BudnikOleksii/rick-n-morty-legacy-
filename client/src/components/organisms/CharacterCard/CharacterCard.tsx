@@ -22,9 +22,11 @@ import { SetsList } from '../SetsList';
 import { toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../constants';
-import { CardActions } from '@mui/material';
 import { selectSets } from '../../../features/sets/sets-selcetors';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { selectCharacters } from '../../../features/characters/characters-selectors';
+import { ConfirmModal } from '../../molecules/ConfirmModal';
+import { createCardStart } from '../../../features/cards/cards-slice';
 
 type Props = {
   character: ICharacter;
@@ -33,9 +35,10 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(selectAuth);
-  const { name, image, status, gender, type, species, origin, location, episodes, sets } =
+  const { id, name, image, status, gender, type, species, origin, location, episodes, sets } =
     character;
   const { sets: allSets } = useAppSelector(selectSets);
+  const { allCharactersUsed } = useAppSelector(selectCharacters);
 
   const handleToggleCharacterInSet = (setId: number) => {
     dispatch(registerAction(toggleCharacterInSetStart.type));
@@ -46,6 +49,11 @@ export const CharacterCard: FC<Props> = ({ character }) => {
       })
     );
     navigate(PATHS.sets);
+  };
+
+  const handleCreateNewCard = () => {
+    dispatch(registerAction(createCardStart.type));
+    dispatch(createCardStart({ id }));
   };
 
   return (
@@ -66,11 +74,18 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         </List>
       </CardContent>
 
-      <BaseModal openModalTitle="Episodes info">
-        <EpisodesList episodes={episodes} />
-      </BaseModal>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          padding: '8px',
+        }}
+      >
+        <BaseModal openModalTitle="Episodes" buttonVariant="contained" buttonColor="info">
+          <EpisodesList episodes={episodes} />
+        </BaseModal>
 
-      <CardActions>
         {sets && sets.length > 0 && (
           <BaseModal openModalTitle="Sets info" buttonVariant="contained" buttonColor="info">
             {sets.map((set) => (
@@ -94,7 +109,16 @@ export const CharacterCard: FC<Props> = ({ character }) => {
             <SetsList sets={allSets} onToggleCharacterInSet={handleToggleCharacterInSet} />
           </BaseModal>
         )}
-      </CardActions>
+
+        {isAdmin && allCharactersUsed && (
+          <ConfirmModal
+            buttonTitle="Create card"
+            buttonColor="secondary"
+            confirmText="Are you sure you want create card with this character?"
+            onConfirm={handleCreateNewCard}
+          />
+        )}
+      </div>
     </Card>
   );
 };

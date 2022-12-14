@@ -23,9 +23,11 @@ const cardsSlice = createSlice({
       state.cards = action.payload.results;
       state.cardsInfo = action.payload.info;
     },
+    createCardStart: (state, action) => {},
   },
 });
 
-export const { cardsLoadingStart, userCardsLoadingStart, cardsSuccess } = cardsSlice.actions;
+export const { cardsLoadingStart, userCardsLoadingStart, cardsSuccess, createCardStart } =
+  cardsSlice.actions;
 
 export default cardsSlice.reducer;
