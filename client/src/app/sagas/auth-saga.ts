@@ -10,7 +10,11 @@ import {
   setAuthDefaultState,
 } from '../../features/auth/auth-slice';
 import { setItemToLocalStorage } from '../../helpers/localstorage-helpers';
-import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
+import {
+  finishAction,
+  setErrors,
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
   try {
@@ -19,6 +23,7 @@ function* loginWorker({ payload }: ReturnType<typeof loginStart>) {
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
+    yield put(setSuccessMessage(`Welcome ${userData.user.username}, you successfully logged in`));
     yield put(authSuccess(userData));
   } catch (errors) {
     localStorage.clear();
@@ -35,6 +40,7 @@ function* registrationWorker({ payload }: ReturnType<typeof registrationStart>) 
     setItemToLocalStorage('tokens', userData.tokens);
     setItemToLocalStorage('user', userData.user);
 
+    yield put(setSuccessMessage(`Welcome ${userData.user.username}, you successfully registered`));
     yield put(authSuccess(userData));
   } catch (errors) {
     localStorage.clear();
@@ -66,6 +72,7 @@ function* logoutWorker() {
 
     localStorage.clear();
 
+    yield put(setSuccessMessage(`Successfully logged out`));
     yield put(setAuthDefaultState());
   } catch (errors) {
     yield put(setErrors(errors));

@@ -7,7 +7,11 @@ import {
   usersLoadingStart,
   usersSuccess,
 } from '../../features/users/users-slice';
-import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
+import {
+  finishAction,
+  setErrors,
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* usersWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
   try {
@@ -26,6 +30,7 @@ function* addNewRoleWorker({ payload }: ReturnType<typeof addNewRoleStart>) {
     const userData = (yield call(addNewRole, payload.id, payload.role)) as IUser;
 
     yield put(addNewRoleSuccess(userData));
+    yield put(setSuccessMessage(`User ${userData.username} get new role ${payload.role}`));
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {

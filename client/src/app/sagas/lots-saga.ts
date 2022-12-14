@@ -8,7 +8,11 @@ import {
 } from '../../features/lots/lots-slice';
 import { ILot, ILotResponse, IPricesRange } from '../../types/lot';
 import { createLot, getLots, getLotsPriceRange, handleBet } from '../../api/lots-service';
-import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
+import {
+  finishAction,
+  setErrors,
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* lotsWorker({ payload }: ReturnType<typeof lotsLoadingStart>) {
   try {
@@ -33,6 +37,9 @@ function* betWorker({ payload }: ReturnType<typeof betForLot>) {
     const lot = (yield call(handleBet, payload.id, payload.bet)) as ILot;
 
     yield put(betSuccess(lot));
+    yield put(
+      setSuccessMessage(`You successfully bet for lot with card ${lot.card.character.name}`)
+    );
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {
@@ -43,6 +50,7 @@ function* betWorker({ payload }: ReturnType<typeof betForLot>) {
 function* createLotWorker({ payload }: ReturnType<typeof createNewLot>) {
   try {
     yield call(createLot, payload);
+    yield put(setSuccessMessage(`Auction started`));
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {

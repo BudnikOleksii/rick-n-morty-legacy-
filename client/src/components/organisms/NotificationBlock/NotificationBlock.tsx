@@ -1,6 +1,6 @@
 import React from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
-import { ErrorAlert } from '../../molecules/ErrorAlert';
+import { NotificationsAlert } from '../../molecules/NotificationsAlert';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectNotificationInfo } from '../../../features/actions-info/actions-info-selector';
 import { setDefaultStatus } from '../../../features/actions-info/actions-info-slice';
@@ -8,7 +8,7 @@ import { MATERIAL_NAV_Z_INDEX } from '../../../constants';
 
 export const NotificationBlock = () => {
   const dispatch = useAppDispatch();
-  const { errors, actions } = useAppSelector(selectNotificationInfo);
+  const { errors, actions, successMessages } = useAppSelector(selectNotificationInfo);
 
   const handleCloseNotification = () => dispatch(setDefaultStatus());
 
@@ -21,8 +21,16 @@ export const NotificationBlock = () => {
         />
       )}
 
+      {successMessages.length > 0 && (
+        <NotificationsAlert
+          type="success"
+          messages={successMessages}
+          onClose={handleCloseNotification}
+        />
+      )}
+
       {errors && errors.length > 0 && (
-        <ErrorAlert errors={errors} onClose={handleCloseNotification} />
+        <NotificationsAlert type="error" messages={errors} onClose={handleCloseNotification} />
       )}
     </>
   );

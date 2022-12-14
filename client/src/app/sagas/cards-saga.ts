@@ -7,7 +7,11 @@ import {
   cardsLoadingStart,
   createCardStart,
 } from '../../features/cards/cards-slice';
-import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
+import {
+  finishAction,
+  setErrors,
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 import { createNewCard, getCards } from '../../api/cards-service';
 
 function* cardsWorker({ payload }: ReturnType<typeof cardsLoadingStart>) {
@@ -37,6 +41,7 @@ function* userCardsWorker({ payload }: ReturnType<typeof userCardsLoadingStart>)
 function* createCardWorker({ payload }: ReturnType<typeof createCardStart>) {
   try {
     yield call(createNewCard, payload.id);
+    yield put(setSuccessMessage('Card was successfully created'));
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {

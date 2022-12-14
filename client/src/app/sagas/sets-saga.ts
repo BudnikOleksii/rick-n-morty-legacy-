@@ -10,7 +10,11 @@ import {
 } from '../../features/sets/sets-slice';
 import { ISet, ISetsResponse } from '../../types/set';
 import { createSet, deleteSet, getSets, toggleCharacterInSet } from '../../api/sets-service';
-import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
+import {
+  finishAction,
+  setErrors,
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* setsWorker({ payload }: ReturnType<typeof setsLoadingStart>) {
   try {
@@ -29,6 +33,7 @@ function* createSetWorker({ payload }: ReturnType<typeof createSetStart>) {
     const setData = (yield call(createSet, payload.name)) as ISet;
 
     yield put(createSetSuccess(setData));
+    yield put(setSuccessMessage(`Set ${setData.name} was successfully created`));
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {
@@ -40,6 +45,7 @@ function* deleteSetWorker({ payload }: ReturnType<typeof deleteSetStart>) {
   try {
     yield call(deleteSet, payload.id);
 
+    yield put(setSuccessMessage(`Set was successfully deleted`));
     yield put(deleteSetSuccess(payload.id));
   } catch (errors) {
     yield put(setErrors(errors));
@@ -51,6 +57,8 @@ function* deleteSetWorker({ payload }: ReturnType<typeof deleteSetStart>) {
 function* toggleCharacterInSetWorker({ payload }: ReturnType<typeof toggleCharacterInSetStart>) {
   try {
     yield call(toggleCharacterInSet, payload.setId, payload.characterId);
+
+    yield put(setSuccessMessage('Character was successfully toggled in set'));
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {
