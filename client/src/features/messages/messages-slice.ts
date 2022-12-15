@@ -25,9 +25,10 @@ const messagesSlice = createSlice({
       state.messages = action.payload.results;
       state.messagesInfo = action.payload.info;
     },
+    createMessageStart: (state, action) => {},
   },
 });
 
-export const { messagesLoadingStart, messagesSuccess } = messagesSlice.actions;
+export const { messagesLoadingStart, messagesSuccess, createMessageStart } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

@@ -19,27 +19,15 @@ import { registerAction } from '../features/actions-info/actions-info-slice';
 import { messagesLoadingStart } from '../features/messages/messages-slice';
 import { selectMessages } from '../features/messages/messages-selectors';
 import { selectAuth } from '../features/auth/auth-selectors';
-import { UserListItem } from '../components/molecules/UserListItem';
-import { ConfirmModal } from '../components/molecules/ConfirmModal';
-import { getLocalTime } from '../helpers/date-helpers';
 import { MessageItem } from '../components/molecules/MessageItem';
-
-const styles = {
-  chatSection: {
-    width: '100%',
-    height: '80vh',
-  },
-  messageArea: {
-    height: '70vh',
-    overflowY: 'auto',
-  },
-};
+import { ChatUsersInfo } from '../components/organisms/ChatUsersInfo';
+import { NewMessageForm } from '../components/organisms/NewMessageForm';
 
 const Chat = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
-  const { chat, messages, messagesInfo } = useAppSelector(selectMessages);
+  const { chat, messages } = useAppSelector(selectMessages);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -52,11 +40,8 @@ const Chat = () => {
     );
   }, [page]);
 
-  const isUserInChat = chat?.users.some((userInChat) => userInChat.id === user?.id);
-  const toggleChatMessage = isUserInChat ? 'Leave chat' : 'Join chat';
-
-  const handleToggleUserInChat = () => {
-    console.log('here');
+  const handleSubmit = () => {
+    console.log('ssss');
   };
 
   return (
@@ -69,34 +54,24 @@ const Chat = () => {
         </Grid>
       </Grid>
 
-      <Grid container component={Paper} sx={styles.chatSection}>
-        <Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0' }}>
-          {user && (
-            <List>
-              <UserListItem user={user}>
-                <ConfirmModal
-                  buttonTitle={toggleChatMessage}
-                  confirmText={`${toggleChatMessage}, please, confirm`}
-                  onConfirm={handleToggleUserInChat}
-                />
-              </UserListItem>
-            </List>
-          )}
-
-          <Divider />
-
-          {chat && chat.users.length > 0 && (
-            <List>
-              {chat.users.map((chatUser) => (
-                <UserListItem key={chatUser.id} user={chatUser} />
-              ))}
-            </List>
-          )}
-        </Grid>
+      <Grid
+        container
+        component={Paper}
+        sx={{
+          width: '100%',
+          height: '80vh',
+        }}
+      >
+        <ChatUsersInfo />
 
         <Grid item xs={9}>
           {messages && messages.length > 0 && (
-            <List sx={styles.messageArea}>
+            <List
+              sx={{
+                height: '60vh',
+                overflowY: 'auto',
+              }}
+            >
               {messages.map((msg) => (
                 <MessageItem key={msg.id} message={msg} />
               ))}
@@ -105,16 +80,7 @@ const Chat = () => {
 
           <Divider />
 
-          <Grid container style={{ padding: '20px' }}>
-            <Grid item xs={11}>
-              <TextField id="outlined-basic-email" label="Type Something" fullWidth />
-            </Grid>
-            <Grid item xs={1}>
-              <Fab color="primary" aria-label="add">
-                <SendIcon />
-              </Fab>
-            </Grid>
-          </Grid>
+          <NewMessageForm />
         </Grid>
       </Grid>
     </Box>
