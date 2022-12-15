@@ -22,9 +22,10 @@ const chatsSlice = createSlice({
       state.chats = action.payload.results;
       state.chatsInfo = action.payload.info;
     },
+    toggleUserInChatStart: (state, action) => {},
   },
 });
 
-export const { chatsLoadingStart, chatsSuccess } = chatsSlice.actions;
+export const { chatsLoadingStart, chatsSuccess, toggleUserInChatStart } = chatsSlice.actions;
 
 export default chatsSlice.reducer;

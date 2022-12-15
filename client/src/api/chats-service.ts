@@ -17,10 +17,13 @@ export const getChatMessages = (
   return $api.get<IMessagesResponse>(ENDPOINTS.chatMessages(id) + params);
 };
 
+export const toggleUserInChat = (chatId: number, userId: number): Promise<AxiosResponse<IChat>> => {
+  return $api.patch<IChat>(ENDPOINTS.chatById(chatId), { userId });
+};
+
 export const createNewMessage = (
   id: number,
   body: string = ''
 ): Promise<AxiosResponse<IMessage>> => {
-  console.log(ENDPOINTS.chatMessages(id), body);
   return $api.post<IMessage>(ENDPOINTS.chatMessages(id), { body });
 };

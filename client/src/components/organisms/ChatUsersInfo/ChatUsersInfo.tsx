@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import { UserListItem } from '../../molecules/UserListItem';
-import { ConfirmModal } from '../../molecules/ConfirmModal';
-import { useAppSelector } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { selectMessages } from '../../../features/messages/messages-selectors';
+import { toggleUserInChatStart } from '../../../features/chats/chats-slice';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { BaseModal } from '../../molecules/BaseModal';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
 
 export const ChatUsersInfo = () => {
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
   const { chat } = useAppSelector(selectMessages);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const isUserInChat = chat?.users.some((userInChat) => userInChat.id === user?.id);
   const toggleChatMessage = isUserInChat ? 'Leave chat' : 'Join chat';
 
   const handleToggleUserInChat = () => {
-    console.log(chat?.id);
+    if (user && chat) {
+      dispatch(registerAction(toggleUserInChatStart.type));
+      dispatch(
+        toggleUserInChatStart({
+          chatId: chat.id,
+          userId: user.id,
+        })
+      );
+    }
   };
 
   return (
@@ -23,11 +36,15 @@ export const ChatUsersInfo = () => {
       {user && (
         <List>
           <UserListItem user={user}>
-            <ConfirmModal
-              buttonTitle={toggleChatMessage}
-              confirmText={`${toggleChatMessage}, please, confirm`}
-              onConfirm={handleToggleUserInChat}
-            />
+            <BaseModal
+              openModalTitle={toggleChatMessage}
+              open={openConfirmModal}
+              onOpenChange={setOpenConfirmModal}
+              buttonVariant="contained"
+            >
+              {`${toggleChatMessage}, please, confirm`}
+              <ConfirmButton onConfirm={handleToggleUserInChat} />
+            </BaseModal>
           </UserListItem>
         </List>
       )}

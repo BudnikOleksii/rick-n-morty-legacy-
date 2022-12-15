@@ -26,9 +26,13 @@ const messagesSlice = createSlice({
       state.messagesInfo = action.payload.info;
     },
     createMessageStart: (state, action) => {},
+    updateChatInfo: (state, action) => {
+      state.chat = action.payload;
+    },
   },
 });
 
-export const { messagesLoadingStart, messagesSuccess, createMessageStart } = messagesSlice.actions;
+export const { messagesLoadingStart, messagesSuccess, createMessageStart, updateChatInfo } =
+  messagesSlice.actions;
 
 export default messagesSlice.reducer;

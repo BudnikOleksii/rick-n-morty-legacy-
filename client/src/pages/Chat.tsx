@@ -3,14 +3,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
-import SendIcon from '@mui/icons-material/Send';
-import Fab from '@mui/material/Fab';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { useParams } from 'react-router-dom';
@@ -39,10 +32,6 @@ const Chat = () => {
       })
     );
   }, [page]);
-
-  const handleSubmit = () => {
-    console.log('ssss');
-  };
 
   return (
     <Box component="main" sx={{ p: 3, width: '100%' }}>
