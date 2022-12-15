@@ -23,6 +23,9 @@ export const ENDPOINTS = {
   lotsPricesRange: '/lots/prices',
   lotById: (id: number) => `/lots/${id}`,
   locations: '/locations',
+  chats: '/chats',
+  chatById: (id: number | string) => `/chats/${id}`,
+  chatMessages: (id: number | string) => `/chats/${id}/messages`,
 };
 
 const UNAUTHORIZED = 401;

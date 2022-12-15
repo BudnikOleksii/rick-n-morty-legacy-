@@ -6,7 +6,7 @@ export const PATHS = {
   characters: '/characters',
   sets: '/sets',
   lots: '/lots',
-  chat: '/chat',
+  chats: '/chats',
   transactions: '/transactions',
 };
 

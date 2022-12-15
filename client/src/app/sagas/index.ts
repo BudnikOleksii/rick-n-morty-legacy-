@@ -7,6 +7,8 @@ import charactersSaga from './characters-saga';
 import lotsSaga from './lots-saga';
 import transactionsSaga from './transactions-saga';
 import locationsSaga from './locations-saga';
+import chatsSaga from './chats-saga';
+import messagesSaga from './messages-saga';
 
 export default function* IndexSaga() {
   yield all([
@@ -18,5 +20,7 @@ export default function* IndexSaga() {
     lotsSaga(),
     transactionsSaga(),
     locationsSaga(),
+    chatsSaga(),
+    messagesSaga(),
   ]);
 }

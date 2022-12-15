@@ -7,8 +7,8 @@ import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { PATHS } from '../../../constants';
 
-const { lots, chat, users } = PATHS;
-const defaultNavItems = [lots, chat].map((item) => item.slice(1));
+const { lots, chats, users } = PATHS;
+const defaultNavItems = [lots, chats].map((item) => item.slice(1));
 const adminNavItems = [users].map((item) => item.slice(1));
 
 export const MainLayout = () => {
