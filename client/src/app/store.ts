@@ -6,7 +6,8 @@ import setsReducer from '../features/sets/sets-slice';
 import charactersReducer from '../features/characters/characters-slice';
 import lotsReducer from '../features/lots/lots-slice';
 import transactionsReducer from '../features/transactions/transactions-slice';
-import notificationInfoReducer from '../features/notification-info/notification-info-slice';
+import actionsInfoReducer from '../features/actions-info/actions-info-slice';
+import locationsReducer from '../features/locations/locations-slice';
 import createSagaMiddleware from 'redux-saga';
 import IndexSaga from './sagas';
 
@@ -14,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
-    notifications: notificationInfoReducer,
+    actionsInfo: actionsInfoReducer,
     auth: authReducer,
     cards: cardsReducer,
     users: usersReducer,
@@ -22,6 +23,7 @@ export const store = configureStore({
     characters: charactersReducer,
     lots: lotsReducer,
     transactions: transactionsReducer,
+    locations: locationsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

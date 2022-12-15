@@ -1,4 +1,5 @@
 import { FC, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -6,8 +7,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import { ButtonLink } from '../../atoms/ButtonLink';
-import { useNavigate } from 'react-router-dom';
 import { ProfileDropdown } from '../ProfileDropdown';
+import { FaqDropdown } from '../FaqDropdown';
 
 interface Props {
   onDrawerToggle: () => void;
@@ -44,6 +45,7 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
           ))}
         </Box>
 
+        <FaqDropdown />
         <ProfileDropdown />
       </Toolbar>
     </AppBar>

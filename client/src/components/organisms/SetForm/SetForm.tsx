@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import React from 'react';
 import { INewSet } from '../../../types/set';
 import { createSetStart } from '../../../features/sets/sets-slice';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 const schema = yup.object().shape({
   name: yup.string().trim().min(4).max(15).required(),
@@ -22,6 +23,7 @@ export const SetForm = () => {
   } = useForm<INewSet>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
+    dispatch(registerAction(createSetStart.type));
     dispatch(createSetStart(data));
   });
 

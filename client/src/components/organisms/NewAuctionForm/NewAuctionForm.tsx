@@ -6,10 +6,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../../app/hooks';
-import { INewLot } from '../../../types/lot';
 import { getLocalTime } from '../../../helpers/date-helpers';
-import { DEFAULT_MAX_PRICE } from '../../../constants';
 import { createNewLot } from '../../../features/lots/lots-slice';
+import { DEFAULT_MAX_PRICE } from '../../../constants';
+import { INewLot } from '../../../types/lot';
 
 interface Props {
   cardId: number;

@@ -7,9 +7,11 @@ const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const getCharacters = async (page, limit, endpoint) => {
   checkLimitForRequest(limit, 'characters');
   const { results, total } = await CharactersRepository.getCharacters(page, limit);
+  const unusedCount = await CharactersRepository.countUnused();
 
   return {
     info: createInfoData(total, page, limit, endpoint),
+    unusedCount,
     results,
   };
 };

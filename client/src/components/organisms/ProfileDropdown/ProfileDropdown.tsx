@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { logoutStart } from '../../../features/auth/auth-slice';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { useNavigate } from 'react-router-dom';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { PATHS } from '../../../constants';
 
 export const ProfileDropdown = () => {
@@ -24,6 +25,7 @@ export const ProfileDropdown = () => {
   };
 
   const handleLogout = () => {
+    dispatch(registerAction(logoutStart.type));
     dispatch(logoutStart());
   };
 
@@ -33,7 +35,7 @@ export const ProfileDropdown = () => {
   };
 
   return (
-    <div style={{ marginLeft: 'auto' }}>
+    <div>
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}

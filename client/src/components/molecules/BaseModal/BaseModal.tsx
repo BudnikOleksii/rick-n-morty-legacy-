@@ -32,7 +32,7 @@ export const BaseModal: FC<Props> = ({ openModalTitle, children, buttonVariant, 
   return (
     <div>
       <Button
-        sx={{ display: 'block', margin: '15px auto' }}
+        sx={{ display: 'block', margin: '10px auto', minWidth: '130px' }}
         variant={buttonVariant}
         color={buttonColor}
         onClick={handleOpen}

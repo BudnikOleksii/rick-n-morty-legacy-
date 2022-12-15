@@ -11,18 +11,20 @@ import {
 import { ISet, ISetsResponse } from '../../types/set';
 import { createSet, deleteSet, getSets, toggleCharacterInSet } from '../../api/sets-service';
 import {
-  loadingSuccess,
+  finishAction,
   setErrors,
-} from '../../features/notification-info/notification-info-slice';
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* setsWorker({ payload }: ReturnType<typeof setsLoadingStart>) {
   try {
     const setsData = (yield call(getSets, payload.params)) as ISetsResponse;
 
-    yield put(loadingSuccess());
     yield put(setsSuccess(setsData));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(setsLoadingStart.type));
   }
 }
 
@@ -30,10 +32,12 @@ function* createSetWorker({ payload }: ReturnType<typeof createSetStart>) {
   try {
     const setData = (yield call(createSet, payload.name)) as ISet;
 
-    yield put(loadingSuccess());
     yield put(createSetSuccess(setData));
+    yield put(setSuccessMessage(`Set ${setData.name} was successfully created`));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(createSetStart.type));
   }
 }
 
@@ -41,10 +45,12 @@ function* deleteSetWorker({ payload }: ReturnType<typeof deleteSetStart>) {
   try {
     yield call(deleteSet, payload.id);
 
-    yield put(loadingSuccess());
+    yield put(setSuccessMessage(`Set was successfully deleted`));
     yield put(deleteSetSuccess(payload.id));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(deleteSetStart.type));
   }
 }
 
@@ -52,9 +58,11 @@ function* toggleCharacterInSetWorker({ payload }: ReturnType<typeof toggleCharac
   try {
     yield call(toggleCharacterInSet, payload.setId, payload.characterId);
 
-    yield put(loadingSuccess());
+    yield put(setSuccessMessage('Character was successfully toggled in set'));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(toggleCharacterInSetStart.type));
   }
 }
 

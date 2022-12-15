@@ -1,11 +1,11 @@
 import { FC, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Drawer from '@mui/material/Drawer';
 import { ListItemLink } from '../../atoms/ListItemLink';
-import { useNavigate } from 'react-router-dom';
 
 interface Props {
   open?: boolean;

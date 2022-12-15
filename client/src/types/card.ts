@@ -1,4 +1,4 @@
-import { Maybe } from './maybe';
+import { Maybe } from './helper-types';
 import { IUser } from './user';
 import { ICharacter } from './character';
 import { ISuccessResponse } from './response';

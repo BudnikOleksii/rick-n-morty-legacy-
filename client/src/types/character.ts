@@ -1,5 +1,5 @@
+import { Maybe } from './helper-types';
 import { IEpisode } from './episode';
-import { Maybe } from './maybe';
 import { ILocation } from './location';
 import { ISuccessResponse } from './response';
 import { ISet } from './set';
@@ -19,4 +19,6 @@ export interface ICharacter {
   sets?: ISet[];
 }
 
-export type ICharactersResponse = ISuccessResponse<ICharacter[]>;
+export interface ICharactersResponse extends ISuccessResponse<ICharacter[]> {
+  unusedCount: number;
+}

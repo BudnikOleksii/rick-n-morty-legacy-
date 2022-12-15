@@ -1,8 +1,8 @@
-import { Maybe } from '../../types/maybe';
-import { IUser } from '../../types/user';
 import { createSlice } from '@reduxjs/toolkit';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import { checkIsAdmin } from '../../helpers/check-is-admin';
+import { Maybe } from '../../types/helper-types';
+import { IUser } from '../../types/user';
 
 const user: IUser = getItemFromLocalStorage('user');
 

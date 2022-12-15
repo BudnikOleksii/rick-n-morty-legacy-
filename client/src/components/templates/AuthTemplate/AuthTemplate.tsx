@@ -1,15 +1,15 @@
 import React, { FC, ReactNode, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../app/hooks';
-import { selectAuth } from '../../../features/auth/auth-selectors';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
+import { useAppSelector } from '../../../app/hooks';
+import { selectAuth } from '../../../features/auth/auth-selectors';
 
 interface Props {
   name: string;

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import List from '@mui/material/List';
-import { ListItemBase } from '../../atoms/ListItemBase';
 import Button from '@mui/material/Button';
+import { ListItemBase } from '../../atoms/ListItemBase';
 import { ISet } from '../../../types/set';
 
 interface Props {

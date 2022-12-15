@@ -3,14 +3,33 @@ const httpStatusCodes = require('../utils/http-status-codes');
 const { LotsService } = require('../services/lots');
 const { validate } = require('../validations/validate');
 
-const { defaultPage, defaultLimitPerPage } = config.server;
+const { defaultPage, defaultLimitPerPage, defaultMaxPrice } = config.server;
 
 const getLots = async (req, res, next) => {
-  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const {
+    page = defaultPage,
+    limit = defaultLimitPerPage,
+    name = '',
+    locationId = '',
+    order = 'asc',
+    minPrice = 0,
+    maxPrice = defaultMaxPrice,
+  } = req.query;
   const endpoint = req.headers.host + req.baseUrl;
 
   try {
-    const lotsData = await LotsService.getLots(page, limit, endpoint);
+    const lotsData = await LotsService.getLots(
+      {
+        page,
+        limit,
+        name,
+        locationId,
+        order,
+        minPrice,
+        maxPrice,
+      },
+      endpoint
+    );
 
     return res.status(httpStatusCodes.OK).json(lotsData);
   } catch (error) {
@@ -55,9 +74,20 @@ const handleBet = async (req, res, next) => {
   }
 };
 
+const getLotsPriceRange = async (req, res, next) => {
+  try {
+    const pricesData = await LotsService.getLotsPriceRange();
+
+    return res.status(httpStatusCodes.OK).json(pricesData);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.LotsController = {
   getLots,
   getLotById,
   createLot,
   handleBet,
+  getLotsPriceRange,
 };

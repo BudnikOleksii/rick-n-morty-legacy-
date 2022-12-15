@@ -1,4 +1,4 @@
-import { Maybe } from './maybe';
+import { Maybe } from './helper-types';
 import { IUser } from './user';
 import { ICard } from './card';
 import { ISuccessResponse } from './response';
@@ -23,6 +23,11 @@ export interface INewLot {
   endDate: string;
   minAuctionDuration: number;
   minStep: number;
+  maxPrice: number;
+}
+
+export interface IPricesRange {
+  minPrice: number;
   maxPrice: number;
 }
 

@@ -20,7 +20,9 @@ export const ENDPOINTS = {
   characters: '/characters',
   cards: '/cards',
   lots: '/lots',
+  lotsPricesRange: '/lots/prices',
   lotById: (id: number) => `/lots/${id}`,
+  locations: '/locations',
 };
 
 const UNAUTHORIZED = 401;

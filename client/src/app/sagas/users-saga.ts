@@ -8,29 +8,33 @@ import {
   usersSuccess,
 } from '../../features/users/users-slice';
 import {
-  loadingSuccess,
+  finishAction,
   setErrors,
-} from '../../features/notification-info/notification-info-slice';
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* usersWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
   try {
     const usersData = (yield call(getUsers, payload.params)) as IUsersResponse;
 
-    yield put(loadingSuccess());
     yield put(usersSuccess(usersData));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(usersLoadingStart.type));
   }
 }
 
-function* addNewRoleWorker({ payload }: ReturnType<typeof usersLoadingStart>) {
+function* addNewRoleWorker({ payload }: ReturnType<typeof addNewRoleStart>) {
   try {
     const userData = (yield call(addNewRole, payload.id, payload.role)) as IUser;
 
-    yield put(loadingSuccess());
     yield put(addNewRoleSuccess(userData));
+    yield put(setSuccessMessage(`User ${userData.username} get new role ${payload.role}`));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(addNewRoleStart.type));
   }
 }
 

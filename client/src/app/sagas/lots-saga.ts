@@ -6,21 +6,29 @@ import {
   lotsLoadingStart,
   lotsSuccess,
 } from '../../features/lots/lots-slice';
-import { ILot, ILotResponse } from '../../types/lot';
-import { createLot, getLots, handleBet } from '../../api/lots-service';
+import { ILot, ILotResponse, IPricesRange } from '../../types/lot';
+import { createLot, getLots, getLotsPriceRange, handleBet } from '../../api/lots-service';
 import {
-  loadingSuccess,
+  finishAction,
   setErrors,
-} from '../../features/notification-info/notification-info-slice';
+  setSuccessMessage,
+} from '../../features/actions-info/actions-info-slice';
 
 function* lotsWorker({ payload }: ReturnType<typeof lotsLoadingStart>) {
   try {
+    const pricesRange = (yield call(getLotsPriceRange)) as IPricesRange;
     const lotsData = (yield call(getLots, payload.params)) as ILotResponse;
 
-    yield put(loadingSuccess());
-    yield put(lotsSuccess(lotsData));
+    yield put(
+      lotsSuccess({
+        ...lotsData,
+        pricesRange,
+      })
+    );
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(lotsLoadingStart.type));
   }
 }
 
@@ -28,20 +36,25 @@ function* betWorker({ payload }: ReturnType<typeof betForLot>) {
   try {
     const lot = (yield call(handleBet, payload.id, payload.bet)) as ILot;
 
-    yield put(loadingSuccess());
     yield put(betSuccess(lot));
+    yield put(
+      setSuccessMessage(`You successfully bet for lot with card ${lot.card.character.name}`)
+    );
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(betForLot.type));
   }
 }
 
 function* createLotWorker({ payload }: ReturnType<typeof createNewLot>) {
   try {
     yield call(createLot, payload);
-
-    yield put(loadingSuccess());
+    yield put(setSuccessMessage(`Auction started`));
   } catch (errors) {
     yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(createNewLot.type));
   }
 }
 

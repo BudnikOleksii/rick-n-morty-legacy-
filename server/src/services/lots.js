@@ -14,12 +14,12 @@ const { auctionFinished } = require('./auction-finished-subject');
 const { defaultInitialPrice, defaultMinActionDuration, defaultMinStep, defaultMaxPrice } =
   config.server;
 
-const getLots = async (page, limit, endpoint) => {
-  checkLimitForRequest(limit, 'lots');
-  const { results, total } = await LotsRepository.getLots(page, limit);
+const getLots = async (queryParams, endpoint) => {
+  checkLimitForRequest(queryParams.limit, 'lots');
+  const { results, total } = await LotsRepository.getLots(queryParams);
 
   return {
-    info: createInfoData(total, page, limit, endpoint),
+    info: createInfoData(total, queryParams.page, queryParams.limit, endpoint),
     results,
   };
 };
@@ -142,10 +142,13 @@ const closeAllFinishedAuctions = async () => {
   }
 };
 
+const getLotsPriceRange = () => LotsRepository.getLotsPriceRange();
+
 module.exports.LotsService = {
   getLots,
   getLotById,
   createLot,
   handleBet,
   closeAllFinishedAuctions,
+  getLotsPriceRange,
 };

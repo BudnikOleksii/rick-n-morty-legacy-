@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -10,20 +11,22 @@ import Diversity2Icon from '@mui/icons-material/Diversity2';
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import PublicIcon from '@mui/icons-material/Public';
 import LanguageIcon from '@mui/icons-material/Language';
-import { BaseModal } from '../../molecules/BaseModal';
-import { ICharacter } from '../../../types/character';
-import { EpisodesList } from '../EpisodesList';
-import { ListItemComponent } from '../../molecules/ListItemComponent';
 import Button from '@mui/material/Button';
+import { BaseModal } from '../../molecules/BaseModal';
+import { EpisodesList } from '../EpisodesList';
+import { SetsList } from '../SetsList';
+import { ConfirmModal } from '../../molecules/ConfirmModal';
+import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { ListItemBase } from '../../atoms/ListItemBase';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
-import { SetsList } from '../SetsList';
 import { toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
-import { useNavigate } from 'react-router-dom';
-import { PATHS } from '../../../constants';
-import { CardActions } from '@mui/material';
 import { selectSets } from '../../../features/sets/sets-selcetors';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { selectCharacters } from '../../../features/characters/characters-selectors';
+import { createCardStart } from '../../../features/cards/cards-slice';
+import { ICharacter } from '../../../types/character';
+import { PATHS } from '../../../constants';
 
 type Props = {
   character: ICharacter;
@@ -32,11 +35,13 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(selectAuth);
-  const { name, image, status, gender, type, species, origin, location, episodes, sets } =
+  const { id, name, image, status, gender, type, species, origin, location, episodes, sets } =
     character;
   const { sets: allSets } = useAppSelector(selectSets);
+  const { allCharactersUsed } = useAppSelector(selectCharacters);
 
   const handleToggleCharacterInSet = (setId: number) => {
+    dispatch(registerAction(toggleCharacterInSetStart.type));
     dispatch(
       toggleCharacterInSetStart({
         setId,
@@ -44,6 +49,11 @@ export const CharacterCard: FC<Props> = ({ character }) => {
       })
     );
     navigate(PATHS.sets);
+  };
+
+  const handleCreateNewCard = () => {
+    dispatch(registerAction(createCardStart.type));
+    dispatch(createCardStart({ id }));
   };
 
   return (
@@ -64,11 +74,18 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         </List>
       </CardContent>
 
-      <BaseModal openModalTitle="Episodes info">
-        <EpisodesList episodes={episodes} />
-      </BaseModal>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          padding: '8px',
+        }}
+      >
+        <BaseModal openModalTitle="Episodes" buttonVariant="contained" buttonColor="info">
+          <EpisodesList episodes={episodes} />
+        </BaseModal>
 
-      <CardActions>
         {sets && sets.length > 0 && (
           <BaseModal openModalTitle="Sets info" buttonVariant="contained" buttonColor="info">
             {sets.map((set) => (
@@ -92,7 +109,16 @@ export const CharacterCard: FC<Props> = ({ character }) => {
             <SetsList sets={allSets} onToggleCharacterInSet={handleToggleCharacterInSet} />
           </BaseModal>
         )}
-      </CardActions>
+
+        {isAdmin && allCharactersUsed && (
+          <ConfirmModal
+            buttonTitle="Create card"
+            buttonColor="secondary"
+            confirmText="Are you sure you want create card with this character?"
+            onConfirm={handleCreateNewCard}
+          />
+        )}
+      </div>
     </Card>
   );
 };

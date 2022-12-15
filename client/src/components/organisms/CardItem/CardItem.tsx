@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
-import { ICard } from '../../../types/card';
+import Paper from '@mui/material/Paper';
+import { BaseModal } from '../../molecules/BaseModal';
+import { NewAuctionForm } from '../NewAuctionForm';
 import { CharacterCard } from '../CharacterCard';
 import { GridItem } from '../../atoms/GridItem';
 import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
-import { Paper } from '@mui/material';
-import { BaseModal } from '../../molecules/BaseModal';
-import { NewAuctionForm } from '../NewAuctionForm';
+import { ICard } from '../../../types/card';
 import { indigo } from '@mui/material/colors';
 
 interface Props {

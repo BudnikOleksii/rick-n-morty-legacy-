@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PageTemplate } from '../components/templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
 import { userCardsLoadingStart } from '../features/cards/cards-slice';
 import { selectAuth } from '../features/auth/auth-selectors';
-import { PATHS } from '../constants';
 import { CardsList } from '../components/organisms/CardsList';
-import { useNavigate } from 'react-router-dom';
-import { PageTemplate } from '../components/templates/PageTemplate';
-import { startLoading } from '../features/notification-info/notification-info-slice';
+import { registerAction } from '../features/actions-info/actions-info-slice';
+import { PATHS } from '../constants';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(startLoading());
+      dispatch(registerAction(userCardsLoadingStart.type));
       dispatch(
         userCardsLoadingStart({
           userId: user.id,
