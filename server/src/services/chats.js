@@ -20,7 +20,7 @@ const getChat = async (columnName, value) => {
   const chat = await ChatsRepository.getChat(columnName, value);
 
   if (!chat) {
-    throw new NotFoundError(['Chats not found']);
+    throw new NotFoundError(['Chat not found']);
   }
 
   return chat;
@@ -32,7 +32,7 @@ const getChatById = async (id) => {
   const chat = await ChatsRepository.getChatById(id);
 
   if (!chat) {
-    throw new NotFoundError(['Chats not found']);
+    throw new NotFoundError(['Chat not found']);
   }
 
   return chat;

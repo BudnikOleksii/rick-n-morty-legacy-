@@ -10,6 +10,9 @@ import { toggleUserInChatStart } from '../../../features/chats/chats-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { BaseModal } from '../../molecules/BaseModal';
 import { ConfirmButton } from '../../atoms/ConfirmButton';
+import Button from '@mui/material/Button';
+import { startChannel, stopChannel } from '../../../features/chat-socket/chat-socket-slice';
+import { selectSocket } from '../../../features/chat-socket/chat-socket-selectors';
 
 export const ChatUsersInfo = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +21,9 @@ export const ChatUsersInfo = () => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const isUserInChat = chat?.users.some((userInChat) => userInChat.id === user?.id);
   const toggleChatMessage = isUserInChat ? 'Leave chat' : 'Join chat';
+
+  const { messages, channelStatus, serverStatus } = useAppSelector(selectSocket);
+  console.log(messages);
 
   const handleToggleUserInChat = () => {
     if (user && chat) {
@@ -50,6 +56,10 @@ export const ChatUsersInfo = () => {
       )}
 
       <Divider />
+      <Button onClick={() => dispatch(startChannel())}>Trigger socket</Button>
+      <Button onClick={() => dispatch(stopChannel())} color="error">
+        Trigger socket stop
+      </Button>
 
       {chat && chat.users.length > 0 && (
         <List>
