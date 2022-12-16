@@ -2,7 +2,6 @@ import { Socket } from 'socket.io-client';
 import { eventChannel } from 'redux-saga';
 import { take, call, put, fork, race, cancelled, delay } from 'redux-saga/effects';
 import {
-  addMessage,
   channelOff,
   channelOn,
   serverOff,
@@ -11,17 +10,21 @@ import {
   stopChannel,
 } from '../../features/chat-socket/chat-socket-slice';
 import { socket, connect, disconnect, reconnect } from '../../api/socket-api';
+import { SOCKET_EVENTS } from '../../constants';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { addNewMessage } from '../../features/messages/messages-slice';
 
-const createSocketChannel = (socket: Socket) => {
+const createSocketChannel = (socket: Socket, payload: any) => {
   return eventChannel((emit) => {
     const handler = (data: any) => {
       emit(data);
     };
 
-    socket.on('sendMessage', handler);
+    socket.on(SOCKET_EVENTS.receive, handler);
+    socket.emit(SOCKET_EVENTS.join, payload);
 
     return () => {
-      socket.off('sendMessage', handler);
+      socket.off(SOCKET_EVENTS.receive, handler);
     };
   });
 };
@@ -40,7 +43,7 @@ function* listenConnectSaga() {
   }
 }
 
-function* listenServerSaga() {
+function* listenServerSaga(payload: any) {
   try {
     yield put(channelOn());
     const { timeout } = yield race({
@@ -54,7 +57,7 @@ function* listenServerSaga() {
 
     const socket = (yield call(connect)) as Socket;
     // @ts-ignore
-    const socketChannel = yield call(createSocketChannel, socket);
+    const socketChannel = yield call(createSocketChannel, socket, payload);
     yield fork(listenDisconnectSaga);
     yield fork(listenConnectSaga);
     yield put(serverOn());
@@ -62,7 +65,7 @@ function* listenServerSaga() {
     while (true) {
       // @ts-ignore
       const payload = yield take(socketChannel);
-      yield put(addMessage(payload));
+      yield put(addNewMessage(payload));
     }
   } catch (error) {
     console.log(error);
@@ -75,12 +78,13 @@ function* listenServerSaga() {
   }
 }
 
-export const startStopChannel = function* () {
+export default function* startStopChannel() {
   while (true) {
-    yield take(startChannel.type);
+    const action = (yield take(startChannel.type)) as PayloadAction;
+
     yield race({
-      task: call(listenServerSaga),
+      task: call(listenServerSaga, action.payload),
       cancel: take(stopChannel.type),
     });
   }
-};
+}

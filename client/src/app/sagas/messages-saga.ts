@@ -7,6 +7,8 @@ import {
   messagesLoadingStart,
   messagesSuccess,
 } from '../../features/messages/messages-slice';
+import { socket } from '../../api/socket-api';
+import { SOCKET_EVENTS } from '../../constants';
 
 function* messagesWorker({ payload }: ReturnType<typeof messagesLoadingStart>) {
   try {
@@ -32,7 +34,8 @@ function* messagesWorker({ payload }: ReturnType<typeof messagesLoadingStart>) {
 
 function* createMessageWorker({ payload }: ReturnType<typeof createMessageStart>) {
   try {
-    yield call(createNewMessage, payload.chatId, payload.body);
+    const message = (yield call(createNewMessage, payload.chatId, payload.body)) as IMessage;
+    socket.emit(SOCKET_EVENTS.send, message);
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {

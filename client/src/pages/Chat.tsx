@@ -15,6 +15,7 @@ import { selectAuth } from '../features/auth/auth-selectors';
 import { MessageItem } from '../components/molecules/MessageItem';
 import { ChatUsersInfo } from '../components/organisms/ChatUsersInfo';
 import { NewMessageForm } from '../components/organisms/NewMessageForm';
+import { startChannel, stopChannel } from '../features/chat-socket/chat-socket-slice';
 
 const Chat = () => {
   const { id } = useParams();
@@ -31,6 +32,15 @@ const Chat = () => {
         params: `?page=${page}`,
       })
     );
+    dispatch(
+      startChannel({
+        roomId: Number(id),
+      })
+    );
+
+    return () => {
+      dispatch(stopChannel());
+    };
   }, [page]);
 
   return (

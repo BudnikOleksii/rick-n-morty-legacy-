@@ -14,20 +14,16 @@ const io = require('socket.io')(server, {
 });
 
 io.on('connection', (socket) => {
-  setInterval(() => {
-    socket.emit('sendMessage', {
-      msg: Math.random(),
-    });
-  }, 2000);
-
-  socket.on(socketEvents.join, ({ roomId, userName }) => {
+  socket.on(socketEvents.join, ({ roomId }) => {
     socket.rooms.forEach((room) => socket.leave(room));
     socket.join(roomId);
-    socket.to(roomId).emit(socketEvents.receive, `${userName} just join room number ${roomId}`);
+    console.log(roomId);
+    // TODO emit some event to notify that user online
+    // socket.to(roomId).emit(socketEvents.receive, `${userName} just join room number ${roomId}`);
   });
 
   socket.on(socketEvents.send, (data) => {
-    socket.to(socket.rooms.values().next().value).emit(socketEvents.receive, data.msg);
+    socket.to(data.chat_id).emit(socketEvents.receive, data);
   });
 });
 

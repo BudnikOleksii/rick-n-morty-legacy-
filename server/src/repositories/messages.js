@@ -9,11 +9,11 @@ const getChatMessages = (page, limit, chatId) => {
 };
 
 const getMessageById = (id) => {
-  return Message.query().whereNotDeleted().findById(id);
+  return Message.query().whereNotDeleted().withGraphFetched('user').findById(id);
 };
 
 const createMessage = (payload) => {
-  return Message.query().insertAndFetch(payload);
+  return Message.query().insertAndFetch(payload).withGraphFetched('user');
 };
 
 const editMessage = (id, body) => {

@@ -9,7 +9,7 @@ import transactionsSaga from './transactions-saga';
 import locationsSaga from './locations-saga';
 import chatsSaga from './chats-saga';
 import messagesSaga from './messages-saga';
-import { startStopChannel } from './socket-saga';
+import startStopChannel from './socket-saga';
 
 export default function* IndexSaga() {
   yield all([
