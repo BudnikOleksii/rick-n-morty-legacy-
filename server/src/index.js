@@ -17,9 +17,6 @@ io.on('connection', (socket) => {
   socket.on(socketEvents.join, ({ roomId }) => {
     socket.rooms.forEach((room) => socket.leave(room));
     socket.join(roomId);
-    console.log(roomId);
-    // TODO emit some event to notify that user online
-    // socket.to(roomId).emit(socketEvents.receive, `${userName} just join room number ${roomId}`);
   });
 
   socket.on(socketEvents.send, (data) => {

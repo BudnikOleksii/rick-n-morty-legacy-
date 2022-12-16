@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
@@ -10,7 +10,6 @@ import { toggleUserInChatStart } from '../../../features/chats/chats-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { BaseModal } from '../../molecules/BaseModal';
 import { ConfirmButton } from '../../atoms/ConfirmButton';
-import { startChannel, stopChannel } from '../../../features/chat-socket/chat-socket-slice';
 
 export const ChatUsersInfo = () => {
   const dispatch = useAppDispatch();
