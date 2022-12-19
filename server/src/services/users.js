@@ -1,6 +1,10 @@
 const config = require('../../config');
 const { UserRepository } = require('../repositories/users');
-const { BadRequestError, NotFoundError, InternalServerError} = require('../utils/errors/api-errors');
+const {
+  BadRequestError,
+  NotFoundError,
+  InternalServerError,
+} = require('../utils/errors/api-errors');
 const bcrypt = require('bcrypt');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
@@ -37,9 +41,7 @@ const getUserById = async (id) => {
 const getUser = (columnName, value) => UserRepository.getUser(columnName, value);
 
 const createUser = async (userData, ip) => {
-  const {
-    username, login, password
-  } = userData;
+  const { username, login, password } = userData;
 
   let candidate = await getUser('login', login);
 
@@ -67,7 +69,7 @@ const createUser = async (userData, ip) => {
   }
 
   return user;
-}
+};
 
 const updateUser = (id, payload) => UserRepository.updateUser(id, payload);
 
@@ -79,7 +81,7 @@ const deleteUser = async (id) => {
 
 const addNewRole = async (userId, newRole) => {
   const user = await getUserById(userId);
-  const isUserHaveThisRole = user.roles.some(role => role.title === newRole);
+  const isUserHaveThisRole = user.roles.some((role) => role.title === newRole);
 
   if (isUserHaveThisRole) {
     throw new BadRequestError(['User already have this role']);

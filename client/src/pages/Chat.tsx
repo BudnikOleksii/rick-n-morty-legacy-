@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import { useParams } from 'react-router-dom';
+import { MessagesList } from '../components/organisms/MessagesList';
+import { ChatUsersInfo } from '../components/organisms/ChatUsersInfo';
+import { NewMessageForm } from '../components/organisms/NewMessageForm';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { messagesLoadingStart } from '../features/messages/messages-slice';
 import { selectMessages } from '../features/messages/messages-selectors';
-import { ChatUsersInfo } from '../components/organisms/ChatUsersInfo';
-import { NewMessageForm } from '../components/organisms/NewMessageForm';
 import { startChannel, stopChannel } from '../features/chat-socket/chat-socket-slice';
-import { MessagesList } from '../components/organisms/MessagesList';
 
 const Chat = () => {
   const { id } = useParams();
@@ -28,11 +28,7 @@ const Chat = () => {
         params: '',
       })
     );
-    dispatch(
-      startChannel({
-        roomId: Number(id),
-      })
-    );
+    dispatch(startChannel(Number(id)));
 
     return () => {
       dispatch(stopChannel());

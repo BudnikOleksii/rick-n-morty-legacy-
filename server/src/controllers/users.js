@@ -113,7 +113,12 @@ const getUserTransactions = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const userTransactions = await TransactionService.getUserTransactions(page, limit, endpoint, id);
+    const userTransactions = await TransactionService.getUserTransactions(
+      page,
+      limit,
+      endpoint,
+      id
+    );
 
     return res.status(httpStatusCodes.OK).json(userTransactions);
   } catch (error) {

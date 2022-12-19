@@ -6,6 +6,7 @@ import {
   channelOn,
   serverOff,
   serverOn,
+  setUsersInRoomIds,
   startChannel,
   stopChannel,
 } from '../../features/chat-socket/chat-socket-slice';
@@ -14,22 +15,28 @@ import { SOCKET_EVENTS } from '../../constants';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { addNewMessage } from '../../features/messages/messages-slice';
 import { IMessage } from '../../types/chat-messages';
+import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
+import { store } from '../store';
 
-interface IRoom {
-  roomId: number;
-}
-
-const createSocketChannel = (socket: Socket, room: IRoom) => {
+const createSocketChannel = (socket: Socket, roomId: number) => {
   return eventChannel((emit) => {
     const newMessageHandler = (data: IMessage) => {
       emit(data);
     };
+    const newUserJoinHandler = (usersIds: number[]) => {
+      store.dispatch(setUsersInRoomIds(usersIds));
+    };
 
     socket.on(SOCKET_EVENTS.receive, newMessageHandler);
-    socket.emit(SOCKET_EVENTS.join, room);
+    socket.on(SOCKET_EVENTS.usersOnlineInfo, newUserJoinHandler);
+    socket.emit(SOCKET_EVENTS.join, {
+      roomId,
+      userId: getItemFromLocalStorage('user')?.id,
+    });
 
     return () => {
       socket.off(SOCKET_EVENTS.receive, newMessageHandler);
+      socket.off(SOCKET_EVENTS.usersOnlineInfo, newUserJoinHandler);
     };
   });
 };
@@ -48,7 +55,7 @@ function* listenConnectSaga() {
   }
 }
 
-function* listenServerSaga(room: IRoom): SagaIterator {
+function* listenServerSaga(roomId: number): SagaIterator {
   try {
     yield put(channelOn());
     const { timeout } = yield race({
@@ -61,7 +68,7 @@ function* listenServerSaga(room: IRoom): SagaIterator {
     }
 
     const socket = (yield call(connect)) as Socket;
-    const socketChannel = (yield call(createSocketChannel, socket, room)) as EventChannel<any>;
+    const socketChannel = (yield call(createSocketChannel, socket, roomId)) as EventChannel<any>;
     yield fork(listenDisconnectSaga);
     yield fork(listenConnectSaga);
     yield put(serverOn());
@@ -82,7 +89,7 @@ function* listenServerSaga(room: IRoom): SagaIterator {
 
 export default function* startStopChannel() {
   while (true) {
-    const action = (yield take(startChannel.type)) as PayloadAction<IRoom>;
+    const action = (yield take(startChannel.type)) as PayloadAction<number>;
 
     yield race({
       task: call(listenServerSaga, action.payload),

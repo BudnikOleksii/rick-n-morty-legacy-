@@ -18,7 +18,11 @@ usersRouter.get('/:id/cards', UserController.getUserCards);
 usersRouter.get('/:id/sets', UserController.getUserSets);
 usersRouter.get('/:id/balance', selfOrRoleGuard(adminRole), UserController.getUserBalance);
 usersRouter.get('/:id/chats', selfOrRoleGuard(adminRole), UserController.getUserChats);
-usersRouter.get('/:id/transactions', selfOrRoleGuard(adminRole), UserController.getUserTransactions);
+usersRouter.get(
+  '/:id/transactions',
+  selfOrRoleGuard(adminRole),
+  UserController.getUserTransactions
+);
 usersRouter.delete('/:id', selfOrRoleGuard(adminRole), UserController.deleteUser);
 usersRouter.patch('/role/:id', roleGuard(adminRole), UserController.addNewRole);
 

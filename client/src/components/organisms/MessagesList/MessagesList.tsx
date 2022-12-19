@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useRef } from 'react';
-import { IMessage } from '../../../types/chat-messages';
-import { MessageItem } from '../../molecules/MessageItem';
+import { useParams } from 'react-router-dom';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
+import { MessageItem } from '../../molecules/MessageItem';
+import { IMessage } from '../../../types/chat-messages';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectMessages } from '../../../features/messages/messages-selectors';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { messagesLoadingStart } from '../../../features/messages/messages-slice';
-import { useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
 
 interface Props {
   messages: IMessage[];

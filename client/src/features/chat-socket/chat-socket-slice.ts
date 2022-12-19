@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface SocketState {
-  channelStatus: 'off' | 'on';
+  isOnline: boolean;
   serverStatus: 'off' | 'on' | 'unknown';
+  usersInRoomIds: number[];
 }
 
 const initialState: SocketState = {
-  channelStatus: 'off',
+  isOnline: false,
   serverStatus: 'unknown',
+  usersInRoomIds: [],
 };
 
 const socketSlice = createSlice({
@@ -17,10 +19,10 @@ const socketSlice = createSlice({
     startChannel: (state, action) => {},
     stopChannel: () => {},
     channelOn: (state) => {
-      state.channelStatus = 'on';
+      state.isOnline = true;
     },
     channelOff: (state) => {
-      state.channelStatus = 'off';
+      state.isOnline = false;
       state.serverStatus = 'unknown';
     },
     serverOn: (state) => {
@@ -29,9 +31,19 @@ const socketSlice = createSlice({
     serverOff: (state) => {
       state.serverStatus = 'off';
     },
+    setUsersInRoomIds: (state, action) => {
+      state.usersInRoomIds = action.payload;
+    },
   },
 });
 
-export const { channelOn, channelOff, serverOn, serverOff, startChannel, stopChannel } =
-  socketSlice.actions;
+export const {
+  channelOn,
+  channelOff,
+  serverOn,
+  serverOff,
+  startChannel,
+  stopChannel,
+  setUsersInRoomIds,
+} = socketSlice.actions;
 export default socketSlice.reducer;

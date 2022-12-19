@@ -2,22 +2,25 @@ import React, { useState } from 'react';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import { BaseModal } from '../../molecules/BaseModal';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
 import { UserListItem } from '../../molecules/UserListItem';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { selectMessages } from '../../../features/messages/messages-selectors';
 import { toggleUserInChatStart } from '../../../features/chats/chats-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
-import { BaseModal } from '../../molecules/BaseModal';
-import { ConfirmButton } from '../../atoms/ConfirmButton';
+import { selectSocket } from '../../../features/chat-socket/chat-socket-selectors';
 
 export const ChatUsersInfo = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
   const { chat } = useAppSelector(selectMessages);
+  const { isOnline, usersInRoomIds } = useAppSelector(selectSocket);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const isUserInChat = chat?.users.some((userInChat) => userInChat.id === user?.id);
   const toggleChatMessage = isUserInChat ? 'Leave chat' : 'Join chat';
+  console.log(usersInRoomIds);
 
   const handleToggleUserInChat = () => {
     if (user && chat) {
@@ -28,6 +31,8 @@ export const ChatUsersInfo = () => {
           userId: user.id,
         })
       );
+
+      setOpenConfirmModal(false);
     }
   };
 
@@ -35,7 +40,7 @@ export const ChatUsersInfo = () => {
     <Grid item xs={3} sx={{ borderRight: '1px solid #e0e0e0' }}>
       {user && (
         <List>
-          <UserListItem user={user}>
+          <UserListItem isOnline={isOnline} user={user}>
             <BaseModal
               openModalTitle={toggleChatMessage}
               open={openConfirmModal}
@@ -54,7 +59,11 @@ export const ChatUsersInfo = () => {
       {chat && chat.users.length > 0 && (
         <List>
           {chat.users.map((chatUser) => (
-            <UserListItem key={chatUser.id} user={chatUser} />
+            <UserListItem
+              key={chatUser.id}
+              user={chatUser}
+              isOnline={usersInRoomIds.includes(chatUser.id)}
+            />
           ))}
         </List>
       )}

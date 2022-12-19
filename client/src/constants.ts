@@ -17,4 +17,5 @@ export const SOCKET_EVENTS = {
   join: 'joinRoom',
   send: 'sendMessage',
   receive: 'receiveMessage',
+  usersOnlineInfo: 'usersOnlineInfo',
 };
