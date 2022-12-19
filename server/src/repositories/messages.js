@@ -6,7 +6,7 @@ const getChatMessages = (page, limit, chatId) => {
     .where('chat_id', chatId)
     .withGraphFetched('user')
     .page(page - 1, limit)
-    .orderBy('created_at');
+    .orderBy('created_at', 'desc');
 };
 
 const getMessageById = (id) => {

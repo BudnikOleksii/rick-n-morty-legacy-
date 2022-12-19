@@ -26,16 +26,15 @@ const messagesSlice = createSlice({
       prevState.messages.forEach((msg) => {
         previousMessagesIds.add(msg.id);
       });
-      const newMessages = action.payload.results.filter(
+      const orderedResults = action.payload.results.reverse();
+      const newMessages = orderedResults.filter(
         (msg: IMessage) => !previousMessagesIds.has(msg.id)
       );
 
-      if (prevState.chat?.id === action.payload.chat.id) {
-        state.messages.push(...newMessages);
-      } else {
-        state.messages = action.payload.results;
-      }
-
+      state.messages =
+        prevState.chat?.id === action.payload.chat.id
+          ? [...newMessages, ...prevState.messages]
+          : action.payload.results;
       state.chat = action.payload.chat;
       state.messagesInfo = action.payload.info;
     },
