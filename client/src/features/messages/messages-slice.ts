@@ -22,19 +22,15 @@ const messagesSlice = createSlice({
     messagesLoadingStart: (state, action) => {},
     messagesSuccess: (state, action) => {
       const prevState = current(state);
-      const previousMessagesIds = new Set();
+      const prevMessagesIds = new Set();
       prevState.messages.forEach((msg) => {
-        previousMessagesIds.add(msg.id);
+        prevMessagesIds.add(msg.id);
       });
       const orderedResults = action.payload.results.reverse();
-      const newMessages = orderedResults.filter(
-        (msg: IMessage) => !previousMessagesIds.has(msg.id)
-      );
+      const newMessages = orderedResults.filter((msg: IMessage) => !prevMessagesIds.has(msg.id));
+      const isSameChat = prevState.chat?.id === action.payload.chat.id;
 
-      state.messages =
-        prevState.chat?.id === action.payload.chat.id
-          ? [...newMessages, ...prevState.messages]
-          : action.payload.results;
+      state.messages = isSameChat ? [...newMessages, ...prevState.messages] : orderedResults;
       state.chat = action.payload.chat;
       state.messagesInfo = action.payload.info;
     },

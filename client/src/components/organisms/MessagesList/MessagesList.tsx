@@ -7,6 +7,7 @@ import { selectMessages } from '../../../features/messages/messages-selectors';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { messagesLoadingStart } from '../../../features/messages/messages-slice';
 import { useParams } from 'react-router-dom';
+import Box from '@mui/material/Box';
 
 interface Props {
   messages: IMessage[];
@@ -20,7 +21,7 @@ export const MessagesList: FC<Props> = ({ messages }) => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  }, [messages]);
 
   const scrollHandler = (event: React.UIEvent<HTMLUListElement, UIEvent>) => {
     if ((event.target as HTMLElement).scrollTop === 0 && messagesInfo?.next) {
@@ -47,7 +48,7 @@ export const MessagesList: FC<Props> = ({ messages }) => {
       {messages.map((msg) => (
         <MessageItem key={msg.id} message={msg} />
       ))}
-      <div ref={bottomRef} />
+      <Box ref={bottomRef} />
     </List>
   );
 };
