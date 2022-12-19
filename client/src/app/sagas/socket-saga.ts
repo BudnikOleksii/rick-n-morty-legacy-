@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io-client';
-import { eventChannel } from 'redux-saga';
+import { EventChannel, eventChannel, SagaIterator } from 'redux-saga';
 import { take, call, put, fork, race, cancelled, delay } from 'redux-saga/effects';
 import {
   channelOff,
@@ -13,6 +13,7 @@ import { socket, connect, disconnect, reconnect } from '../../api/socket-api';
 import { SOCKET_EVENTS } from '../../constants';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { addNewMessage } from '../../features/messages/messages-slice';
+import { IMessage } from '../../types/chat-messages';
 
 const createSocketChannel = (socket: Socket, payload: any) => {
   return eventChannel((emit) => {
@@ -43,7 +44,7 @@ function* listenConnectSaga() {
   }
 }
 
-function* listenServerSaga(payload: any) {
+function* listenServerSaga(payload: any): SagaIterator {
   try {
     yield put(channelOn());
     const { timeout } = yield race({
@@ -56,21 +57,18 @@ function* listenServerSaga(payload: any) {
     }
 
     const socket = (yield call(connect)) as Socket;
-    // @ts-ignore
-    const socketChannel = yield call(createSocketChannel, socket, payload);
+    const socketChannel = (yield call(createSocketChannel, socket, payload)) as EventChannel<any>;
     yield fork(listenDisconnectSaga);
     yield fork(listenConnectSaga);
     yield put(serverOn());
 
     while (true) {
-      // @ts-ignore
-      const payload = yield take(socketChannel);
+      const payload = (yield take(socketChannel)) as IMessage;
       yield put(addNewMessage(payload));
     }
   } catch (error) {
     console.log(error);
   } finally {
-    // @ts-ignore
     if (yield cancelled()) {
       socket.disconnect();
       yield put(channelOff());

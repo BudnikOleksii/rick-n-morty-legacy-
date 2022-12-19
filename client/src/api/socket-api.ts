@@ -1,10 +1,9 @@
 import io, { Socket } from 'socket.io-client';
-
-const socketServerURL = 'http://localhost:8080';
+import { BASE_URL } from './index';
 
 export let socket: Socket;
 export const connect = () => {
-  socket = io(socketServerURL);
+  socket = io(BASE_URL);
 
   return new Promise((resolve) => {
     socket.on('connect', () => {
@@ -14,8 +13,6 @@ export const connect = () => {
 };
 
 export const disconnect = () => {
-  socket = io(socketServerURL);
-
   return new Promise((resolve) => {
     socket.on('disconnect', () => {
       resolve(socket);
@@ -24,8 +21,6 @@ export const disconnect = () => {
 };
 
 export const reconnect = () => {
-  socket = io(socketServerURL);
-
   return new Promise((resolve) => {
     socket.on('reconnect', () => {
       resolve(socket);
