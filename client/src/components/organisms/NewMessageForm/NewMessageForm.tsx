@@ -26,6 +26,7 @@ export const NewMessageForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<INewMessage>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
@@ -37,6 +38,8 @@ export const NewMessageForm = () => {
           chatId: chat.id,
         })
       );
+
+      reset();
     }
   });
 
