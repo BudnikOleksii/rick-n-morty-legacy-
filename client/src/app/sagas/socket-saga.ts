@@ -15,14 +15,18 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { addNewMessage } from '../../features/messages/messages-slice';
 import { IMessage } from '../../types/chat-messages';
 
-const createSocketChannel = (socket: Socket, payload: any) => {
+interface IRoom {
+  roomId: number;
+}
+
+const createSocketChannel = (socket: Socket, room: IRoom) => {
   return eventChannel((emit) => {
-    const handler = (data: any) => {
+    const handler = (data: IMessage) => {
       emit(data);
     };
 
     socket.on(SOCKET_EVENTS.receive, handler);
-    socket.emit(SOCKET_EVENTS.join, payload);
+    socket.emit(SOCKET_EVENTS.join, room);
 
     return () => {
       socket.off(SOCKET_EVENTS.receive, handler);
@@ -44,7 +48,7 @@ function* listenConnectSaga() {
   }
 }
 
-function* listenServerSaga(payload: any): SagaIterator {
+function* listenServerSaga(room: IRoom): SagaIterator {
   try {
     yield put(channelOn());
     const { timeout } = yield race({
@@ -57,7 +61,7 @@ function* listenServerSaga(payload: any): SagaIterator {
     }
 
     const socket = (yield call(connect)) as Socket;
-    const socketChannel = (yield call(createSocketChannel, socket, payload)) as EventChannel<any>;
+    const socketChannel = (yield call(createSocketChannel, socket, room)) as EventChannel<any>;
     yield fork(listenDisconnectSaga);
     yield fork(listenConnectSaga);
     yield put(serverOn());
@@ -78,7 +82,7 @@ function* listenServerSaga(payload: any): SagaIterator {
 
 export default function* startStopChannel() {
   while (true) {
-    const action = (yield take(startChannel.type)) as PayloadAction;
+    const action = (yield take(startChannel.type)) as PayloadAction<IRoom>;
 
     yield race({
       task: call(listenServerSaga, action.payload),
