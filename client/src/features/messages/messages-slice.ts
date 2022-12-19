@@ -1,17 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import { Maybe } from '../../types/helper-types';
 import { IResponseInfo } from '../../types/response';
 import { IChat, IMessage } from '../../types/chat-messages';
 
 interface ChatsState {
   chat: Maybe<IChat>;
-  messages: Maybe<IMessage[]>;
+  messages: IMessage[];
   messagesInfo: Maybe<IResponseInfo>;
 }
 
 const initialState: ChatsState = {
   chat: null,
-  messages: null,
+  messages: [],
   messagesInfo: null,
 };
 
@@ -21,8 +21,22 @@ const messagesSlice = createSlice({
   reducers: {
     messagesLoadingStart: (state, action) => {},
     messagesSuccess: (state, action) => {
+      const prevState = current(state);
+      const previousMessagesIds = new Set();
+      prevState.messages.forEach((msg) => {
+        previousMessagesIds.add(msg.id);
+      });
+      const newMessages = action.payload.results.filter(
+        (msg: IMessage) => !previousMessagesIds.has(msg.id)
+      );
+
+      if (prevState.chat?.id === action.payload.chat.id) {
+        state.messages.push(...newMessages);
+      } else {
+        state.messages = action.payload.results;
+      }
+
       state.chat = action.payload.chat;
-      state.messages = action.payload.results;
       state.messagesInfo = action.payload.info;
     },
     createMessageStart: (state, action) => {},
@@ -30,7 +44,7 @@ const messagesSlice = createSlice({
       state.chat = action.payload;
     },
     addNewMessage: (state, action) => {
-      state.messages?.push(action.payload);
+      state.messages.push(action.payload);
     },
   },
 });
