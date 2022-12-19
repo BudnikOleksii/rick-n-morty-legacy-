@@ -12,7 +12,7 @@ export const connect = () => {
   });
 };
 
-export const disconnect = () => {
+export const onDisconnect = () => {
   return new Promise((resolve) => {
     socket.on('disconnect', () => {
       resolve(socket);
@@ -20,7 +20,7 @@ export const disconnect = () => {
   });
 };
 
-export const reconnect = () => {
+export const onReconnect = () => {
   return new Promise((resolve) => {
     socket.on('reconnect', () => {
       resolve(socket);

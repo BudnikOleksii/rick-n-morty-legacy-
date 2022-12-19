@@ -9,7 +9,7 @@ import {
   startChannel,
   stopChannel,
 } from '../../features/chat-socket/chat-socket-slice';
-import { socket, connect, disconnect, reconnect } from '../../api/socket-api';
+import { socket, connect, onDisconnect, onReconnect } from '../../api/socket-api';
 import { SOCKET_EVENTS } from '../../constants';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { addNewMessage } from '../../features/messages/messages-slice';
@@ -21,29 +21,29 @@ interface IRoom {
 
 const createSocketChannel = (socket: Socket, room: IRoom) => {
   return eventChannel((emit) => {
-    const handler = (data: IMessage) => {
+    const newMessageHandler = (data: IMessage) => {
       emit(data);
     };
 
-    socket.on(SOCKET_EVENTS.receive, handler);
+    socket.on(SOCKET_EVENTS.receive, newMessageHandler);
     socket.emit(SOCKET_EVENTS.join, room);
 
     return () => {
-      socket.off(SOCKET_EVENTS.receive, handler);
+      socket.off(SOCKET_EVENTS.receive, newMessageHandler);
     };
   });
 };
 
 function* listenDisconnectSaga() {
   while (true) {
-    yield call(disconnect);
+    yield call(onDisconnect);
     yield put(serverOff());
   }
 }
 
 function* listenConnectSaga() {
   while (true) {
-    yield call(reconnect);
+    yield call(onReconnect);
     yield put(serverOn());
   }
 }
