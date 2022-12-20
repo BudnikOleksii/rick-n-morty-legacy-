@@ -36,6 +36,7 @@ const development = {
       join: 'joinRoom',
       send: 'sendMessage',
       receive: 'receiveMessage',
+      usersOnlineInfo: 'usersOnlineInfo',
     },
     jwtAccessSecret: JWT_ACCESS_SECRET || 'jwt_access_secret',
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',

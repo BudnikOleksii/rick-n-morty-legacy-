@@ -7,7 +7,8 @@ const createInfoData = (total, page, limit, endpoint) => {
 
   return {
     total,
-    next: page >= pages ? null : `${protocol}://${endpoint}?page=${Number(page) + 1}&limit=${limit}`,
+    next:
+      page >= pages ? null : `${protocol}://${endpoint}?page=${Number(page) + 1}&limit=${limit}`,
     prev: page <= 1 ? null : `${protocol}://${endpoint}?page=${Number(page) - 1}&limit=${limit}`,
     pages,
   };

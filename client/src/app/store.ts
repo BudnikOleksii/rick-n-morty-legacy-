@@ -8,6 +8,9 @@ import lotsReducer from '../features/lots/lots-slice';
 import transactionsReducer from '../features/transactions/transactions-slice';
 import actionsInfoReducer from '../features/actions-info/actions-info-slice';
 import locationsReducer from '../features/locations/locations-slice';
+import chatsReducer from '../features/chats/chats-slice';
+import messagesReducer from '../features/messages/messages-slice';
+import socketReducer from '../features/chat-socket/chat-socket-slice';
 import createSagaMiddleware from 'redux-saga';
 import IndexSaga from './sagas';
 
@@ -24,6 +27,9 @@ export const store = configureStore({
     lots: lotsReducer,
     transactions: transactionsReducer,
     locations: locationsReducer,
+    chats: chatsReducer,
+    messages: messagesReducer,
+    socket: socketReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

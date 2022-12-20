@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
@@ -7,8 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { deleteSetStart } from '../../../features/sets/sets-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
-import { ConfirmModal } from '../../molecules/ConfirmModal';
 import { ISetWithCharacters } from '../../../types/set';
+import { BaseModal } from '../../molecules/BaseModal';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
 
 interface Props {
   set: ISetWithCharacters;
@@ -18,6 +19,7 @@ export const SetBlock: FC<Props> = ({ set }) => {
   const { id, name, characters } = set;
   const dispatch = useAppDispatch();
   const { isAdmin } = useAppSelector(selectAuth);
+  const [openDeleteSetConfirm, setOpenDeleteSetConfirm] = useState(false);
 
   const handleSetDelete = () => {
     dispatch(registerAction(deleteSetStart.type));
@@ -26,6 +28,8 @@ export const SetBlock: FC<Props> = ({ set }) => {
         id,
       })
     );
+
+    setOpenDeleteSetConfirm(false);
   };
 
   return (
@@ -43,12 +47,16 @@ export const SetBlock: FC<Props> = ({ set }) => {
       <Divider sx={{ margin: '20px' }}>{set.name} end</Divider>
 
       {isAdmin && (
-        <ConfirmModal
-          buttonTitle="Delete set"
+        <BaseModal
+          openModalTitle="Delete set"
           buttonColor="error"
-          confirmText="Are you sure you want delete current set?"
-          onConfirm={handleSetDelete}
-        />
+          buttonVariant="contained"
+          open={openDeleteSetConfirm}
+          onOpenChange={setOpenDeleteSetConfirm}
+        >
+          Are you sure you want delete current set?
+          <ConfirmButton onConfirm={handleSetDelete} />
+        </BaseModal>
       )}
     </Paper>
   );

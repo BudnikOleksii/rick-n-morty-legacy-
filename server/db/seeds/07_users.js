@@ -3,7 +3,7 @@ const config = require('../../config');
 
 const { saltRounds } = config.server;
 
-exports.seed = async function(knex) {
+exports.seed = async function (knex) {
   await knex('users').del();
 
   await knex('users').insert([

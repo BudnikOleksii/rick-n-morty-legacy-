@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import { BaseModal } from '../../molecules/BaseModal';
 import { NewAuctionForm } from '../NewAuctionForm';
@@ -15,6 +15,8 @@ interface Props {
 
 export const CardItem: FC<Props> = ({ card }) => {
   const { user, isAdmin } = useAppSelector(selectAuth);
+  const [openAuctionModal, setOpenAuctionModal] = useState(false);
+
   const isUsersCard = user?.id === card.owner?.id;
   const isAdminCanStart = isAdmin && card.owner === null;
   const isHavePermision = isUsersCard || isAdminCanStart;
@@ -27,6 +29,8 @@ export const CardItem: FC<Props> = ({ card }) => {
       >
         {isHavePermision && (
           <BaseModal
+            open={openAuctionModal}
+            onOpenChange={setOpenAuctionModal}
             openModalTitle="Start auction"
             buttonVariant="contained"
             buttonColor="secondary"

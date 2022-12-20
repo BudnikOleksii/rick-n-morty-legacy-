@@ -5,15 +5,16 @@ const getChatMessages = (page, limit, chatId) => {
   return Message.query()
     .where('chat_id', chatId)
     .withGraphFetched('user')
-    .page(page - 1, limit);
+    .page(page - 1, limit)
+    .orderBy('created_at', 'desc');
 };
 
 const getMessageById = (id) => {
-  return Message.query().whereNotDeleted().findById(id);
+  return Message.query().whereNotDeleted().withGraphFetched('user').findById(id);
 };
 
 const createMessage = (payload) => {
-  return Message.query().insertAndFetch(payload);
+  return Message.query().insertAndFetch(payload).withGraphFetched('user');
 };
 
 const editMessage = (id, body) => {

@@ -6,17 +6,44 @@ const { LotsService } = require('./services/lots');
 const { initCronJobs } = require('./cron-jobs');
 
 const server = http.createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
+const onlineUsers = new Map();
 
 io.on('connection', (socket) => {
-  socket.on(socketEvents.join, ({ roomId, userName }) => {
-    socket.rooms.forEach(room => socket.leave(room));
+  const sendUsersInRoomIds = (roomId) => {
+    const users = [];
+
+    io.sockets.adapter.rooms.get(roomId).forEach((socketId) => {
+      users.push(onlineUsers.get(socketId));
+    });
+
+    socket.to(roomId).emit(socketEvents.usersOnlineInfo, users);
+  };
+
+  socket.on(socketEvents.join, ({ roomId, userId }) => {
+    socket.rooms.forEach((room) => socket.leave(room));
     socket.join(roomId);
-    socket.to(roomId).emit(socketEvents.receive, `${userName} just join room number ${roomId}`);
+    onlineUsers.set(socket.id, userId);
+
+    sendUsersInRoomIds(roomId);
   });
 
   socket.on(socketEvents.send, (data) => {
-    socket.to(socket.rooms.values().next().value).emit(socketEvents.receive, data.msg);
+    socket.to(data.chat_id).emit(socketEvents.receive, data);
+  });
+
+  socket.on('disconnecting', () => {
+    onlineUsers.delete(socket.id);
+
+    socket.rooms.forEach((roomId) => {
+      sendUsersInRoomIds(roomId);
+    });
   });
 });
 

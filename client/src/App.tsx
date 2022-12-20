@@ -14,6 +14,8 @@ import Characters from './pages/Characters';
 import Lots from './pages/Lots';
 import Transactions from './pages/Transactions';
 import Cards from './pages/Cards';
+import Chats from './pages/Chats';
+import Chat from './pages/Chat';
 
 const App = () => {
   return (
@@ -31,6 +33,10 @@ const App = () => {
             <Route path={PATHS.characters} element={<Characters />} />
             <Route path={PATHS.lots} element={<Lots />} />
             <Route path={PATHS.transactions} element={<Transactions />} />
+            <Route path={PATHS.chats}>
+              <Route index element={<Chats />} />
+              <Route path=":id" element={<Chat />} />
+            </Route>
           </Route>
         </Route>
 

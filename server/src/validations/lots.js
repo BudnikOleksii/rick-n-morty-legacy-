@@ -7,10 +7,7 @@ const newLotValidations = [
     .isInt({ min: 1 })
     .withMessage('Initial price must be positive number')
     .optional(),
-  body('endDate')
-    .isAfter()
-    .withMessage('End date must be in future')
-    .optional(),
+  body('endDate').isAfter().withMessage('End date must be in future').optional(),
   body('minActionDuration')
     .isInt({ min: 1 })
     .withMessage('Min action duration must be positive number')

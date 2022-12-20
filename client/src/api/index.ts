@@ -4,7 +4,8 @@ import { store } from '../app/store';
 import { setAuthDefaultState } from '../features/auth/auth-slice';
 
 const PORT = process.env.PORT || 8080;
-export const BASE_URL = `http://localhost:${PORT}/v1`;
+export const BASE_URL = `http://localhost:${PORT}`;
+export const API_URL = BASE_URL + '/v1';
 
 export const ENDPOINTS = {
   login: '/auth/login',
@@ -23,12 +24,15 @@ export const ENDPOINTS = {
   lotsPricesRange: '/lots/prices',
   lotById: (id: number) => `/lots/${id}`,
   locations: '/locations',
+  chats: '/chats',
+  chatById: (id: number | string) => `/chats/${id}`,
+  chatMessages: (id: number | string) => `/chats/${id}/messages`,
 };
 
 const UNAUTHORIZED = 401;
 
 const $api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_URL,
 });
 
 $api.interceptors.request.use((config) => {
@@ -54,7 +58,7 @@ $api.interceptors.response.use(
           return;
         }
 
-        const userData = await axios.post(BASE_URL + ENDPOINTS.refresh, {
+        const userData = await axios.post(API_URL + ENDPOINTS.refresh, {
           refreshToken: tokens.refreshToken,
         });
 
