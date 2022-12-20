@@ -48,11 +48,7 @@ const messagesSlice = createSlice({
       }
     },
     editMessageStart: (state, action) => {},
-    // updateMessage: (state, action) => {
-    //   state.messages = state.messages.map((msg) =>
-    //     msg.id === action.payload.id ? action.payload : msg
-    //   );
-    // },
+    deleteMessageStart: (state, action) => {},
   },
 });
 
@@ -63,6 +59,7 @@ export const {
   updateChatInfo,
   handleMessageReceive,
   editMessageStart,
+  deleteMessageStart,
 } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

@@ -35,7 +35,7 @@ export const EditMessageForm: FC<Props> = ({ message, onFormClose }) => {
       onFormClose();
       return;
     }
-    console.log(data);
+
     dispatch(registerAction(editMessageStart.type));
     dispatch(
       editMessageStart({

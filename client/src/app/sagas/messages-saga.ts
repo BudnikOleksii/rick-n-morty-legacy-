@@ -2,6 +2,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
 import {
   createNewMessage,
+  deleteMessage,
   editMessage,
   getChatById,
   getChatMessages,
@@ -9,6 +10,7 @@ import {
 import { IChat, IMessage, IMessagesResponse } from '../../types/chat-messages';
 import {
   createMessageStart,
+  deleteMessageStart,
   editMessageStart,
   messagesLoadingStart,
   messagesSuccess,
@@ -65,10 +67,26 @@ function* editMessageWorker({ payload }: ReturnType<typeof editMessageStart>) {
   }
 }
 
+function* deleteMessageWorker({ payload }: ReturnType<typeof deleteMessageStart>) {
+  try {
+    const message = (yield call(deleteMessage, {
+      id: payload.messageId,
+      chat_id: payload.chatId,
+    })) as IMessage;
+
+    socket.emit(SOCKET_EVENTS.send, message);
+  } catch (errors) {
+    yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(deleteMessageStart.type));
+  }
+}
+
 function* messagesSaga() {
   yield takeEvery(messagesLoadingStart.type, messagesWorker);
   yield takeEvery(createMessageStart.type, createMessageWorker);
   yield takeEvery(editMessageStart.type, editMessageWorker);
+  yield takeEvery(deleteMessageStart.type, deleteMessageWorker);
 }
 
 export default messagesSaga;

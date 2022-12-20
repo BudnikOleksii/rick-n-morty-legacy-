@@ -5,10 +5,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { EditMessageForm } from '../../organisms/EditMessageForm';
+import { MessageActionsBlock } from '../../organisms/MessageActionsBlock';
 import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { getLocalTime } from '../../../helpers/date-helpers';
@@ -55,19 +54,7 @@ export const MessageItem: FC<Props> = ({ message }) => {
               <Avatar alt={author.username}>{author.username.slice(0, 2)}</Avatar>
 
               {isUserAuthor && !deleted_at && (
-                <Box>
-                  <IconButton
-                    color="warning"
-                    aria-label="edit message"
-                    onClick={handleEditModeToggle}
-                  >
-                    <EditIcon />
-                  </IconButton>
-
-                  <IconButton color="error" aria-label="delete message">
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
+                <MessageActionsBlock message={message} onFormClose={handleEditModeToggle} />
               )}
             </Box>
 
@@ -75,8 +62,8 @@ export const MessageItem: FC<Props> = ({ message }) => {
               <EditMessageForm message={message} onFormClose={handleEditModeToggle} />
             ) : (
               <ListItemText
-                primary={!deleted_at && body}
-                secondary={deleted_at && 'message has been deleted'}
+                primary={!deleted_at ? body : ''}
+                secondary={deleted_at ? 'message has been deleted' : ''}
               />
             )}
 

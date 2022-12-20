@@ -39,3 +39,11 @@ export const editMessage = (
 
   return $api.patch<IMessage>(ENDPOINTS.chatMessageById(chat_id, id), { body });
 };
+
+export const deleteMessage = (
+  messageData: Pick<IMessage, 'id' | 'chat_id'>
+): Promise<AxiosResponse<IMessage>> => {
+  const { id, chat_id } = messageData;
+
+  return $api.delete<IMessage>(ENDPOINTS.chatMessageById(chat_id, id));
+};
