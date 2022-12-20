@@ -21,6 +21,10 @@ export const toggleUserInChat = (chatId: number, userId: number): Promise<AxiosR
   return $api.patch<IChat>(ENDPOINTS.chatById(chatId), { userId });
 };
 
+export const createChat = (name: string): Promise<AxiosResponse<IChat>> => {
+  return $api.post<IChat>(ENDPOINTS.chats, { name });
+};
+
 export const createNewMessage = (
   id: number,
   body: string = ''

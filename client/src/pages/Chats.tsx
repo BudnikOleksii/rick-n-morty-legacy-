@@ -4,9 +4,11 @@ import { PageTemplate } from '../components/templates/PageTemplate';
 import { ChatsList } from '../components/organisms/ChatsList';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectChats } from '../features/chats/chats-selectors';
+import { selectAuth } from '../features/auth/auth-selectors';
 import { chatsLoadingStart } from '../features/chats/chats-slice';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
+import { ChatFormModal } from '../components/organisms/ChatFormModal';
 
 const Chats = () => {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ const Chats = () => {
   const page = params.get('page');
   const dispatch = useAppDispatch();
   const { chats, chatsInfo } = useAppSelector(selectChats);
+  const { isAdmin } = useAppSelector(selectAuth);
 
   useEffect(() => {
     dispatch(registerAction(chatsLoadingStart.type));
@@ -36,6 +39,7 @@ const Chats = () => {
       currentPage={Number(page)}
       onPageChange={handlePageChange}
     >
+      {isAdmin && <ChatFormModal />}
       {chats && chats.length > 0 && <ChatsList chats={chats} />}
 
       {chats && chats.length === 0 && <h2>There are no active chats, create one</h2>}
