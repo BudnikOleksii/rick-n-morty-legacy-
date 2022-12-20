@@ -13,7 +13,7 @@ import {
 import { socket, connect, onDisconnect, onReconnect } from '../../api/socket-api';
 import { SOCKET_EVENTS } from '../../constants';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { addNewMessage } from '../../features/messages/messages-slice';
+import { handleMessageReceive } from '../../features/messages/messages-slice';
 import { IMessage } from '../../types/chat-messages';
 import { getItemFromLocalStorage } from '../../helpers/localstorage-helpers';
 import { store } from '../store';
@@ -75,7 +75,7 @@ function* listenServerSaga(roomId: number): SagaIterator {
 
     while (true) {
       const payload = (yield take(socketChannel)) as IMessage;
-      yield put(addNewMessage(payload));
+      yield put(handleMessageReceive(payload));
     }
   } catch (error) {
     console.log(error);

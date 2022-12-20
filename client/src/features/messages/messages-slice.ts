@@ -38,15 +38,21 @@ const messagesSlice = createSlice({
     updateChatInfo: (state, action) => {
       state.chat = action.payload;
     },
-    addNewMessage: (state, action) => {
-      state.messages.push(action.payload);
+    handleMessageReceive: (state, action) => {
+      if (action.payload.updated_at || action.payload.deleted_at) {
+        state.messages = state.messages.map((msg) =>
+          msg.id === action.payload.id ? action.payload : msg
+        );
+      } else {
+        state.messages.push(action.payload);
+      }
     },
     editMessageStart: (state, action) => {},
-    updateMessage: (state, action) => {
-      state.messages = state.messages.map((msg) =>
-        msg.id === action.payload.id ? action.payload : msg
-      );
-    },
+    // updateMessage: (state, action) => {
+    //   state.messages = state.messages.map((msg) =>
+    //     msg.id === action.payload.id ? action.payload : msg
+    //   );
+    // },
   },
 });
 
@@ -55,9 +61,8 @@ export const {
   messagesSuccess,
   createMessageStart,
   updateChatInfo,
-  addNewMessage,
+  handleMessageReceive,
   editMessageStart,
-  updateMessage,
 } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

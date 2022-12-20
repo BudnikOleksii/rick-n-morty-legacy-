@@ -12,7 +12,6 @@ import {
   editMessageStart,
   messagesLoadingStart,
   messagesSuccess,
-  updateMessage,
 } from '../../features/messages/messages-slice';
 import { socket } from '../../api/socket-api';
 import { SOCKET_EVENTS } from '../../constants';
@@ -58,7 +57,7 @@ function* editMessageWorker({ payload }: ReturnType<typeof editMessageStart>) {
       body: payload.body,
     })) as IMessage;
 
-    yield put(updateMessage(message));
+    socket.emit(SOCKET_EVENTS.send, message);
   } catch (errors) {
     yield put(setErrors(errors));
   } finally {
