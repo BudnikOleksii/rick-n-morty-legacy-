@@ -18,5 +18,9 @@ export interface IMessage {
   user: Omit<IUser, 'roles'>;
 }
 
+export interface INewMessage {
+  body: string;
+}
+
 export type IChatResponse = ISuccessResponse<IChat[]>;
 export type IMessagesResponse = ISuccessResponse<IMessage[]>;

@@ -1,10 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { IMessage } from '../../../types/chat-messages';
 import Grid from '@mui/material/Grid';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { EditMessageForm } from '../../organisms/EditMessageForm';
 import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { getLocalTime } from '../../../helpers/date-helpers';
@@ -18,9 +22,14 @@ interface Props {
 }
 
 export const MessageItem: FC<Props> = ({ message }) => {
-  const { user: author, body, created_at } = message;
+  const { user: author, body, created_at, updated_at, deleted_at } = message;
   const { user } = useAppSelector(selectAuth);
   const isUserAuthor = user?.id === author.id;
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleEditModeToggle = () => {
+    setIsEditMode((prev) => !prev);
+  };
 
   return (
     <ListItem>
@@ -39,11 +48,43 @@ export const MessageItem: FC<Props> = ({ message }) => {
               padding: '5px',
               borderRadius: '8px',
               bgcolor: isUserAuthor ? myMsgColor : msgColor,
+              maxWidth: '45%',
             }}
           >
-            <Avatar alt={author.username}>{author.username.slice(0, 2)}</Avatar>
-            <ListItemText primary={body} />
-            <ListItemText secondary={getLocalTime(created_at)} />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Avatar alt={author.username}>{author.username.slice(0, 2)}</Avatar>
+
+              {isUserAuthor && !deleted_at && (
+                <Box>
+                  <IconButton
+                    color="warning"
+                    aria-label="edit message"
+                    onClick={handleEditModeToggle}
+                  >
+                    <EditIcon />
+                  </IconButton>
+
+                  <IconButton color="error" aria-label="delete message">
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              )}
+            </Box>
+
+            {isEditMode ? (
+              <EditMessageForm message={message} onFormClose={handleEditModeToggle} />
+            ) : (
+              <ListItemText
+                primary={!deleted_at && body}
+                secondary={deleted_at && 'message has been deleted'}
+              />
+            )}
+
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px', textAlign: 'right' }}>
+              <ListItemText secondary={getLocalTime(created_at)} />
+
+              {updated_at && <EditIcon color="disabled" fontSize="small" />}
+            </Box>
           </Box>
         </Grid>
       </Grid>

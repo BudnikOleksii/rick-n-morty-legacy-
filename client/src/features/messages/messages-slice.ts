@@ -41,6 +41,12 @@ const messagesSlice = createSlice({
     addNewMessage: (state, action) => {
       state.messages.push(action.payload);
     },
+    editMessageStart: (state, action) => {},
+    updateMessage: (state, action) => {
+      state.messages = state.messages.map((msg) =>
+        msg.id === action.payload.id ? action.payload : msg
+      );
+    },
   },
 });
 
@@ -50,6 +56,8 @@ export const {
   createMessageStart,
   updateChatInfo,
   addNewMessage,
+  editMessageStart,
+  updateMessage,
 } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

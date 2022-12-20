@@ -10,14 +10,11 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { selectMessages } from '../../../features/messages/messages-selectors';
 import { createMessageStart } from '../../../features/messages/messages-slice';
+import { INewMessage } from '../../../types/chat-messages';
 
 const schema = yup.object().shape({
   body: yup.string().trim().min(1).required(),
 });
-
-interface INewMessage {
-  body: string;
-}
 
 export const NewMessageForm = () => {
   const dispatch = useAppDispatch();

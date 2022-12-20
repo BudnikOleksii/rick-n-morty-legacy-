@@ -31,3 +31,11 @@ export const createNewMessage = (
 ): Promise<AxiosResponse<IMessage>> => {
   return $api.post<IMessage>(ENDPOINTS.chatMessages(id), { body });
 };
+
+export const editMessage = (
+  messageData: Pick<IMessage, 'id' | 'chat_id' | 'body'>
+): Promise<AxiosResponse<IMessage>> => {
+  const { id, chat_id, body } = messageData;
+
+  return $api.patch<IMessage>(ENDPOINTS.chatMessageById(chat_id, id), { body });
+};

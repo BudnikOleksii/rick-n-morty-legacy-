@@ -10,6 +10,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   maxHeight: '50vh',
   maxWidth: 400,
+  minWidth: 300,
   overflow: 'auto',
   bgcolor: 'background.paper',
   border: '2px solid #000',

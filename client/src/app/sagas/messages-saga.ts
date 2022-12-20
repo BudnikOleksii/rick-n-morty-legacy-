@@ -1,11 +1,18 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { finishAction, setErrors } from '../../features/actions-info/actions-info-slice';
-import { createNewMessage, getChatById, getChatMessages } from '../../api/chats-service';
+import {
+  createNewMessage,
+  editMessage,
+  getChatById,
+  getChatMessages,
+} from '../../api/chats-service';
 import { IChat, IMessage, IMessagesResponse } from '../../types/chat-messages';
 import {
   createMessageStart,
+  editMessageStart,
   messagesLoadingStart,
   messagesSuccess,
+  updateMessage,
 } from '../../features/messages/messages-slice';
 import { socket } from '../../api/socket-api';
 import { SOCKET_EVENTS } from '../../constants';
@@ -43,9 +50,26 @@ function* createMessageWorker({ payload }: ReturnType<typeof createMessageStart>
   }
 }
 
+function* editMessageWorker({ payload }: ReturnType<typeof editMessageStart>) {
+  try {
+    const message = (yield call(editMessage, {
+      id: payload.messageId,
+      chat_id: payload.chatId,
+      body: payload.body,
+    })) as IMessage;
+
+    yield put(updateMessage(message));
+  } catch (errors) {
+    yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(editMessageStart.type));
+  }
+}
+
 function* messagesSaga() {
   yield takeEvery(messagesLoadingStart.type, messagesWorker);
   yield takeEvery(createMessageStart.type, createMessageWorker);
+  yield takeEvery(editMessageStart.type, editMessageWorker);
 }
 
 export default messagesSaga;
