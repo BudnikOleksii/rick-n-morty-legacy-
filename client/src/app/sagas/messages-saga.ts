@@ -53,11 +53,7 @@ function* createMessageWorker({ payload }: ReturnType<typeof createMessageStart>
 
 function* editMessageWorker({ payload }: ReturnType<typeof editMessageStart>) {
   try {
-    const message = (yield call(editMessage, {
-      id: payload.messageId,
-      chat_id: payload.chatId,
-      body: payload.body,
-    })) as IMessage;
+    const message = (yield call(editMessage, payload)) as IMessage;
 
     socket.emit(SOCKET_EVENTS.send, message);
   } catch (errors) {
@@ -69,10 +65,7 @@ function* editMessageWorker({ payload }: ReturnType<typeof editMessageStart>) {
 
 function* deleteMessageWorker({ payload }: ReturnType<typeof deleteMessageStart>) {
   try {
-    const message = (yield call(deleteMessage, {
-      id: payload.messageId,
-      chat_id: payload.chatId,
-    })) as IMessage;
+    const message = (yield call(deleteMessage, payload)) as IMessage;
 
     socket.emit(SOCKET_EVENTS.send, message);
   } catch (errors) {

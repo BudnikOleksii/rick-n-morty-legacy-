@@ -27,7 +27,6 @@ export const EditMessageForm: FC<Props> = ({ message, onFormClose }) => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<INewMessage>({ resolver: yupResolver(schema) });
 
   const onEditMessageSubmit = handleSubmit((data) => {
@@ -40,8 +39,8 @@ export const EditMessageForm: FC<Props> = ({ message, onFormClose }) => {
     dispatch(
       editMessageStart({
         ...data,
-        chatId: chat_id,
-        messageId: id,
+        id,
+        chat_id,
       })
     );
 

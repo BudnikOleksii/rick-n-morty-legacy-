@@ -17,6 +17,7 @@ interface Props {
 }
 
 export const MessageActionsBlock: FC<Props> = ({ message, onFormClose }) => {
+  const { id, chat_id } = message;
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -24,12 +25,7 @@ export const MessageActionsBlock: FC<Props> = ({ message, onFormClose }) => {
 
   const handleMessageDelete = () => {
     dispatch(registerAction(deleteMessageStart.type));
-    dispatch(
-      deleteMessageStart({
-        chatId: message.chat_id,
-        messageId: message.id,
-      })
-    );
+    dispatch(deleteMessageStart({ id, chat_id }));
 
     handleClose();
   };
