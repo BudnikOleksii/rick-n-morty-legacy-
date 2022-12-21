@@ -20,7 +20,6 @@ export const ChatUsersInfo = () => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const isUserInChat = chat?.users.some((userInChat) => userInChat.id === user?.id);
   const toggleChatMessage = isUserInChat ? 'Leave chat' : 'Join chat';
-  console.log(usersInRoomIds);
 
   const handleToggleUserInChat = () => {
     if (user && chat) {

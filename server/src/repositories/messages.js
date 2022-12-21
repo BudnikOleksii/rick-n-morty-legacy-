@@ -10,7 +10,7 @@ const getChatMessages = (page, limit, chatId) => {
 };
 
 const getMessageById = (id) => {
-  return Message.query().whereNotDeleted().withGraphFetched('user').findById(id);
+  return Message.query().withGraphFetched('user').findById(id);
 };
 
 const createMessage = (payload) => {
@@ -18,10 +18,14 @@ const createMessage = (payload) => {
 };
 
 const editMessage = (id, body) => {
-  return Message.query().patchAndFetchById(id, { body });
+  return Message.query().patchAndFetchById(id, { body }).withGraphFetched('user');
 };
 
-const deleteMessage = (id) => Message.query().deleteById(id);
+const deleteMessage = async (id) => {
+  await Message.query().deleteById(id);
+
+  return getMessageById(id);
+};
 
 module.exports.MessagesRepository = {
   getChatMessages,

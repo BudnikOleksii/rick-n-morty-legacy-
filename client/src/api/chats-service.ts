@@ -21,9 +21,29 @@ export const toggleUserInChat = (chatId: number, userId: number): Promise<AxiosR
   return $api.patch<IChat>(ENDPOINTS.chatById(chatId), { userId });
 };
 
+export const createChat = (name: string): Promise<AxiosResponse<IChat>> => {
+  return $api.post<IChat>(ENDPOINTS.chats, { name });
+};
+
 export const createNewMessage = (
   id: number,
   body: string = ''
 ): Promise<AxiosResponse<IMessage>> => {
   return $api.post<IMessage>(ENDPOINTS.chatMessages(id), { body });
+};
+
+export const editMessage = (
+  messageData: Pick<IMessage, 'id' | 'chat_id' | 'body'>
+): Promise<AxiosResponse<IMessage>> => {
+  const { id, chat_id, body } = messageData;
+
+  return $api.patch<IMessage>(ENDPOINTS.chatMessageById(chat_id, id), { body });
+};
+
+export const deleteMessage = (
+  messageData: Pick<IMessage, 'id' | 'chat_id'>
+): Promise<AxiosResponse<IMessage>> => {
+  const { id, chat_id } = messageData;
+
+  return $api.delete<IMessage>(ENDPOINTS.chatMessageById(chat_id, id));
 };

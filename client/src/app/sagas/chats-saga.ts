@@ -7,9 +7,10 @@ import {
 import {
   chatsLoadingStart,
   chatsSuccess,
+  createChatStart,
   toggleUserInChatStart,
 } from '../../features/chats/chats-slice';
-import { getChats, toggleUserInChat } from '../../api/chats-service';
+import { createChat, getChats, toggleUserInChat } from '../../api/chats-service';
 import { IChat, IChatResponse } from '../../types/chat-messages';
 import { updateChatInfo } from '../../features/messages/messages-slice';
 
@@ -38,9 +39,22 @@ function* toggleUserInChatWorker({ payload }: ReturnType<typeof toggleUserInChat
   }
 }
 
+function* createChatWorker({ payload }: ReturnType<typeof createChatStart>) {
+  try {
+    const chat = (yield call(createChat, payload.name)) as IChat;
+
+    yield put(setSuccessMessage(`Chat ${chat.name} was successfully created`));
+  } catch (errors) {
+    yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(createChatStart.type));
+  }
+}
+
 function* chatsSaga() {
   yield takeEvery(chatsLoadingStart.type, chatsWorker);
   yield takeEvery(toggleUserInChatStart.type, toggleUserInChatWorker);
+  yield takeEvery(createChatStart.type, createChatWorker);
 }
 
 export default chatsSaga;
