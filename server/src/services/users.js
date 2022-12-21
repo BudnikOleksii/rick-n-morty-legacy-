@@ -90,18 +90,6 @@ const addNewRole = async (userId, newRole) => {
   return UserRepository.addNewRole(user, newRole);
 };
 
-const getUserChats = async (id) => {
-  checkId(id);
-
-  const user = await UserRepository.getUserChats(id);
-
-  if (!user) {
-    throw new NotFoundError(['User not found']);
-  }
-
-  return user;
-};
-
 const updateLastSeen = async (id, ipAddress) => {
   const user = await getUserById(id);
   const ip = ipAddress || user.ip;
@@ -118,6 +106,5 @@ module.exports.UserService = {
   updateUser,
   deleteUser,
   addNewRole,
-  getUserChats,
   updateLastSeen,
 };
