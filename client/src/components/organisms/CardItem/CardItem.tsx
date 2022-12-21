@@ -27,6 +27,8 @@ export const CardItem: FC<Props> = ({ card }) => {
         elevation={12}
         sx={{ padding: '10px', backgroundColor: isUsersCard ? indigo[300] : 'white' }}
       >
+        <CharacterCard character={card.character} />
+
         {isHavePermision && (
           <BaseModal
             open={openAuctionModal}
@@ -38,8 +40,6 @@ export const CardItem: FC<Props> = ({ card }) => {
             <NewAuctionForm cardId={card.id} />
           </BaseModal>
         )}
-
-        <CharacterCard character={card.character} />
       </Paper>
     </GridItem>
   );
