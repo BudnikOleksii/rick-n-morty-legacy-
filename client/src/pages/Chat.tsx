@@ -50,12 +50,15 @@ const Chat = () => {
         component={Paper}
         sx={{
           width: '100%',
-          height: '80vh',
+          height: {
+            sm: '80vh',
+            lg: '70vh',
+          },
         }}
       >
         <ChatUsersInfo />
 
-        <Grid item xs={9}>
+        <Grid item xs={12} md={8} lg={9}>
           {messages.length > 0 && <MessagesList messages={messages} />}
 
           <Divider />

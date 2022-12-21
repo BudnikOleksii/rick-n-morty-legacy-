@@ -40,7 +40,7 @@ export const MessagesList: FC<Props> = ({ messages }) => {
   return (
     <List
       sx={{
-        height: '60vh',
+        maxHeight: '55vh',
         overflowY: 'auto',
       }}
       onScroll={scrollHandler}

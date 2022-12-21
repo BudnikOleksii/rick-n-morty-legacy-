@@ -56,7 +56,10 @@ export const MessageItem: FC<Props> = ({ message }) => {
               padding: '5px',
               borderRadius: '8px',
               bgcolor: isUserAuthor ? myMsgColor : msgColor,
-              maxWidth: '45%',
+              maxWidth: {
+                xs: '80%',
+                md: '45%',
+              },
             }}
           >
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
