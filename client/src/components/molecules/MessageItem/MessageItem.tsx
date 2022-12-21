@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { IMessage } from '../../../types/chat-messages';
 import Grid from '@mui/material/Grid';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,6 +11,7 @@ import { MessageActionsBlock } from '../../organisms/MessageActionsBlock';
 import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { getLocalTime } from '../../../helpers/date-helpers';
+import { useOutsideClickHandle } from '../../../hooks/useOutsideClickHandle';
 import { teal, indigo } from '@mui/material/colors';
 
 const myMsgColor = teal[300];
@@ -25,10 +26,17 @@ export const MessageItem: FC<Props> = ({ message }) => {
   const { user } = useAppSelector(selectAuth);
   const isUserAuthor = user?.id === author.id;
   const [isEditMode, setIsEditMode] = useState(false);
+  const editFieldRef = useRef<HTMLDivElement | null>(null);
+
+  const handleCloseEditMode = () => {
+    setIsEditMode(false);
+  };
 
   const handleEditModeToggle = () => {
     setIsEditMode((prev) => !prev);
   };
+
+  useOutsideClickHandle(editFieldRef, handleCloseEditMode);
 
   return (
     <ListItem>
@@ -43,6 +51,7 @@ export const MessageItem: FC<Props> = ({ message }) => {
           }}
         >
           <Box
+            ref={editFieldRef}
             sx={{
               padding: '5px',
               borderRadius: '8px',
@@ -54,12 +63,12 @@ export const MessageItem: FC<Props> = ({ message }) => {
               <Avatar alt={author.username}>{author.username.slice(0, 2)}</Avatar>
 
               {isUserAuthor && !deleted_at && (
-                <MessageActionsBlock message={message} onFormClose={handleEditModeToggle} />
+                <MessageActionsBlock message={message} onToggleEditMode={handleEditModeToggle} />
               )}
             </Box>
 
             {isEditMode ? (
-              <EditMessageForm message={message} onFormClose={handleEditModeToggle} />
+              <EditMessageForm message={message} onFormClose={handleCloseEditMode} />
             ) : (
               <ListItemText
                 primary={!deleted_at ? body : ''}
