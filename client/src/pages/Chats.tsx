@@ -45,6 +45,11 @@ const Chats = () => {
     navigate(`${PATHS.chats}?page=${pageNumber}`);
   };
 
+  const handleChatsSwitchChange = () => {
+    navigate(PATHS.chats);
+    setIsAllChats((prev) => !prev);
+  };
+
   return (
     <PageTemplate
       title="All chats"
@@ -59,7 +64,7 @@ const Chats = () => {
           control={
             <Switch
               checked={isAllChats}
-              onChange={() => setIsAllChats((prev) => !prev)}
+              onChange={handleChatsSwitchChange}
               inputProps={{ 'aria-label': 'controlled' }}
             />
           }
