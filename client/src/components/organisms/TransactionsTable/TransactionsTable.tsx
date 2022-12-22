@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { orange, lightGreen, indigo } from '@mui/material/colors';
 import { ITransaction } from '../../../types/transaction';
+import { getLocalTime } from '../../../helpers/date-helpers';
 
 const colorCredit = orange[400];
 const colorDebit = lightGreen[500];
@@ -31,6 +32,7 @@ export const TransactionsTable: FC<Props> = ({ transactions }) => {
             <TableCell align="center">System fee</TableCell>
             <TableCell align="center">Seller</TableCell>
             <TableCell align="center">Purchaser</TableCell>
+            <TableCell align="center">Date of transaction</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -51,6 +53,7 @@ export const TransactionsTable: FC<Props> = ({ transactions }) => {
               <TableCell align="center">{tran.system_fee}</TableCell>
               <TableCell align="center">{tran.seller_id}</TableCell>
               <TableCell align="center">{tran.purchaser_id}</TableCell>
+              <TableCell align="center">{getLocalTime(tran.created_at)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,5 +1,6 @@
 const httpStatusCodes = require('../utils/http-status-codes');
 const { TransactionService } = require('../services/transactions');
+const { stripeErrorHandler } = require('../utils/stripe-error-handler');
 const { stripeSecretKey } = require('../../config').server;
 
 const stripe = require('stripe')(stripeSecretKey);
@@ -17,7 +18,8 @@ const handlePayment = async (req, res, next) => {
 
     return res.status(httpStatusCodes.CREATED).json(response);
   } catch (error) {
-    next(error);
+    const currentError = stripeErrorHandler(error);
+    next(currentError);
   }
 };
 

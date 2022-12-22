@@ -27,7 +27,8 @@ const getUserTransactions = (page, limit, userId) => {
   return Transaction.query()
     .where('seller_id', userId)
     .orWhere('purchaser_id', userId)
-    .page(page - 1, limit);
+    .page(page - 1, limit)
+    .orderBy('created_at', 'desc');
 };
 
 module.exports.TransactionRepository = {
