@@ -10,9 +10,11 @@ import { getLocalTime } from '../../../helpers/date-helpers';
 import { createNewLot } from '../../../features/lots/lots-slice';
 import { DEFAULT_MAX_PRICE } from '../../../constants';
 import { INewLot } from '../../../types/lot';
+import { registerAction } from '../../../features/actions-info/actions-info-slice';
 
 interface Props {
   cardId: number;
+  onCloseModal: () => void;
 }
 
 const schema = yup.object().shape({
@@ -27,7 +29,7 @@ const schema = yup.object().shape({
     .transform((_, val) => (val === Number(val) ? val : null)),
 });
 
-export const NewAuctionForm: FC<Props> = ({ cardId }) => {
+export const NewAuctionForm: FC<Props> = ({ cardId, onCloseModal }) => {
   const dispatch = useAppDispatch();
   const {
     register,
@@ -36,6 +38,7 @@ export const NewAuctionForm: FC<Props> = ({ cardId }) => {
   } = useForm<INewLot>({ resolver: yupResolver(schema) });
 
   const onSubmit = handleSubmit((data) => {
+    dispatch(registerAction(createNewLot.type));
     dispatch(
       createNewLot({
         ...data,
@@ -44,6 +47,8 @@ export const NewAuctionForm: FC<Props> = ({ cardId }) => {
         maxPrice: data.maxPrice || DEFAULT_MAX_PRICE,
       })
     );
+
+    onCloseModal();
   });
 
   const defaultData = new Date().toISOString().split(':');

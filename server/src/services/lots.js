@@ -113,12 +113,11 @@ const handleBet = async (lotId, bet, tokenData) => {
     throw new BadRequestError(['Bet step must be more than minimum']);
   }
 
-  // TODO return balance check after tests
-  // const { balance } = await TransactionService.getUserBalance(tokenData.id);
-  //
-  // if (balance < bet) {
-  //   throw new BadRequestError(['User don`t have enough money']);
-  // }
+  const { balance } = await TransactionService.getUserBalance(tokenData.id);
+
+  if (balance < bet) {
+    throw new BadRequestError(['User don`t have enough money']);
+  }
 
   const timeToAuctionEnd = end_date - new Date();
   const newEndDate =
