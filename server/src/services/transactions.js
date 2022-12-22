@@ -17,9 +17,9 @@ const createTransaction = async (lot) => {
   }
 
   const transactionData = {
-    lot_id: lot.id,
+    lot_id: lot?.id || null,
     seller_id: owner?.id || null,
-    purchaser_id: lastPersonToBet.id,
+    purchaser_id: lastPersonToBet?.id || null,
     amount: current_price,
     system_fee: current_price * systemFee,
   };
