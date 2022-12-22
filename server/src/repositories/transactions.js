@@ -7,10 +7,8 @@ const getTransaction = (columnName, value) => {
     .first();
 };
 
-const createTransaction = async (payload) => {
-  const transaction = await Transaction.query().insertAndFetch(payload);
-
-  return getTransaction('id', transaction.id);
+const createTransaction = (payload) => {
+  return Transaction.query().insertAndFetch(payload).withGraphFetched('[seller, purchaser]');
 };
 
 const getUserDebitSum = (userId) => {

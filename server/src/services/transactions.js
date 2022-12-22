@@ -50,8 +50,17 @@ const getUserTransactions = async (page, limit, endpoint, userId) => {
   };
 };
 
+const replenishBalance = (userId, amount) => {
+  return TransactionRepository.createTransaction({
+    seller_id: userId,
+    amount,
+    system_fee: 0,
+  });
+};
+
 module.exports.TransactionService = {
   createTransaction,
   getUserBalance,
   getUserTransactions,
+  replenishBalance,
 };
