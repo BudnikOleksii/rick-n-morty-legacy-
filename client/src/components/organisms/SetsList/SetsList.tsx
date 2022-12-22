@@ -15,7 +15,7 @@ export const SetsList: FC<Props> = ({ sets, onToggleCharacterInSet }) => {
       {sets.map((set) => (
         <ListItemBase key={set.id} text={set.name}>
           <Button variant="outlined" color="success" onClick={() => onToggleCharacterInSet(set.id)}>
-            Add to set
+            Add
           </Button>
         </ListItemBase>
       ))}

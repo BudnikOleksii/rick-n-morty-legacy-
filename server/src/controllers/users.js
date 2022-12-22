@@ -4,6 +4,7 @@ const { UserService } = require('../services/users');
 const { CardsService } = require('../services/cards');
 const { SetsService } = require('../services/sets');
 const { TransactionService } = require('../services/transactions');
+const { ChatsService } = require('../services/chats');
 
 const { defaultPage, defaultLimitPerPage } = config.server;
 
@@ -96,10 +97,12 @@ const getUserBalance = async (req, res, next) => {
 };
 
 const getUserChats = async (req, res, next) => {
+  const { page = defaultPage, limit = defaultLimitPerPage } = req.query;
+  const endpoint = req.headers.host + req.baseUrl + req.path;
   const { id } = req.params;
 
   try {
-    const userData = await UserService.getUserChats(id);
+    const userData = await ChatsService.getUserChats(page, limit, endpoint, id);
 
     return res.status(httpStatusCodes.OK).json(userData);
   } catch (error) {

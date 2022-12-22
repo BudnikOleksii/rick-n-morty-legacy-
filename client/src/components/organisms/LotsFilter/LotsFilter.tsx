@@ -78,7 +78,7 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
 
   return (
     <Paper elevation={6} sx={{ margin: '20px', padding: '20px' }}>
-      <Grid container rowSpacing={2} alignContent="center" justifyContent="space-between">
+      <Grid container rowSpacing={2} alignItems="center" justifyContent="space-between">
         <Grid item xs={12} sm={5} md={3} lg={2}>
           <TextField
             fullWidth
@@ -133,10 +133,15 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
 
         <Grid
           item
-          sm={12}
-          md={5}
+          xs={12}
           lg={3}
-          sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}
+          sx={{
+            display: 'flex',
+            justifyContent: { xs: 'center', sm: 'space-evenly' },
+            alignItems: 'center',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: '10px',
+          }}
         >
           <Button variant="contained" color="primary" onClick={handleFiltersSubmit}>
             Apply filters

@@ -23,15 +23,17 @@ export const ErrorPage: FC<Props> = ({ errorNumber, text, image, children }) => 
     >
       <Container maxWidth="md">
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={8} md={6} margin="auto" textAlign="center">
             <Typography variant="h1">{errorNumber}</Typography>
 
             <Typography variant="h6">{text}</Typography>
 
             {children}
           </Grid>
-          <Grid item xs={6}>
-            <img src={image} alt={`${errorNumber} error`} width={500} height={250} />
+          <Grid item xs={12} sm={8} md={6} margin="auto">
+            <div style={{ maxWidth: 500, maxHeight: 250 }}>
+              <img src={image} alt={`${errorNumber} error`} style={{ width: '100%' }} />
+            </div>
           </Grid>
         </Grid>
       </Container>

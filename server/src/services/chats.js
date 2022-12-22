@@ -62,9 +62,20 @@ const toggleUserInChat = async (chatId, userId) => {
   return ChatsRepository.addUserToChat(chat, user);
 };
 
+const getUserChats = async (page, limit, endpoint, userId) => {
+  checkLimitForRequest(limit, 'chats');
+  const { results, total } = await ChatsRepository.getUserChats(page, limit, userId);
+
+  return {
+    info: createInfoData(total, page, limit, endpoint),
+    results,
+  };
+};
+
 module.exports.ChatsService = {
   getChats,
   getChatById,
   createChat,
   toggleUserInChat,
+  getUserChats,
 };

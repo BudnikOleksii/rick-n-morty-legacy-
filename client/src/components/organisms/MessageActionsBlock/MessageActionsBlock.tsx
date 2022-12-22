@@ -13,15 +13,15 @@ import { deleteMessageStart } from '../../../features/messages/messages-slice';
 
 interface Props {
   message: IMessage;
-  onFormClose: () => void;
+  onToggleEditMode: () => void;
 }
 
-export const MessageActionsBlock: FC<Props> = ({ message, onFormClose }) => {
+export const MessageActionsBlock: FC<Props> = ({ message, onToggleEditMode }) => {
   const { id, chat_id } = message;
   const dispatch = useAppDispatch();
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
+  const handleOpen = () => setOpenConfirmModal(true);
+  const handleClose = () => setOpenConfirmModal(false);
 
   const handleMessageDelete = () => {
     dispatch(registerAction(deleteMessageStart.type));
@@ -32,7 +32,7 @@ export const MessageActionsBlock: FC<Props> = ({ message, onFormClose }) => {
 
   return (
     <Box>
-      <IconButton color="warning" aria-label="edit message" onClick={onFormClose}>
+      <IconButton color="warning" aria-label="edit message" onClick={onToggleEditMode}>
         <EditIcon />
       </IconButton>
 
@@ -41,7 +41,7 @@ export const MessageActionsBlock: FC<Props> = ({ message, onFormClose }) => {
       </IconButton>
 
       <Modal
-        open={open}
+        open={openConfirmModal}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

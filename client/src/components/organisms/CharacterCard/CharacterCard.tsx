@@ -62,7 +62,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 300 }}>
+    <Card sx={{ maxWidth: 300, minHeight: '93%', display: 'flex', flexDirection: 'column' }}>
       <CardMedia component="img" height="300" image={image} alt={name} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -85,6 +85,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
           flexWrap: 'wrap',
           justifyContent: 'space-between',
           padding: '8px',
+          marginTop: 'auto',
         }}
       >
         <BaseModal

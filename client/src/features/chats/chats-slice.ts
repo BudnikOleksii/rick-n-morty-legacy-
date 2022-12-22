@@ -18,6 +18,7 @@ const chatsSlice = createSlice({
   initialState,
   reducers: {
     chatsLoadingStart: (state, action) => {},
+    userChatsLoadingStart: (state, action) => {},
     chatsSuccess: (state, action) => {
       state.chats = action.payload.results;
       state.chatsInfo = action.payload.info;
@@ -27,7 +28,12 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { chatsLoadingStart, chatsSuccess, toggleUserInChatStart, createChatStart } =
-  chatsSlice.actions;
+export const {
+  chatsLoadingStart,
+  userChatsLoadingStart,
+  chatsSuccess,
+  toggleUserInChatStart,
+  createChatStart,
+} = chatsSlice.actions;
 
 export default chatsSlice.reducer;

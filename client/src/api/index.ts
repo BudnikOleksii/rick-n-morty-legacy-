@@ -15,6 +15,7 @@ export const ENDPOINTS = {
   users: '/users',
   userCards: (id: number) => `/users/${id}/cards`,
   userTransactions: (id: number) => `/users/${id}/transactions`,
+  userChats: (id: number) => `/users/${id}/chats`,
   addRoleToUser: (id: number) => `/users/role/${id}`,
   sets: '/sets',
   setById: (id: number) => `/sets/${id}`,

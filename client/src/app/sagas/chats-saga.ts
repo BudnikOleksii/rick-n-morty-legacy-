@@ -9,10 +9,12 @@ import {
   chatsSuccess,
   createChatStart,
   toggleUserInChatStart,
+  userChatsLoadingStart,
 } from '../../features/chats/chats-slice';
 import { createChat, getChats, toggleUserInChat } from '../../api/chats-service';
 import { IChat, IChatResponse } from '../../types/chat-messages';
 import { updateChatInfo } from '../../features/messages/messages-slice';
+import { getUserChats } from '../../api/user-service';
 
 function* chatsWorker({ payload }: ReturnType<typeof chatsLoadingStart>) {
   try {
@@ -23,6 +25,18 @@ function* chatsWorker({ payload }: ReturnType<typeof chatsLoadingStart>) {
     yield put(setErrors(errors));
   } finally {
     yield put(finishAction(chatsLoadingStart.type));
+  }
+}
+
+function* userChatsWorker({ payload }: ReturnType<typeof userChatsLoadingStart>) {
+  try {
+    const chatsData = (yield call(getUserChats, payload.userId, payload.params)) as IChatResponse;
+
+    yield put(chatsSuccess(chatsData));
+  } catch (errors) {
+    yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(userChatsLoadingStart.type));
   }
 }
 
@@ -55,6 +69,7 @@ function* chatsSaga() {
   yield takeEvery(chatsLoadingStart.type, chatsWorker);
   yield takeEvery(toggleUserInChatStart.type, toggleUserInChatWorker);
   yield takeEvery(createChatStart.type, createChatWorker);
+  yield takeEvery(userChatsLoadingStart.type, userChatsWorker);
 }
 
 export default chatsSaga;
