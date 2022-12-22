@@ -59,7 +59,7 @@ export const ProfileDropdown = () => {
         <MenuItem>{`Rating: ${user?.rating || 0}`}</MenuItem>
         <MenuItem>{`Balance: ${user?.balance || 0}`}</MenuItem>
         <MenuItem onClick={() => handleLinkClick('/')}>Your cards</MenuItem>
-        <MenuItem onClick={() => handleLinkClick(PATHS.transactions)}>History</MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.transactions)}>Payments</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

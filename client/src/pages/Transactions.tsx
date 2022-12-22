@@ -8,6 +8,7 @@ import { transactionsLoadingStart } from '../features/transactions/transactions-
 import { selectAuth } from '../features/auth/auth-selectors';
 import { TransactionsTable } from '../components/organisms/TransactionsTable';
 import { registerAction } from '../features/actions-info/actions-info-slice';
+import { PaymentsActions } from '../components/organisms/PaymentsActions';
 
 const Transactions = () => {
   const navigate = useNavigate();
@@ -33,11 +34,13 @@ const Transactions = () => {
 
   return (
     <PageTemplate
-      title="Transactions history"
+      title="Payments"
       info={transactionsInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}
     >
+      <PaymentsActions />
+
       {transactions && transactions.length > 0 && <TransactionsTable transactions={transactions} />}
     </PageTemplate>
   );

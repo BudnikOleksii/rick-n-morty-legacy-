@@ -4,6 +4,7 @@ const { BadRequestError } = require('../utils/errors/api-errors');
 const { checkId } = require('../utils/check-id');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { createInfoData } = require('../utils/create-info-data');
+const { UserService } = require('./users');
 
 const { systemFee } = config.server;
 
@@ -57,11 +58,15 @@ const replenishBalance = async (userId, amount) => {
     system_fee: 0,
   });
 
+  const user = await UserService.getUserById(userId);
   const { balance } = await getUserBalance(userId);
 
   return {
     transaction,
-    updatedBalance: balance,
+    user: {
+      ...user,
+      balance,
+    },
   };
 };
 

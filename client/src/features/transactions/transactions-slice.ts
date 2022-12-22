@@ -22,9 +22,11 @@ const transactionsSlice = createSlice({
       state.transactions = action.payload.results;
       state.transactionsInfo = action.payload.info;
     },
+    replenishBalanceStart: (state, action) => {},
   },
 });
 
-export const { transactionsLoadingStart, transactionsSuccess } = transactionsSlice.actions;
+export const { transactionsLoadingStart, transactionsSuccess, replenishBalanceStart } =
+  transactionsSlice.actions;
 
 export default transactionsSlice.reducer;
