@@ -55,6 +55,10 @@ const addNewRole = async (user, role) => {
   return getExistingUser('id', user.id);
 };
 
+const getUserChats = (id) => {
+  return User.query().findById(id).withGraphFetched('chats');
+};
+
 const updateLastSeen = (id, ipAddress) => User.query().patch({ ip: ipAddress }).findById(id);
 
 module.exports.UserRepository = {
@@ -65,5 +69,6 @@ module.exports.UserRepository = {
   updateUser,
   deleteUser,
   addNewRole,
+  getUserChats,
   updateLastSeen,
 };

@@ -97,6 +97,18 @@ const updateLastSeen = async (id, ipAddress) => {
   await UserRepository.updateLastSeen(id, ip);
 };
 
+const getUserChats = async (id) => {
+  checkId(id);
+
+  const user = await UserRepository.getUserChats(id);
+
+  if (!user) {
+    throw new NotFoundError(['User not found']);
+  }
+
+  return user;
+};
+
 module.exports.UserService = {
   getAllUsers,
   getUserById,
@@ -107,4 +119,5 @@ module.exports.UserService = {
   deleteUser,
   addNewRole,
   updateLastSeen,
+  getUserChats,
 };

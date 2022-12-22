@@ -3,7 +3,6 @@ const config = require('../../config');
 const { ChatsController } = require('../controllers/chats');
 const { authGuard } = require('../middlewares/auth-guard');
 const { roleGuard } = require('../middlewares/role-guard');
-const { selfOrRoleGuard } = require('../middlewares/self-or-role-guard');
 const { MessagesController } = require('../controllers/messages');
 const { updateLastVisitDate } = require('../middlewares/update-last-visit');
 
@@ -20,6 +19,6 @@ chatsRouter.post('/:id/messages', MessagesController.createMessage);
 chatsRouter.patch('/:id/messages/:messageId', MessagesController.editMessage);
 chatsRouter.delete('/:id/messages/:messageId', MessagesController.deleteMessage);
 chatsRouter.post('/', roleGuard(adminRole), ChatsController.createChat);
-chatsRouter.patch('/:id', selfOrRoleGuard(adminRole), ChatsController.toggleUserInChat);
+chatsRouter.patch('/:id', ChatsController.toggleUserInChat);
 
 module.exports = chatsRouter;
