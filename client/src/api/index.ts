@@ -30,6 +30,7 @@ export const ENDPOINTS = {
   chatMessages: (id: number | string) => `/chats/${id}/messages`,
   chatMessageById: (chatId: number, messageId: number) => `/chats/${chatId}/messages/${messageId}`,
   replenishBalance: '/payments/payment',
+  withdraw: '/payments/withdraw',
 };
 
 const UNAUTHORIZED = 401;

@@ -7,3 +7,7 @@ export const replenishBalance = (
 ): Promise<AxiosResponse<IPaymentResponse>> => {
   return $api.post<IPaymentResponse>(ENDPOINTS.replenishBalance, paymentData);
 };
+
+export const withdraw = (paymentData: IPaymentData): Promise<AxiosResponse<IPaymentResponse>> => {
+  return $api.post<IPaymentResponse>(ENDPOINTS.withdraw, paymentData);
+};

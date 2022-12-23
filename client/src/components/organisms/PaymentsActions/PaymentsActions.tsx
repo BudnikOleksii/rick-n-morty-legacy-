@@ -12,10 +12,12 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { withdraw } from '../../../api/payments-service';
 
 const AMOUNT_INCREMENT = 100;
 const MIN_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT;
 const MAX_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT * 100;
+const CURRENCY = 'USD';
 
 export const PaymentsActions = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +35,12 @@ export const PaymentsActions = () => {
           token,
         })
       );
+      // const res = await withdraw({
+      //   userId: user.id,
+      //   amount,
+      //   token,
+      // });
+      // console.log(res);
     }
   };
 
@@ -96,6 +104,7 @@ export const PaymentsActions = () => {
         token={onToken}
         stripeKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string}
         amount={amount}
+        currency={CURRENCY}
         billingAddress
         label="Buy cards points"
       />

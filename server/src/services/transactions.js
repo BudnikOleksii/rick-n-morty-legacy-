@@ -70,9 +70,29 @@ const replenishBalance = async (userId, amount) => {
   };
 };
 
+const withdraw = async (userId, amount) => {
+  const transaction = await TransactionRepository.createTransaction({
+    purchaser_id: userId,
+    amount,
+    system_fee: amount * systemFee,
+  });
+
+  const user = await UserService.getUserById(userId);
+  const { balance } = await getUserBalance(userId);
+
+  return {
+    transaction,
+    user: {
+      ...user,
+      balance,
+    },
+  };
+};
+
 module.exports.TransactionService = {
   createTransaction,
   getUserBalance,
   getUserTransactions,
   replenishBalance,
+  withdraw,
 };

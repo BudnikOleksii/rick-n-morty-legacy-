@@ -6,5 +6,6 @@ const paymentsRouter = express.Router();
 
 paymentsRouter.use(authGuard);
 paymentsRouter.post('/payment', PaymentsController.handlePayment);
+paymentsRouter.post('/withdraw', PaymentsController.handleWithdrawal);
 
 module.exports = paymentsRouter;
