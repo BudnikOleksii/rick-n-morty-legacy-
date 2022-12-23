@@ -4,26 +4,31 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
-import { replenishBalanceStart } from '../../../features/transactions/transactions-slice';
-import { CARDS_POINTS_RATE } from '../../../constants';
+import {
+  replenishBalanceStart,
+  withdrawalStart,
+} from '../../../features/transactions/transactions-slice';
+import { CARDS_POINTS_RATE, STRIPE_CURRENCY } from '../../../constants';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { BaseModal } from '../../molecules/BaseModal';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
 
 const AMOUNT_INCREMENT = 100;
 const MIN_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT;
 const MAX_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT * 100;
-const CURRENCY = 'USD';
 
 export const PaymentsActions = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
   const [cardsPointsAmount, setCardsPointsAmount] = useState(AMOUNT_INCREMENT);
+  const [openWithdrawModal, setOpenWithdrawModal] = useState(false);
   const amount = cardsPointsAmount * CARDS_POINTS_RATE;
 
-  const onToken = async (token: Token) => {
+  const onPayment = async (token: Token) => {
     if (user) {
       dispatch(registerAction(replenishBalanceStart.type));
       dispatch(
@@ -34,6 +39,20 @@ export const PaymentsActions = () => {
         })
       );
     }
+  };
+
+  const onWithdraw = () => {
+    if (user) {
+      dispatch(registerAction(withdrawalStart.type));
+      dispatch(
+        withdrawalStart({
+          userId: user.id,
+          amount: user.balance,
+        })
+      );
+    }
+
+    setOpenWithdrawModal(false);
   };
 
   const handleCardsPointsAmount = (value: number) => {
@@ -62,6 +81,18 @@ export const PaymentsActions = () => {
       <Typography variant="h5" component="h3" textAlign="center">
         {`Current balance: ${user?.balance || 0}`}
       </Typography>
+
+      {user && user.balance > 0 && (
+        <BaseModal
+          openModalTitle="Withdraw"
+          open={openWithdrawModal}
+          onOpenChange={setOpenWithdrawModal}
+        >
+          {`Withdraw ${user.balance}? 
+          Please, be informed, we collect commission ${10}%`}
+          <ConfirmButton onConfirm={onWithdraw} />
+        </BaseModal>
+      )}
 
       <Box
         sx={{
@@ -93,10 +124,10 @@ export const PaymentsActions = () => {
       </Box>
 
       <StripeCheckout
-        token={onToken}
+        token={onPayment}
         stripeKey={process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY as string}
         amount={amount}
-        currency={CURRENCY}
+        currency={STRIPE_CURRENCY}
         billingAddress
         label="Buy cards points"
       />

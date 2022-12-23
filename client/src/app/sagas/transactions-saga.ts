@@ -10,9 +10,10 @@ import {
   transactionsLoadingStart,
   transactionsSuccess,
   transactionSuccess,
+  withdrawalStart,
 } from '../../features/transactions/transactions-slice';
 import { ITransactionResponse } from '../../types/transaction';
-import { replenishBalance } from '../../api/payments-service';
+import { replenishBalance, withdraw } from '../../api/payments-service';
 import { IPaymentResponse } from '../../types/payment-types';
 import { updateUserInfo } from '../../features/auth/auth-slice';
 
@@ -47,9 +48,25 @@ function* replenishBalanceWorker({ payload }: ReturnType<typeof replenishBalance
   }
 }
 
+function* withdrawalWorker({ payload }: ReturnType<typeof withdrawalStart>) {
+  try {
+    const transactionResponse = (yield call(withdraw, payload)) as IPaymentResponse;
+    const successMessage = `You successfully withdraw ${transactionResponse.transaction.amount}`;
+
+    yield put(updateUserInfo(transactionResponse.user));
+    yield put(transactionSuccess(transactionResponse.transaction));
+    yield put(setSuccessMessage(successMessage));
+  } catch (errors) {
+    yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(withdrawalStart.type));
+  }
+}
+
 function* transactionsSaga() {
   yield takeEvery(transactionsLoadingStart.type, transactionsWorker);
   yield takeEvery(replenishBalanceStart.type, replenishBalanceWorker);
+  yield takeEvery(withdrawalStart.type, withdrawalWorker);
 }
 
 export default transactionsSaga;

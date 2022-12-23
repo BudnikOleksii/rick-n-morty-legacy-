@@ -22,10 +22,10 @@ class User extends softDelete(Model) {
         from: 'users.id',
         through: {
           from: 'users_roles.user_id',
-          to: 'users_roles.role_id'
+          to: 'users_roles.role_id',
         },
-        to: 'roles.id'
-      }
+        to: 'roles.id',
+      },
     },
     chats: {
       relation: Model.ManyToManyRelation,
@@ -34,11 +34,11 @@ class User extends softDelete(Model) {
         from: 'users.id',
         through: {
           from: 'users_chats.user_id',
-          to: 'users_chats.chat_id'
+          to: 'users_chats.chat_id',
         },
-        to: 'chats.id'
-      }
-    }
+        to: 'chats.id',
+      },
+    },
   };
 
   $formatJson(json) {
@@ -46,6 +46,7 @@ class User extends softDelete(Model) {
     delete json.login;
     delete json.password;
     delete json.deleted_at;
+    delete json.stripe_account_id;
     return json;
   }
 

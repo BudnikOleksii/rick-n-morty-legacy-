@@ -45,6 +45,7 @@ const development = {
     refreshTokenExpiresIn: '30d',
     stripeSecretKey: STRIPE_SECRET_KEY,
     stripeCurrency: 'usd',
+    cardPointsRate: 1,
   },
   db: {
     type: DEV_DB_TYPE || 'mysql',
