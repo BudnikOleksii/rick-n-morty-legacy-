@@ -10,6 +10,7 @@ const {
   DEV_DB_PORT,
   JWT_ACCESS_SECRET,
   JWT_REFRESH_SECRET,
+  STRIPE_SECRET_KEY,
 } = process.env;
 
 const env = process.env.NODE_ENV;
@@ -42,6 +43,7 @@ const development = {
     jwtRefreshSecret: JWT_REFRESH_SECRET || 'jwt_refresh_secret',
     accessTokenExpiresIn: '10m',
     refreshTokenExpiresIn: '30d',
+    stripeSecretKey: STRIPE_SECRET_KEY,
   },
   db: {
     type: DEV_DB_TYPE || 'mysql',

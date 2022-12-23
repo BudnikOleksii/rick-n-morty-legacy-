@@ -38,6 +38,9 @@ const authSlice = createSlice({
       state.user = null;
       state.isAdmin = false;
     },
+    updateUserInfo: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
@@ -48,6 +51,7 @@ export const {
   authSuccess,
   logoutStart,
   setAuthDefaultState,
+  updateUserInfo,
 } = authSlice.actions;
 
 export default authSlice.reducer;

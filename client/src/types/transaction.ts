@@ -8,6 +8,7 @@ export interface ITransaction {
   purchaser_id: number;
   amount: number;
   system_fee: number;
+  created_at: string;
 }
 
 export type ITransactionResponse = ISuccessResponse<ITransaction[]>;

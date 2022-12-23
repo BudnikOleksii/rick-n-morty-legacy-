@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import { Maybe } from '../../types/helper-types';
 import { IResponseInfo } from '../../types/response';
 import { ITransaction } from '../../types/transaction';
@@ -22,9 +22,19 @@ const transactionsSlice = createSlice({
       state.transactions = action.payload.results;
       state.transactionsInfo = action.payload.info;
     },
+    replenishBalanceStart: (state, action) => {},
+    transactionSuccess: (state, action) => {
+      const previousTransactions = current(state.transactions) || [];
+      state.transactions = [action.payload, ...previousTransactions];
+    },
   },
 });
 
-export const { transactionsLoadingStart, transactionsSuccess } = transactionsSlice.actions;
+export const {
+  transactionsLoadingStart,
+  transactionsSuccess,
+  replenishBalanceStart,
+  transactionSuccess,
+} = transactionsSlice.actions;
 
 export default transactionsSlice.reducer;

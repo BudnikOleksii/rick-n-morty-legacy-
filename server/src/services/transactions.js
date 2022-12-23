@@ -4,6 +4,7 @@ const { BadRequestError } = require('../utils/errors/api-errors');
 const { checkId } = require('../utils/check-id');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { createInfoData } = require('../utils/create-info-data');
+const { UserService } = require('./users');
 
 const { systemFee } = config.server;
 
@@ -50,8 +51,28 @@ const getUserTransactions = async (page, limit, endpoint, userId) => {
   };
 };
 
+const replenishBalance = async (userId, amount) => {
+  const transaction = await TransactionRepository.createTransaction({
+    seller_id: userId,
+    amount,
+    system_fee: 0,
+  });
+
+  const user = await UserService.getUserById(userId);
+  const { balance } = await getUserBalance(userId);
+
+  return {
+    transaction,
+    user: {
+      ...user,
+      balance,
+    },
+  };
+};
+
 module.exports.TransactionService = {
   createTransaction,
   getUserBalance,
   getUserTransactions,
+  replenishBalance,
 };

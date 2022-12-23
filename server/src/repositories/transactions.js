@@ -7,10 +7,8 @@ const getTransaction = (columnName, value) => {
     .first();
 };
 
-const createTransaction = async (payload) => {
-  const transaction = await Transaction.query().insertAndFetch(payload);
-
-  return getTransaction('id', transaction.id);
+const createTransaction = (payload) => {
+  return Transaction.query().insertAndFetch(payload).withGraphFetched('[seller, purchaser]');
 };
 
 const getUserDebitSum = (userId) => {
@@ -29,7 +27,8 @@ const getUserTransactions = (page, limit, userId) => {
   return Transaction.query()
     .where('seller_id', userId)
     .orWhere('purchaser_id', userId)
-    .page(page - 1, limit);
+    .page(page - 1, limit)
+    .orderBy('created_at', 'desc');
 };
 
 module.exports.TransactionRepository = {

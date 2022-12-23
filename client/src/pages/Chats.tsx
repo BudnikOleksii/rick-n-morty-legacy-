@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { ChatsList } from '../components/organisms/ChatsList';
@@ -9,8 +12,6 @@ import { chatsLoadingStart, userChatsLoadingStart } from '../features/chats/chat
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
 import { ChatFormModal } from '../components/organisms/ChatFormModal';
-import { FormControlLabel, Switch } from '@mui/material';
-import Box from '@mui/material/Box';
 
 const Chats = () => {
   const navigate = useNavigate();

@@ -11,6 +11,7 @@ const setsRouter = require('./sets');
 const cardsRouter = require('./cards');
 const lotsRouter = require('./lots');
 const chatsRouter = require('./chats');
+const paymentsRouter = require('./payments');
 
 const api = express.Router();
 
@@ -25,5 +26,6 @@ api.use('/sets', setsRouter);
 api.use('/cards', cardsRouter);
 api.use('/lots', lotsRouter);
 api.use('/chats', chatsRouter);
+api.use('/payments', paymentsRouter);
 
 module.exports = api;

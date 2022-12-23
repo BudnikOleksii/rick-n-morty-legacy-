@@ -37,7 +37,7 @@ export const CardItem: FC<Props> = ({ card }) => {
             buttonVariant="contained"
             buttonColor="secondary"
           >
-            <NewAuctionForm cardId={card.id} />
+            <NewAuctionForm cardId={card.id} onCloseModal={() => setOpenAuctionModal(false)} />
           </BaseModal>
         )}
       </Paper>
