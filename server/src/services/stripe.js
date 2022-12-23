@@ -1,3 +1,4 @@
+const { UserService } = require('./users');
 const { stripeSecretKey, stripeCurrency } = require('../../config').server;
 
 const stripe = require('stripe')(stripeSecretKey);
@@ -17,9 +18,27 @@ const createCustomer = async (token) => {
   return currentCustomer;
 };
 
-const handleStripePayment = async (token, amount) => {
+const createAccountForCustomer = (email) => {
+  return stripe.accounts.create({
+    type: 'custom',
+    business_type: 'individual',
+    email,
+    capabilities: {
+      card_payments: { requested: true },
+      transfers: { requested: true },
+    },
+  });
+};
+
+const handleStripePayment = async (userId, token, amount) => {
   const currentCustomer = await createCustomer(token);
   const source = await stripe.customers.createSource(currentCustomer.id, { source: token.id });
+  const user = await UserService.getUserById(userId);
+
+  if (!user.stripe_account_id) {
+    const customersAccount = await createAccountForCustomer(token.email);
+    await UserService.updateUser(userId, { stripe_account_id: customersAccount.id });
+  }
 
   await stripe.charges.create({
     source: source.id,
@@ -30,17 +49,19 @@ const handleStripePayment = async (token, amount) => {
   });
 };
 
-const handleStripeWithdrawal = async (token, amount) => {
-  const existingCustomers = await stripe.customers.list({ email: token.email });
-  console.log(existingCustomers.data[0].default_source);
+const handleStripeWithdrawal = async (userId, token, amount) => {
+  const user = await UserService.getUserById(userId);
 
-  const withdraw = await stripe.payouts.create({
+  // TODO fix capabilities for created account!
+  const withdraw = await stripe.transfers.create({
     amount,
     currency: stripeCurrency,
-    destination: existingCustomers.data[0].default_source,
-    description: `Withdrawal for user ${token.email}`,
+    destination: user.stripe_account_id,
+    description: `Withdrawal for user ${user.email}`,
     source_type: 'card',
   });
+
+  console.log(withdraw);
 };
 
 module.exports.StripeService = {

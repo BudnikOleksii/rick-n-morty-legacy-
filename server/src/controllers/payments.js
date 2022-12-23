@@ -7,12 +7,11 @@ const handlePayment = async (req, res, next) => {
   const { userId, amount, token } = req.body;
 
   try {
-    await StripeService.handleStripePayment(token, amount);
+    await StripeService.handleStripePayment(userId, token, amount);
     const response = await TransactionService.replenishBalance(userId, amount);
 
     return res.status(httpStatusCodes.CREATED).json(response);
   } catch (error) {
-    console.log(error);
     const currentError = stripeErrorHandler(error);
     next(currentError);
   }
@@ -22,10 +21,10 @@ const handleWithdrawal = async (req, res, next) => {
   const { userId, amount, token } = req.body;
 
   try {
-    await StripeService.handleStripeWithdrawal(token, amount);
-    // const response = await TransactionService.replenishBalance(userId, amount);
+    await StripeService.handleStripeWithdrawal(userId, token, amount);
+    const response = await TransactionService.withdraw(userId, amount);
 
-    return res.status(httpStatusCodes.OK).json({ msg: 'ok' });
+    return res.status(httpStatusCodes.OK).json(response);
   } catch (error) {
     console.log(error);
     const currentError = stripeErrorHandler(error);

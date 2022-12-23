@@ -1,6 +1,5 @@
 import StripeCheckout, { Token } from 'react-stripe-checkout';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
@@ -12,7 +11,6 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { withdraw } from '../../../api/payments-service';
 
 const AMOUNT_INCREMENT = 100;
 const MIN_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT;
@@ -35,12 +33,6 @@ export const PaymentsActions = () => {
           token,
         })
       );
-      // const res = await withdraw({
-      //   userId: user.id,
-      //   amount,
-      //   token,
-      // });
-      // console.log(res);
     }
   };
 
