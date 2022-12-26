@@ -11,13 +11,20 @@ const {
   JWT_ACCESS_SECRET,
   JWT_REFRESH_SECRET,
   STRIPE_SECRET_KEY,
+  SMTP_USER,
+  SMTP_PASSWORD,
 } = process.env;
 
 const env = process.env.NODE_ENV;
 
+const serverPort = parseInt(DEV_SERVER_PORT) || 8080;
 const development = {
   server: {
-    port: parseInt(DEV_SERVER_PORT) || 8080,
+    port: serverPort,
+    apiUrl: `http://localhost:${serverPort}`,
+    clientUrl: `http://localhost:3000`,
+    apiEntrypoint: '/v1',
+    activateEndpoint: '/activate',
     protocol: 'http',
     adminRole: 'admin',
     saltRounds: 7,
@@ -46,6 +53,8 @@ const development = {
     stripeSecretKey: STRIPE_SECRET_KEY,
     stripeCurrency: 'usd',
     cardPointsRate: 1,
+    smtpUser: SMTP_USER,
+    smtpPassword: SMTP_PASSWORD,
   },
   db: {
     type: DEV_DB_TYPE || 'mysql',

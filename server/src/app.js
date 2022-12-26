@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const connection = require('./db');
 
 const api = require('./routes/api');
+const { apiEntrypoint } = require('../config').server;
 const { errorHandler } = require('./middlewares/error-handler');
 
 const app = express();
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 api.use(errorHandler);
 
-app.use('/v1', api);
+app.use(apiEntrypoint, api);
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));

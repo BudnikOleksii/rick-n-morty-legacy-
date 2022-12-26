@@ -23,14 +23,7 @@ const getExistingUser = (columnName, value) => {
 };
 
 const createUser = async (user) => {
-  const { username, login, password, ip } = user;
-
-  const createdUser = await User.query().insertAndFetch({
-    username,
-    login,
-    password,
-    ip,
-  });
+  const createdUser = await User.query().insertAndFetch(user);
 
   const role = await RoleRepository.getRole('user');
 
