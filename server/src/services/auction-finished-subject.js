@@ -5,11 +5,14 @@ const { MailService } = require('./mail-service');
 const auctionFinished = new Subject();
 
 const updateRating = async (lot) => {
-  const { card, lastPersonToBet } = lot;
+  const {
+    card: { owner },
+    lastPersonToBet,
+  } = lot;
   await RatingService.updateUserRating(lastPersonToBet.id);
 
-  if (card.owner) {
-    await RatingService.updateUserRating(card.owner.id);
+  if (owner) {
+    await RatingService.updateUserRating(owner.id);
   }
 };
 
