@@ -20,3 +20,4 @@ export const SOCKET_EVENTS = {
   usersOnlineInfo: 'usersOnlineInfo',
 };
 export const CARDS_POINTS_RATE = 1; // 1$ === 100 card points
+export const STRIPE_CURRENCY = 'USD';

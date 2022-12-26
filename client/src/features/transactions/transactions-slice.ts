@@ -23,6 +23,7 @@ const transactionsSlice = createSlice({
       state.transactionsInfo = action.payload.info;
     },
     replenishBalanceStart: (state, action) => {},
+    withdrawalStart: (state, action) => {},
     transactionSuccess: (state, action) => {
       const previousTransactions = current(state.transactions) || [];
       state.transactions = [action.payload, ...previousTransactions];
@@ -34,6 +35,7 @@ export const {
   transactionsLoadingStart,
   transactionsSuccess,
   replenishBalanceStart,
+  withdrawalStart,
   transactionSuccess,
 } = transactionsSlice.actions;
 

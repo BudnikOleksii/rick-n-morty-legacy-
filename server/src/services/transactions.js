@@ -5,6 +5,7 @@ const { checkId } = require('../utils/check-id');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { createInfoData } = require('../utils/create-info-data');
 const { UserService } = require('./users');
+const { StripeService } = require('./stripe');
 
 const { systemFee } = config.server;
 
@@ -51,11 +52,32 @@ const getUserTransactions = async (page, limit, endpoint, userId) => {
   };
 };
 
-const replenishBalance = async (userId, amount) => {
+const replenishBalance = async (userId, amount, token) => {
+  await StripeService.handleStripePayment(userId, amount, token);
   const transaction = await TransactionRepository.createTransaction({
     seller_id: userId,
     amount,
     system_fee: 0,
+  });
+
+  const user = await UserService.getUserById(userId);
+  const { balance } = await getUserBalance(userId);
+
+  return {
+    transaction,
+    user: {
+      ...user,
+      balance,
+    },
+  };
+};
+
+const withdraw = async (userId, amount) => {
+  await StripeService.handleStripeWithdrawal(userId, amount);
+  const transaction = await TransactionRepository.createTransaction({
+    purchaser_id: userId,
+    amount,
+    system_fee: amount * systemFee,
   });
 
   const user = await UserService.getUserById(userId);
@@ -75,4 +97,5 @@ module.exports.TransactionService = {
   getUserBalance,
   getUserTransactions,
   replenishBalance,
+  withdraw,
 };
