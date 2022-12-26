@@ -20,6 +20,7 @@ const createCustomer = async (token) => {
 
 const createAccountForCustomer = (user) => {
   return stripe.accounts.create({
+    country: 'PL',
     type: 'custom',
     business_type: 'individual',
     email: user.login,
