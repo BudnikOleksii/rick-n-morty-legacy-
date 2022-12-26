@@ -24,6 +24,36 @@ const sendActivationMail = async (userEmail, link) => {
   });
 };
 
+const informAuctionWinner = async (lot) => {
+  await transporter.sendMail({
+    from: smtpUser,
+    to: lot.lastPersonToBet.login,
+    subject: `You won lot, ${lot.card.character.name} congratulations!`,
+    text: '',
+    html: `
+      <div>
+        <h1>You just bought card, ${lot.card.character.name} for ${lot.current_price}, congratulations!</h1>
+      </div>
+    `,
+  });
+};
+
+const informLotSeller = async (lot) => {
+  await transporter.sendMail({
+    from: smtpUser,
+    to: lot.card.owner.login,
+    subject: `Card ${lot.card.character.name} has been sold, congratulations!`,
+    text: '',
+    html: `
+      <div>
+        <h1>You just sold card, ${lot.card.character.name} for ${lot.current_price}, congratulations!</h1>
+      </div>
+    `,
+  });
+};
+
 module.exports.MailService = {
   sendActivationMail,
+  informAuctionWinner,
+  informLotSeller,
 };

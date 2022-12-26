@@ -10,7 +10,7 @@ const { StripeService } = require('./stripe');
 const { systemFee } = config.server;
 
 const createTransaction = async (lot) => {
-  const { current_price, owner, lastPersonToBet } = lot;
+  const { current_price, card, lastPersonToBet } = lot;
 
   const transaction = await TransactionRepository.getTransaction('lot_id', lot.id);
 
@@ -20,7 +20,7 @@ const createTransaction = async (lot) => {
 
   const transactionData = {
     lot_id: lot?.id || null,
-    seller_id: owner?.id || null,
+    seller_id: card.owner?.id || null,
     purchaser_id: lastPersonToBet?.id || null,
     amount: current_price,
     system_fee: current_price * systemFee,

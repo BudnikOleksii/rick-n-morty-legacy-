@@ -10,22 +10,27 @@ const getAllFinishedLots = () => {
 };
 
 const getLots = (queryParams) => {
+  const { name, minPrice, maxPrice, locationId, order, page, limit } = queryParams;
   return Lot.query()
     .select()
     .whereNotDeleted()
     .withGraphFetched(
       '[card.[character.[species, type, origin, location, episodes], owner], lastPersonToBet]'
     )
-    .whereBetween('current_price', [queryParams.minPrice, queryParams.maxPrice])
+    .whereBetween('current_price', [minPrice, maxPrice])
     .whereExists(
       Lot.relatedQuery('card').whereExists(
         Card.relatedQuery('character')
-          .where('name', 'like', `%${queryParams.name}%`)
-          .where('location_id', 'like', `%${queryParams.locationId}%`)
+          .where('name', 'like', `%${name}%`)
+          .modify(function (queryBuilder) {
+            if (locationId) {
+              queryBuilder.where('location_id', locationId);
+            }
+          })
       )
     )
-    .orderBy('current_price', queryParams.order)
-    .page(queryParams.page - 1, queryParams.limit);
+    .orderBy('current_price', order)
+    .page(page - 1, limit);
 };
 
 const getLotsPriceRange = () => {
