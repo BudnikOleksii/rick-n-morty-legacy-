@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -17,6 +17,8 @@ import { checkIsAdmin } from '../../../helpers/check-is-admin';
 import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
 import { ADMIN_ROLE } from '../../../constants';
 import { IUser } from '../../../types/user';
+import { BaseModal } from '../../molecules/BaseModal';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
 
 type Props = {
   user: IUser;
@@ -26,6 +28,7 @@ export const UserCard: FC<Props> = ({ user }) => {
   const dispatch = useAppDispatch();
   const { id, username, rating, roles, ip, registration_date, last_visit_date } = user;
   const { isAdmin } = useAppSelector(selectAuth);
+  const [openAddNewRoleModal, setOpenAddNewRoleModal] = useState(false);
   const hasAdminRole = checkIsAdmin(roles);
 
   const handleAddNewRole = (role: string = ADMIN_ROLE) => {
@@ -71,7 +74,14 @@ export const UserCard: FC<Props> = ({ user }) => {
         </List>
 
         {isAdmin && !hasAdminRole && (
-          <Button onClick={() => handleAddNewRole()}>Add admin role</Button>
+          <BaseModal
+            openModalTitle="Add admin role"
+            open={openAddNewRoleModal}
+            onOpenChange={setOpenAddNewRoleModal}
+          >
+            Are you sure you want add admin privilege for current user?
+            <ConfirmButton onConfirm={handleAddNewRole} />
+          </BaseModal>
         )}
       </CardContent>
     </Card>
