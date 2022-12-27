@@ -76,6 +76,8 @@ const createLot = async (body, tokenData) => {
 const finishAuction = async (lot) => {
   const { card, lastPersonToBet } = lot;
 
+  await LotsRepository.finishAuction(lot.id);
+
   if (lastPersonToBet) {
     await CardsService.changeOwner(card.id, lastPersonToBet.id);
     await CharactersRepository.markCharacterAsUsed(lot.card.character.id);
@@ -83,8 +85,6 @@ const finishAuction = async (lot) => {
 
     auctionFinished.next(lot);
   }
-
-  await LotsRepository.finishAuction(lot.id);
 };
 
 const handleBet = async (lotId, bet, tokenData) => {

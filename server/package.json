@@ -23,11 +23,13 @@
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "node-cron": "^3.0.2",
+    "nodemailer": "^6.8.0",
     "objection": "^3.0.1",
     "objection-js-soft-delete": "^3.0.3",
     "rxjs": "^7.5.7",
     "socket.io": "^4.5.4",
-    "stripe": "^11.4.0"
+    "stripe": "^11.4.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

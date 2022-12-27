@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const config = require('../../config');
 const { UserRepository } = require('../repositories/users');
 const {
@@ -9,6 +10,8 @@ const bcrypt = require('bcrypt');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
+const { MailService } = require('./mail-service');
+const { createActivationLink } = require('../utils/createActivationLink');
 
 const { saltRounds } = config.server;
 
@@ -56,17 +59,21 @@ const createUser = async (userData, ip) => {
   }
 
   const hashPassword = await bcrypt.hash(password, saltRounds);
+  const activationLink = uuidv4();
 
   const user = await UserRepository.createUser({
     username,
     login,
     password: hashPassword,
     ip,
+    activation_link: activationLink,
   });
 
   if (!user) {
     throw new InternalServerError(['Cannot create user']);
   }
+
+  await MailService.sendActivationMail(login, createActivationLink(activationLink));
 
   return user;
 };
@@ -109,6 +116,16 @@ const getUserChats = async (id) => {
   return user;
 };
 
+const activateAccount = async (activationLink) => {
+  const user = await getUser('activation_link', activationLink);
+
+  if (!user) {
+    throw new NotFoundError(['User not found']);
+  }
+
+  return updateUser(user.id, { activated: true });
+};
+
 module.exports.UserService = {
   getAllUsers,
   getUserById,
@@ -120,4 +137,5 @@ module.exports.UserService = {
   addNewRole,
   updateLastSeen,
   getUserChats,
+  activateAccount,
 };

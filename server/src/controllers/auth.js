@@ -2,6 +2,8 @@ const httpStatusCodes = require('../utils/http-status-codes');
 const { AuthService } = require('../services/auth');
 const { validate } = require('../validations/validate');
 const { getIpFromRequest } = require('../utils/get-ip-from-request');
+const { UserService } = require('../services/users');
+const { clientUrl } = require('../../config').server;
 
 const registration = async (req, res, next) => {
   try {
@@ -52,9 +54,22 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
+const activateAccount = async (req, res, next) => {
+  try {
+    const { link } = req.params;
+
+    await UserService.activateAccount(link);
+
+    return res.redirect(clientUrl);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.AuthController = {
   registration,
   login,
   logout,
   refreshToken,
+  activateAccount,
 };
