@@ -8,6 +8,7 @@ import { selectAuth } from '../features/auth/auth-selectors';
 import { CardsList } from '../components/organisms/CardsList';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
+import { SocialMediaButtons } from '../components/organisms/SocialMediaButtons';
 
 const UserCards = () => {
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ const UserCards = () => {
     >
       {cards && cards.length > 0 && <CardsList cards={cards} />}
       {cards && cards.length === 0 && <h2>You don't have any cards yet:( Go to auction</h2>}
+
+      {!id && cards && cards.length > 0 && <SocialMediaButtons />}
     </PageTemplate>
   );
 };
