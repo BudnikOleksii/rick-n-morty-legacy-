@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
@@ -9,22 +8,26 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import DnsIcon from '@mui/icons-material/Dns';
 import EventIcon from '@mui/icons-material/Event';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
+import { BaseModal } from '../../molecules/BaseModal';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { addNewRoleStart } from '../../../features/users/users-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { checkIsAdmin } from '../../../helpers/check-is-admin';
 import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
-import { ADMIN_ROLE } from '../../../constants';
+import { ADMIN_ROLE, PATHS } from '../../../constants';
 import { IUser } from '../../../types/user';
-import { BaseModal } from '../../molecules/BaseModal';
-import { ConfirmButton } from '../../atoms/ConfirmButton';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   user: IUser;
 };
 
 export const UserCard: FC<Props> = ({ user }) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id, username, rating, roles, ip, registration_date, last_visit_date } = user;
   const { isAdmin } = useAppSelector(selectAuth);
@@ -39,6 +42,10 @@ export const UserCard: FC<Props> = ({ user }) => {
         role,
       })
     );
+  };
+
+  const handleNavigateToUserCards = () => {
+    navigate(PATHS.userCards(id));
   };
 
   return (
@@ -73,16 +80,23 @@ export const UserCard: FC<Props> = ({ user }) => {
           />
         </List>
 
-        {isAdmin && !hasAdminRole && (
-          <BaseModal
-            openModalTitle="Add admin role"
-            open={openAddNewRoleModal}
-            onOpenChange={setOpenAddNewRoleModal}
-          >
-            Are you sure you want add admin privilege for current user?
-            <ConfirmButton onConfirm={handleAddNewRole} />
-          </BaseModal>
-        )}
+        <Box sx={{ display: 'flex', gap: '15px', marginTop: '15px' }}>
+          {isAdmin && !hasAdminRole && (
+            <BaseModal
+              openModalTitle="Add admin role"
+              open={openAddNewRoleModal}
+              onOpenChange={setOpenAddNewRoleModal}
+              styles={{ margin: 0 }}
+            >
+              Are you sure you want add admin privilege for current user?
+              <ConfirmButton onConfirm={() => handleAddNewRole()} />
+            </BaseModal>
+          )}
+
+          <Button variant="contained" onClick={handleNavigateToUserCards}>
+            Users cards
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );

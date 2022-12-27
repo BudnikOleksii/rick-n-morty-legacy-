@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
@@ -9,11 +9,12 @@ import { CardsList } from '../components/organisms/CardsList';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
 
-const Home = () => {
+const UserCards = () => {
   const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
+  const { id } = useParams();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
   const { cards, cardsInfo } = useAppSelector(selectCards);
@@ -23,12 +24,12 @@ const Home = () => {
       dispatch(registerAction(userCardsLoadingStart.type));
       dispatch(
         userCardsLoadingStart({
-          userId: user.id,
+          userId: id || user.id,
           params: `?page=${page || 1}`,
         })
       );
     }
-  }, [page]);
+  }, [page, id]);
 
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.cards}?page=${pageNumber}`);
@@ -47,4 +48,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default UserCards;

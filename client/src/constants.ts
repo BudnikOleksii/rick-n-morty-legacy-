@@ -2,6 +2,7 @@ export const PATHS = {
   registration: '/registration',
   login: '/login',
   users: '/users',
+  userCards: (id: number) => `/users/${id}/cards`,
   cards: '/cards',
   characters: '/characters',
   sets: '/sets',
