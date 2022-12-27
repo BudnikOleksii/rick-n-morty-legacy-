@@ -11,7 +11,6 @@ export const PATHS = {
   transactions: '/transactions',
 };
 
-// with localhost facebook share button doesn't work
 export const CLIENT_URL = 'http://172.17.0.1:3000';
 
 export const ADMIN_ROLE = 'admin';

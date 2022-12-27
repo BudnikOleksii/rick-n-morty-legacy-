@@ -55,6 +55,7 @@ const development = {
     cardPointsRate: 1,
     smtpUser: SMTP_USER,
     smtpPassword: SMTP_PASSWORD,
+    corsWhiteList: ['http://localhost:3000', 'http://172.17.0.1:3000'],
   },
   db: {
     type: DEV_DB_TYPE || 'mysql',
