@@ -5,6 +5,8 @@ import { registerAction } from '../../../features/actions-info/actions-info-slic
 import { withdrawalStart } from '../../../features/transactions/transactions-slice';
 import { useAppDispatch } from '../../../app/hooks';
 import { IUser } from '../../../types/user';
+import { SYSTEM_FEE } from '../../../constants';
+import Typography from '@mui/material/Typography';
 
 interface Props {
   user: IUser;
@@ -32,8 +34,11 @@ export const WithdrawalModal: FC<Props> = React.memo(({ user }) => {
       open={openWithdrawModal}
       onOpenChange={setOpenWithdrawModal}
     >
-      {`Withdraw ${user.balance}? 
-          Please, be informed, we collect commission ${10}%`}
+      <Typography>
+        {`Withdraw ${user.balance}? Please, be informed, we collect commission ${
+          SYSTEM_FEE * 100
+        }%`}
+      </Typography>
       <ConfirmButton onConfirm={onWithdraw} />
     </BaseModal>
   );

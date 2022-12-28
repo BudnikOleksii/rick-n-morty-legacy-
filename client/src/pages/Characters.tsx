@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCharacters } from '../features/characters/characters-selectors';
@@ -49,7 +50,7 @@ const Characters = () => {
       {characters && characters.length > 0 && <CharactersList characters={characters} />}
 
       {characters && characters.length === 0 && (
-        <h2>You don't have any cards yet:( Go to auction</h2>
+        <Typography variant="h5">No characters found</Typography>
       )}
     </PageTemplate>
   );

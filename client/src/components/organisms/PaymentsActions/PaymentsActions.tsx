@@ -5,8 +5,9 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { WithdrawalModal } from '../WithdrawalModal';
 import { AccountReplenishmentBlock } from '../AccountReplenishmentBlock';
+import React from 'react';
 
-export const PaymentsActions = () => {
+export const PaymentsActions = React.memo(() => {
   const { user } = useAppSelector(selectAuth);
 
   return (
@@ -31,4 +32,4 @@ export const PaymentsActions = () => {
       {user && <AccountReplenishmentBlock user={user} />}
     </Box>
   );
-};
+});

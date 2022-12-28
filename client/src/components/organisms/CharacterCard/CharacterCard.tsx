@@ -16,6 +16,8 @@ import { EpisodesList } from '../EpisodesList';
 import { SetsModalList } from '../SetsModalList';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { ListItemBase } from '../../atoms/ListItemBase';
+import { ConfirmButton } from '../../atoms/ConfirmButton';
+import { CardButtonsWrapper } from '../../atoms/CardButtonsWrapper';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
@@ -24,7 +26,6 @@ import { registerAction } from '../../../features/actions-info/actions-info-slic
 import { selectCharacters } from '../../../features/characters/characters-selectors';
 import { createCardStart } from '../../../features/cards/cards-slice';
 import { ICharacter } from '../../../types/character';
-import { ConfirmButton } from '../../atoms/ConfirmButton';
 
 type Props = {
   character: ICharacter;
@@ -62,7 +63,15 @@ export const CharacterCard: FC<Props> = ({ character }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 300, minHeight: '93%', display: 'flex', flexDirection: 'column' }}>
+    <Card
+      sx={{
+        maxWidth: 300,
+        minHeight: '93%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
       <CardMedia component="img" height="300" image={image} alt={name} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -79,15 +88,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
         </List>
       </CardContent>
 
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          padding: '8px',
-          marginTop: 'auto',
-        }}
-      >
+      <CardButtonsWrapper>
         <BaseModal
           open={openEpisodesModal}
           onOpenChange={setOpenEpisodesModal}
@@ -146,7 +147,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
             <ConfirmButton onConfirm={handleCreateNewCard} />
           </BaseModal>
         )}
-      </div>
+      </CardButtonsWrapper>
     </Card>
   );
 };
