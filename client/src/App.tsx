@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import { MainLayout } from './components/layouts/MainLayout';
 import { PATHS } from './constants';
 import { PrivateRoute } from './components/layouts/PrivateRoute';
-import Home from './pages/Home';
+import UserCards from './pages/UserCards';
 import Users from './pages/Users';
 import Sets from './pages/Sets';
 import Characters from './pages/Characters';
@@ -26,9 +26,12 @@ const App = () => {
 
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
+            <Route index element={<UserCards />} />
             <Route path={PATHS.cards} element={<Cards />} />
-            <Route path={PATHS.users} element={<Users />} />
+            <Route path={PATHS.users}>
+              <Route index element={<Users />} />
+              <Route path=":id/cards" element={<UserCards />} />
+            </Route>
             <Route path={PATHS.sets} element={<Sets />} />
             <Route path={PATHS.characters} element={<Characters />} />
             <Route path={PATHS.lots} element={<Lots />} />

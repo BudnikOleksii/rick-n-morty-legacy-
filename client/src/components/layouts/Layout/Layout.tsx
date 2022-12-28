@@ -1,13 +1,17 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { NotificationBlock } from '../../organisms/NotificationBlock';
+import { HelmetMetaData } from '../../organisms/HelmetMetaData';
 
 export const Layout = () => {
   return (
-    <main className="App">
-      <NotificationBlock />
+    <>
+      <HelmetMetaData />
+      <main className="App">
+        <NotificationBlock />
 
-      <Outlet />
-    </main>
+        <Outlet />
+      </main>
+    </>
   );
 };

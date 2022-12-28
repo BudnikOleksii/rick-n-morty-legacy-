@@ -2,6 +2,7 @@ export const PATHS = {
   registration: '/registration',
   login: '/login',
   users: '/users',
+  userCards: (id: number) => `/users/${id}/cards`,
   cards: '/cards',
   characters: '/characters',
   sets: '/sets',
@@ -9,6 +10,8 @@ export const PATHS = {
   chats: '/chats',
   transactions: '/transactions',
 };
+
+export const CLIENT_URL = 'http://172.17.0.1:3000';
 
 export const ADMIN_ROLE = 'admin';
 export const DEFAULT_MAX_PRICE = 2 ** 31 - 1;

@@ -6,16 +6,22 @@ const morgan = require('morgan');
 const connection = require('./db');
 
 const api = require('./routes/api');
-const { apiEntrypoint } = require('../config').server;
+const { apiEntrypoint, corsWhiteList } = require('../config').server;
 const { errorHandler } = require('./middlewares/error-handler');
 
 const app = express();
 
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (corsWhiteList.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'public')));

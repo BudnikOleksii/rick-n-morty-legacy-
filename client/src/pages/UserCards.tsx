@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
@@ -8,12 +8,14 @@ import { selectAuth } from '../features/auth/auth-selectors';
 import { CardsList } from '../components/organisms/CardsList';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
+import { SocialMediaButtons } from '../components/organisms/SocialMediaButtons';
 
-const Home = () => {
+const UserCards = () => {
   const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
   const page = params.get('page');
+  const { id } = useParams();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
   const { cards, cardsInfo } = useAppSelector(selectCards);
@@ -23,12 +25,12 @@ const Home = () => {
       dispatch(registerAction(userCardsLoadingStart.type));
       dispatch(
         userCardsLoadingStart({
-          userId: user.id,
+          userId: id || user.id,
           params: `?page=${page || 1}`,
         })
       );
     }
-  }, [page]);
+  }, [page, id]);
 
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.cards}?page=${pageNumber}`);
@@ -43,8 +45,10 @@ const Home = () => {
     >
       {cards && cards.length > 0 && <CardsList cards={cards} />}
       {cards && cards.length === 0 && <h2>You don't have any cards yet:( Go to auction</h2>}
+
+      {!id && cards && cards.length > 0 && <SocialMediaButtons />}
     </PageTemplate>
   );
 };
 
-export default Home;
+export default UserCards;
