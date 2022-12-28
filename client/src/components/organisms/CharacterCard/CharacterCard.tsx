@@ -13,7 +13,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import Button from '@mui/material/Button';
 import { BaseModal } from '../../molecules/BaseModal';
 import { EpisodesList } from '../EpisodesList';
-import { SetsList } from '../SetsList';
+import { SetsModalList } from '../SetsModalList';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { ListItemBase } from '../../atoms/ListItemBase';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -130,7 +130,7 @@ export const CharacterCard: FC<Props> = ({ character }) => {
             buttonVariant="contained"
             buttonColor="success"
           >
-            <SetsList sets={allSets} onToggleCharacterInSet={handleToggleCharacterInSet} />
+            <SetsModalList sets={allSets} onToggleCharacterInSet={handleToggleCharacterInSet} />
           </BaseModal>
         )}
 

@@ -4,12 +4,9 @@ import { ISuccessResponse } from './response';
 export interface ISet {
   id: number;
   name: string;
-}
-
-export interface ISetWithCharacters extends ISet {
-  characters?: ICharacter[];
+  characters?: Omit<ICharacter, 'location' | 'episodes'>[];
 }
 
 export type INewSet = Pick<ISet, 'name'>;
 
-export type ISetsResponse = ISuccessResponse<ISetWithCharacters[]>;
+export type ISetsResponse = ISuccessResponse<ISet[]>;

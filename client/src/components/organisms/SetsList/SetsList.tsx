@@ -1,23 +1,17 @@
 import { FC } from 'react';
-import List from '@mui/material/List';
-import Button from '@mui/material/Button';
-import { ListItemBase } from '../../atoms/ListItemBase';
 import { ISet } from '../../../types/set';
+import List from '@mui/material/List';
+import { SetListItem } from '../SetListItem';
 
 interface Props {
   sets: ISet[];
-  onToggleCharacterInSet: (setId: number) => void;
 }
 
-export const SetsList: FC<Props> = ({ sets, onToggleCharacterInSet }) => {
+export const SetsList: FC<Props> = ({ sets }) => {
   return (
-    <List>
+    <List sx={{ maxWidth: 375, margin: 'auto' }}>
       {sets.map((set) => (
-        <ListItemBase key={set.id} text={set.name}>
-          <Button variant="outlined" color="success" onClick={() => onToggleCharacterInSet(set.id)}>
-            Add
-          </Button>
-        </ListItemBase>
+        <SetListItem key={set.id} set={set} />
       ))}
     </List>
   );
