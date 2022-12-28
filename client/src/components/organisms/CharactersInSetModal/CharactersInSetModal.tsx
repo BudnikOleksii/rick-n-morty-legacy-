@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { ICharacter } from '../../../types/character';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import PersonIcon from '@mui/icons-material/Person';
 import Modal from '@mui/material/Modal';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { modalStyles } from '../../../modal-styles';
+import { ICharacterInSet } from '../../../types/set';
 
 interface Props {
   isOpen: boolean;
   onOpen: (open: boolean) => void;
-  characters: Omit<ICharacter, 'location' | 'episodes'>[];
+  characters: ICharacterInSet[];
 }
 
 export const CharactersInSetModal: FC<Props> = ({ isOpen, onOpen, characters }) => {

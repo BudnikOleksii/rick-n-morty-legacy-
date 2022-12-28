@@ -1,10 +1,9 @@
 import React, { FC, ReactNode } from 'react';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Pagination from '@mui/material/Pagination';
 import { Heading } from '../../molecules/Heading';
 import { IResponseInfo } from '../../../types/response';
 import { Maybe } from '../../../types/helper-types';
+import { ContentContainer } from '../../layouts/ContentContainer';
 
 interface Props {
   title: string;
@@ -18,8 +17,7 @@ export const PageTemplate: FC<Props> = (props) => {
   const { title, info, currentPage, onPageChange, children } = props;
 
   return (
-    <Box component="main" sx={{ p: 3, width: '100%' }}>
-      <Toolbar />
+    <ContentContainer>
       <Heading title={title} />
 
       {children}
@@ -36,6 +34,6 @@ export const PageTemplate: FC<Props> = (props) => {
           }}
         />
       )}
-    </Box>
+    </ContentContainer>
   );
 };

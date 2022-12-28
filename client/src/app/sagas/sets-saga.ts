@@ -4,12 +4,20 @@ import {
   createSetSuccess,
   deleteSetStart,
   deleteSetSuccess,
+  setLoadingStart,
   setsLoadingStart,
   setsSuccess,
+  setSuccess,
   toggleCharacterInSetStart,
 } from '../../features/sets/sets-slice';
-import { ISet, ISetsResponse } from '../../types/set';
-import { createSet, deleteSet, getSets, toggleCharacterInSet } from '../../api/sets-service';
+import { ISet, ISetFullInfo, ISetsResponse } from '../../types/set';
+import {
+  createSet,
+  deleteSet,
+  getSetById,
+  getSets,
+  toggleCharacterInSet,
+} from '../../api/sets-service';
 import {
   finishAction,
   setErrors,
@@ -25,6 +33,18 @@ function* setsWorker({ payload }: ReturnType<typeof setsLoadingStart>) {
     yield put(setErrors(errors));
   } finally {
     yield put(finishAction(setsLoadingStart.type));
+  }
+}
+
+function* setWorker({ payload }: ReturnType<typeof setLoadingStart>) {
+  try {
+    const set = (yield call(getSetById, payload.id)) as ISetFullInfo;
+
+    yield put(setSuccess(set));
+  } catch (errors) {
+    yield put(setErrors(errors));
+  } finally {
+    yield put(finishAction(setLoadingStart.type));
   }
 }
 
@@ -68,6 +88,7 @@ function* toggleCharacterInSetWorker({ payload }: ReturnType<typeof toggleCharac
 
 function* setsSaga() {
   yield takeEvery(setsLoadingStart.type, setsWorker);
+  yield takeEvery(setLoadingStart.type, setWorker);
   yield takeEvery(createSetStart.type, createSetWorker);
   yield takeEvery(deleteSetStart.type, deleteSetWorker);
   yield takeEvery(toggleCharacterInSetStart.type, toggleCharacterInSetWorker);
