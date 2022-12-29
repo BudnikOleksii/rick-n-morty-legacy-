@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export const UserCard: FC<Props> = ({ user }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id, username, rating, roles, ip, registration_date, last_visit_date } = user;
@@ -63,25 +65,29 @@ export const UserCard: FC<Props> = ({ user }) => {
         </Typography>
 
         <List>
-          <ListItemComponent name="Rating" value={rating} icon={<StarRateIcon />} />
+          <ListItemComponent
+            name={t('rating', { ns: 'user-card' })}
+            value={rating}
+            icon={<StarRateIcon />}
+          />
 
           {roles.map((role) => (
             <ListItemComponent
               key={role.id}
-              name="Role"
+              name={t('role', { ns: 'user-card' })}
               value={role.title}
               icon={<SupervisorAccountIcon />}
             />
           ))}
 
-          <ListItemComponent name="Ip address" value={ip} icon={<DnsIcon />} />
+          <ListItemComponent name={t('ip', { ns: 'user-card' })} value={ip} icon={<DnsIcon />} />
           <ListItemComponent
-            name="Registration date"
+            name={t('registration_date', { ns: 'user-card' })}
             value={getLocalDate(registration_date)}
             icon={<EventIcon />}
           />
           <ListItemComponent
-            name="Last seen"
+            name={t('last_seen', { ns: 'user-card' })}
             value={getLocalTime(last_visit_date)}
             icon={<EventIcon />}
           />
@@ -91,18 +97,18 @@ export const UserCard: FC<Props> = ({ user }) => {
       <CardButtonsWrapper>
         {isAdmin && !hasAdminRole && (
           <BaseModal
-            openModalTitle="Add admin role"
+            openModalTitle={t('add_role', { ns: 'user-card' })}
             open={openAddNewRoleModal}
             onOpenChange={setOpenAddNewRoleModal}
             styles={{ margin: 0 }}
           >
-            Are you sure you want add admin privilege for current user?
+            {t('add_role_confirmation', { ns: 'user-card' })}
             <ConfirmButton onConfirm={() => handleAddNewRole()} />
           </BaseModal>
         )}
 
         <Button variant="contained" onClick={handleNavigateToUserCards}>
-          Users cards
+          {t('cards_link', { ns: 'user-card' })}
         </Button>
       </CardButtonsWrapper>
     </Card>

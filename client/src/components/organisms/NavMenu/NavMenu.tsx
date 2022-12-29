@@ -1,5 +1,6 @@
 import { FC, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLinkClick = (item: string = '/') => navigate(item);
@@ -37,7 +39,7 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
           component="div"
           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
         >
-          Rick and Morty App
+          {t('app_title', { ns: 'main' })}
         </Typography>
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           {navItems.map((item) => (
