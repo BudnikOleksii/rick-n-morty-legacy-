@@ -1,0 +1,23 @@
+{
+  "payments": {
+    "title": "Платежи",
+    "table": {
+      "transaction_id": "ID Транзакции",
+      "lot_id": "ID Лота",
+      "amount": "Сумма",
+      "system_fee": "Комиссия",
+      "seller": "Продавец",
+      "purchaser": "Покупатель",
+      "transaction_date": "Дата транзакции"
+    },
+    "withdraw": {
+      "btn": "Вывести",
+      "text": "Вывести {{balance}}? Пожалуйста, подтвердите, мы берем комиссию {{fee}}%"
+    },
+    "payment_btn": "Купить cards points"
+  },
+  "cards": {
+    "title": "Карточки пользователя",
+    "not_found": "Нету карточек"
+  }
+}

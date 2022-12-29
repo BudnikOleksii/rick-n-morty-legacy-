@@ -6,7 +6,6 @@ import { NavMenu } from '../../organisms/NavMenu';
 import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { PATHS } from '../../../constants';
-import { LanguageSelect } from '../../molecules/LanguageSelect';
 
 const { lots, chats, users } = PATHS;
 const defaultNavItems = [lots, chats].map((item) => item.slice(1));

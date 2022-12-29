@@ -1,4 +1,28 @@
 {
   "app_title": "Аукцион карточек Рик и Морти",
-  "language": "Язык"
+  "language": "Язык",
+  "languages": {
+    "en": "Английский",
+    "uk": "Украинский",
+    "ru": "Русский"
+  },
+  "paths": {
+    "users": "Пользователи",
+    "lots": "Лоты",
+    "chats": "Чаты",
+    "characters": "Персонажы",
+    "sets": "Сэты",
+    "cards": "Все карточки",
+    "payments": "Платежы",
+    "logout": "Виход",
+    "my_cards": "Мои карточки"
+  },
+  "dropdowns": {
+    "faq": "faq",
+    "profile": "профиль"
+  },
+  "profile": {
+    "rating": "Рейтинг: {{rating}}",
+    "balance": "Баланс: {{balance}}"
+  }
 }

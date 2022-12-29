@@ -1,4 +1,28 @@
 {
   "app_title": "Аукціон карток Рік та Морті",
-  "language": "Мова"
+  "language": "Мова",
+  "languages": {
+    "en": "Англійська",
+    "uk": "Українська",
+    "ru": "Російська"
+  },
+  "paths": {
+    "users": "Користувачі",
+    "lots": "Лоти",
+    "chats": "Чати",
+    "characters": "Персонажі",
+    "sets": "Сети",
+    "cards": "Всі картки",
+    "payments": "Платежі",
+    "logout": "Вихід",
+    "my_cards": "Мої картки"
+  },
+  "dropdowns": {
+    "faq": "faq",
+    "profile": "профіль"
+  },
+  "profile": {
+    "rating": "Рейтинг: {{rating}}",
+    "balance": "Баланс: {{balance}}"
+  }
 }

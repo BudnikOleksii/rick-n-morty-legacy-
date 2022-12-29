@@ -1,4 +1,5 @@
 import { useState, MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,9 +8,10 @@ import { logoutStart } from '../../../features/auth/auth-slice';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { useNavigate } from 'react-router-dom';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
-import { PATHS } from '../../../constants';
+import { NAME_SPACES, PATHS } from '../../../constants';
 
 export const ProfileDropdown = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
@@ -45,7 +47,7 @@ export const ProfileDropdown = () => {
         variant="contained"
         color="secondary"
       >
-        Profile
+        {t(`dropdowns.profile`, { ns: NAME_SPACES.main })}
       </Button>
       <Menu
         id="basic-menu"
@@ -56,11 +58,19 @@ export const ProfileDropdown = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem>{`Rating: ${user?.rating || 0}`}</MenuItem>
-        <MenuItem>{`Balance: ${user?.balance || 0}`}</MenuItem>
-        <MenuItem onClick={() => handleLinkClick('/')}>Your cards</MenuItem>
-        <MenuItem onClick={() => handleLinkClick(PATHS.transactions)}>Payments</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem>
+          {t(`profile.rating`, { ns: NAME_SPACES.main, rating: user?.rating || 0 })}
+        </MenuItem>
+        <MenuItem>
+          {t(`profile.balance`, { ns: NAME_SPACES.main, balance: user?.balance || 0 })}
+        </MenuItem>
+        <MenuItem onClick={() => handleLinkClick('/')}>
+          {t(`paths.my_cards`, { ns: NAME_SPACES.main })}
+        </MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.transactions)}>
+          {t(`paths.payments`, { ns: NAME_SPACES.main })}
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>{t(`paths.logout`, { ns: NAME_SPACES.main })}</MenuItem>
       </Menu>
     </div>
   );

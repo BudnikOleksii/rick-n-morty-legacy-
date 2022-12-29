@@ -1,0 +1,23 @@
+{
+  "payments": {
+    "title": "Payments",
+    "table": {
+      "transaction_id": "Transaction ID",
+      "lot_id": "Lot ID",
+      "amount": "Amount",
+      "system_fee": "System fee",
+      "seller": "Seller",
+      "purchaser": "Purchaser",
+      "transaction_date": "Date of transaction"
+    },
+    "withdraw": {
+      "btn": "Withdraw",
+      "text": "Withdraw {{balance}}? Please, be informed, we collect commission {{fee}}%"
+    },
+    "payment_btn": "Buy cards points"
+  },
+  "cards": {
+    "title": "User cards",
+    "not_found": "No cards found"
+  }
+}

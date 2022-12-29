@@ -1,0 +1,23 @@
+{
+  "payments": {
+    "title": "Платежі",
+    "table": {
+      "transaction_id": "ID Транзакції",
+      "lot_id": "ID Лота",
+      "amount": "Сума",
+      "system_fee": "Коміссія",
+      "seller": "Продавець",
+      "purchaser": "Покупець",
+      "transaction_date": "Дата транзакції"
+    },
+    "withdraw": {
+      "btn": "Вивести",
+      "text": "Вивести {{balance}}? Будь ласка, підтвердіть, ми беремо коміссію {{fee}}%"
+    },
+    "payment_btn": "Придбати cards points"
+  },
+  "cards": {
+    "title": "Картки користувача",
+    "not_found": "Немає карток"
+  }
+}

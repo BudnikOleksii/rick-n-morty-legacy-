@@ -13,7 +13,7 @@ import Sets from './pages/Sets';
 import Set from './pages/Set';
 import Characters from './pages/Characters';
 import Lots from './pages/Lots';
-import Transactions from './pages/Transactions';
+import Payments from './pages/Payments';
 import Cards from './pages/Cards';
 import Chats from './pages/Chats';
 import Chat from './pages/Chat';
@@ -39,7 +39,7 @@ const App = () => {
             </Route>
             <Route path={PATHS.characters} element={<Characters />} />
             <Route path={PATHS.lots} element={<Lots />} />
-            <Route path={PATHS.transactions} element={<Transactions />} />
+            <Route path={PATHS.transactions} element={<Payments />} />
             <Route path={PATHS.chats}>
               <Route index element={<Chats />} />
               <Route path=":id" element={<Chat />} />

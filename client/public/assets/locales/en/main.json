@@ -1,5 +1,28 @@
 {
   "app_title": "Rick and Morty cards auction",
   "language": "Language",
-  "days_since_release": "it's been {{number_of_days}} days since this video was released"
+  "languages": {
+    "en": "English",
+    "uk": "Ukrainian",
+    "ru": "Russian"
+  },
+  "paths": {
+    "users": "Users",
+    "lots": "Lots",
+    "chats": "Chats",
+    "characters": "Characters",
+    "sets": "Sets",
+    "cards": "All cards",
+    "payments": "Payments",
+    "logout": "Logout",
+    "my_cards": "Your cards"
+  },
+  "dropdowns": {
+    "faq": "faq",
+    "profile": "profile"
+  },
+  "profile": {
+    "rating": "Rating: {{rating}}",
+    "balance": "Balance: {{balance}}"
+  }
 }

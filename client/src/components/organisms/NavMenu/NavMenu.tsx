@@ -11,6 +11,7 @@ import { ButtonLink } from '../../atoms/ButtonLink';
 import { ProfileDropdown } from '../ProfileDropdown';
 import { FaqDropdown } from '../FaqDropdown';
 import { LanguageSelect } from '../../molecules/LanguageSelect';
+import { NAME_SPACES } from '../../../constants';
 
 interface Props {
   onDrawerToggle: () => void;
@@ -35,13 +36,15 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
         >
           <MenuIcon />
         </IconButton>
+
         <Typography
           variant="h6"
           component="div"
           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
         >
-          {t('app_title', { ns: 'main' })}
+          {t('app_title', { ns: NAME_SPACES.main })}
         </Typography>
+
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           {navItems.map((item) => (
             <ButtonLink key={item} item={item} onClick={handleLinkClick} />
