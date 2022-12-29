@@ -13,6 +13,7 @@ setsRouter.use(authGuard);
 setsRouter.use(updateLastVisitDate);
 setsRouter.get('/', SetsController.getSets);
 setsRouter.get('/all', SetsController.getSetsInfo);
+setsRouter.get('/:id', SetsController.getSet);
 setsRouter.post('/', roleGuard(adminRole), SetsController.createSet);
 setsRouter.patch('/:id', roleGuard(adminRole), SetsController.toggleCharactersInSet);
 setsRouter.delete('/:id', roleGuard(adminRole), SetsController.deleteSet);

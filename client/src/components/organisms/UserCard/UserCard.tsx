@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,6 +8,8 @@ import StarRateIcon from '@mui/icons-material/StarRate';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import DnsIcon from '@mui/icons-material/Dns';
 import EventIcon from '@mui/icons-material/Event';
+import Button from '@mui/material/Button';
+import { CardButtonsWrapper } from '../../atoms/CardButtonsWrapper';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { BaseModal } from '../../molecules/BaseModal';
 import { ConfirmButton } from '../../atoms/ConfirmButton';
@@ -18,9 +21,6 @@ import { checkIsAdmin } from '../../../helpers/check-is-admin';
 import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
 import { ADMIN_ROLE, PATHS } from '../../../constants';
 import { IUser } from '../../../types/user';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import { useNavigate } from 'react-router-dom';
 
 type Props = {
   user: IUser;
@@ -49,7 +49,14 @@ export const UserCard: FC<Props> = ({ user }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: '100%' }}>
+    <Card
+      sx={{
+        maxWidth: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {username}
@@ -79,25 +86,25 @@ export const UserCard: FC<Props> = ({ user }) => {
             icon={<EventIcon />}
           />
         </List>
-
-        <Box sx={{ display: 'flex', gap: '15px', marginTop: '15px' }}>
-          {isAdmin && !hasAdminRole && (
-            <BaseModal
-              openModalTitle="Add admin role"
-              open={openAddNewRoleModal}
-              onOpenChange={setOpenAddNewRoleModal}
-              styles={{ margin: 0 }}
-            >
-              Are you sure you want add admin privilege for current user?
-              <ConfirmButton onConfirm={() => handleAddNewRole()} />
-            </BaseModal>
-          )}
-
-          <Button variant="contained" onClick={handleNavigateToUserCards}>
-            Users cards
-          </Button>
-        </Box>
       </CardContent>
+
+      <CardButtonsWrapper>
+        {isAdmin && !hasAdminRole && (
+          <BaseModal
+            openModalTitle="Add admin role"
+            open={openAddNewRoleModal}
+            onOpenChange={setOpenAddNewRoleModal}
+            styles={{ margin: 0 }}
+          >
+            Are you sure you want add admin privilege for current user?
+            <ConfirmButton onConfirm={() => handleAddNewRole()} />
+          </BaseModal>
+        )}
+
+        <Button variant="contained" onClick={handleNavigateToUserCards}>
+          Users cards
+        </Button>
+      </CardButtonsWrapper>
     </Card>
   );
 };

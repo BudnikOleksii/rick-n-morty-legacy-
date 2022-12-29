@@ -13,6 +13,11 @@ const app = express();
 
 const corsOptions = {
   origin: function (origin, callback) {
+    // For tests via postman, because it doesn't provide origin
+    // TODO remove after tests
+    if (!origin) {
+      return callback(null, true);
+    }
     if (corsWhiteList.indexOf(origin) !== -1) {
       callback(null, true);
     } else {

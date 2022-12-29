@@ -9,6 +9,8 @@ import { CardsList } from '../components/organisms/CardsList';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
 import { SocialMediaButtons } from '../components/organisms/SocialMediaButtons';
+import { Heading } from '../components/molecules/Heading';
+import Typography from '@mui/material/Typography';
 
 const UserCards = () => {
   const navigate = useNavigate();
@@ -44,7 +46,7 @@ const UserCards = () => {
       onPageChange={handlePageChange}
     >
       {cards && cards.length > 0 && <CardsList cards={cards} />}
-      {cards && cards.length === 0 && <h2>You don't have any cards yet:( Go to auction</h2>}
+      {cards && cards.length === 0 && <Typography variant="h5">No cards found</Typography>}
 
       {!id && cards && cards.length > 0 && <SocialMediaButtons />}
     </PageTemplate>

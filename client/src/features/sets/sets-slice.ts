@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Maybe } from '../../types/helper-types';
 import { IResponseInfo } from '../../types/response';
-import { ISet } from '../../types/set';
+import { ISet, ISetFullInfo } from '../../types/set';
 
 interface SetsState {
   sets: Maybe<ISet[]>;
   setsInfo: Maybe<IResponseInfo>;
+  selectedSet: Maybe<ISetFullInfo>;
 }
 
 const initialState: SetsState = {
   sets: null,
   setsInfo: null,
+  selectedSet: null,
 };
 
 const setsSlice = createSlice({
@@ -21,6 +23,10 @@ const setsSlice = createSlice({
     setsSuccess: (state, action) => {
       state.sets = action.payload.results;
       state.setsInfo = action.payload.info;
+    },
+    setLoadingStart: (state, action) => {},
+    setSuccess: (state, action) => {
+      state.selectedSet = action.payload;
     },
     createSetStart: (state, action) => {},
     createSetSuccess: (state, action) => {
@@ -37,6 +43,8 @@ const setsSlice = createSlice({
 export const {
   setsLoadingStart,
   setsSuccess,
+  setLoadingStart,
+  setSuccess,
   createSetStart,
   createSetSuccess,
   deleteSetStart,

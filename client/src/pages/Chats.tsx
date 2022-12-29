@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { ChatsList } from '../components/organisms/ChatsList';
@@ -75,7 +76,9 @@ const Chats = () => {
 
       {chats && chats.length > 0 && <ChatsList chats={chats} />}
 
-      {chats && chats.length === 0 && <h2>There are no active chats, create one</h2>}
+      {chats && chats.length === 0 && (
+        <Typography variant="h5">There are no active chats, create one</Typography>
+      )}
     </PageTemplate>
   );
 };

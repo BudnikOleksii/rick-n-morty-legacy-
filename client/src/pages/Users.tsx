@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import Typography from '@mui/material/Typography';
+import { PageTemplate } from '../components/templates/PageTemplate';
+import { UsersList } from '../components/organisms/UsersList';
 import { PATHS } from '../constants';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectUsers } from '../features/users/users-selelctors';
 import { usersLoadingStart } from '../features/users/users-slice';
-import { UsersList } from '../components/organisms/UsersList';
 import { useNavigate } from 'react-router-dom';
-import { PageTemplate } from '../components/templates/PageTemplate';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 
 const Users = () => {
@@ -38,7 +39,7 @@ const Users = () => {
     >
       {users && users.length > 0 && <UsersList users={users} />}
 
-      {users && users.length === 0 && <h2>No users found</h2>}
+      {users && users.length === 0 && <Typography variant="h5">No users found</Typography>}
     </PageTemplate>
   );
 };

@@ -12,20 +12,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { IChat } from '../../../types/chat-messages';
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxHeight: '50vh',
-  maxWidth: 400,
-  overflow: 'auto',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { modalStyles } from '../../../modal-styles';
 
 interface Props {
   chat: IChat;
@@ -58,7 +45,7 @@ export const ChatCard: FC<Props> = ({ chat }) => {
         aria-labelledby="modal-users"
         aria-describedby="modal-users-list-for-current-chat"
       >
-        <Box sx={style}>
+        <Box sx={modalStyles}>
           {users.length > 0 ? (
             <List>
               {users.map((user) => (

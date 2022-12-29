@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import { PageTemplate } from '../components/templates/PageTemplate';
+import { CardsList } from '../components/organisms/CardsList';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { cardsLoadingStart } from '../features/cards/cards-slice';
 import { PATHS } from '../constants';
-import { PageTemplate } from '../components/templates/PageTemplate';
-import { CardsList } from '../components/organisms/CardsList';
 
 const Cards = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Cards = () => {
       onPageChange={handlePageChange}
     >
       {cards && cards.length > 0 && <CardsList cards={cards} />}
-      {cards && cards.length === 0 && <h2>No cards found</h2>}
+      {cards && cards.length === 0 && <Typography variant="h5">No cards found</Typography>}
     </PageTemplate>
   );
 };

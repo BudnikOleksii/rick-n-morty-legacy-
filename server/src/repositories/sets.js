@@ -2,7 +2,7 @@ const Set = require('../models/sets');
 
 const getSets = (page, limit) => {
   return Set.query()
-    .withGraphFetched('characters.[species, type, origin, location, episodes]')
+    .withGraphFetched('characters.[species, type]')
     .page(page - 1, limit);
 };
 

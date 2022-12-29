@@ -10,6 +10,7 @@ import { PrivateRoute } from './components/layouts/PrivateRoute';
 import UserCards from './pages/UserCards';
 import Users from './pages/Users';
 import Sets from './pages/Sets';
+import Set from './pages/Set';
 import Characters from './pages/Characters';
 import Lots from './pages/Lots';
 import Transactions from './pages/Transactions';
@@ -32,7 +33,10 @@ const App = () => {
               <Route index element={<Users />} />
               <Route path=":id/cards" element={<UserCards />} />
             </Route>
-            <Route path={PATHS.sets} element={<Sets />} />
+            <Route path={PATHS.sets}>
+              <Route index element={<Sets />} />
+              <Route path=":id" element={<Set />} />
+            </Route>
             <Route path={PATHS.characters} element={<Characters />} />
             <Route path={PATHS.lots} element={<Lots />} />
             <Route path={PATHS.transactions} element={<Transactions />} />
