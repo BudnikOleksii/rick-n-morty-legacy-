@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import { SocialMediaButtons } from '../components/organisms/SocialMediaButtons';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCards } from '../features/cards/cards-selectors';
@@ -8,9 +10,6 @@ import { selectAuth } from '../features/auth/auth-selectors';
 import { CardsList } from '../components/organisms/CardsList';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PATHS } from '../constants';
-import { SocialMediaButtons } from '../components/organisms/SocialMediaButtons';
-import { Heading } from '../components/molecules/Heading';
-import Typography from '@mui/material/Typography';
 
 const UserCards = () => {
   const navigate = useNavigate();

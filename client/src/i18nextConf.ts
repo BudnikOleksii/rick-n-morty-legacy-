@@ -13,12 +13,10 @@ i18next
     supportedLngs: ['en', 'uk', 'ru'],
     fallbackLng: 'en',
     debug: false,
-    // Options for language detector
     detection: {
-      order: ['path', 'cookie', 'htmlTag'],
-      caches: ['cookie'],
+      order: ['path', 'localStorage', 'cookie', 'htmlTag'],
+      caches: ['localStorage', 'cookie'],
     },
-    // react: { useSuspense: false },
     backend: {
       loadPath: '/assets/locales/{{lng}}/{{ns}}.json',
     },

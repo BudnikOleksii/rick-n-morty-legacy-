@@ -8,7 +8,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 export const LanguageSelect = () => {
   const { i18n } = useTranslation();
-  const [language, setLanguage] = useState('en');
+  const lang = window.localStorage.getItem('i18nextLng') || 'en';
+  const [language, setLanguage] = useState(lang);
 
   const handleChange = (event: SelectChangeEvent) => {
     const newLanguage = event.target.value as string;
@@ -18,7 +19,7 @@ export const LanguageSelect = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 120, position: 'absolute', right: '5%', top: '12vh' }}>
+    <Box sx={{ position: 'absolute', right: '5%', top: '80px' }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Language</InputLabel>
         <Select
