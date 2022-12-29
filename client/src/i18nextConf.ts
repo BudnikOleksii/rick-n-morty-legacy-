@@ -15,8 +15,8 @@ i18next
     fallbackLng: 'en',
     debug: false,
     detection: {
-      order: ['path', 'localStorage', 'cookie', 'htmlTag'],
-      caches: ['localStorage', 'cookie'],
+      order: ['path', 'cookie', 'htmlTag'],
+      caches: ['cookie'],
     },
     backend: {
       loadPath: '/assets/locales/{{lng}}/{{ns}}.json',

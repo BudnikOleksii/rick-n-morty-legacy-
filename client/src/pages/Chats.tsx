@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { ChatsList } from '../components/organisms/ChatsList';
+import { ChatFormModal } from '../components/organisms/ChatFormModal';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectChats } from '../features/chats/chats-selectors';
 import { selectAuth } from '../features/auth/auth-selectors';
 import { chatsLoadingStart, userChatsLoadingStart } from '../features/chats/chats-slice';
 import { registerAction } from '../features/actions-info/actions-info-slice';
-import { PATHS } from '../constants';
-import { ChatFormModal } from '../components/organisms/ChatFormModal';
+import { NAME_SPACES, PATHS } from '../constants';
 
 const Chats = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
@@ -54,7 +56,7 @@ const Chats = () => {
 
   return (
     <PageTemplate
-      title="All chats"
+      title={t('chats.title', { ns: NAME_SPACES.pages })}
       info={chatsInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}
@@ -70,14 +72,14 @@ const Chats = () => {
               inputProps={{ 'aria-label': 'controlled' }}
             />
           }
-          label="All chats"
+          label={t('chats.switch', { ns: NAME_SPACES.pages })}
         />
       </Box>
 
       {chats && chats.length > 0 && <ChatsList chats={chats} />}
 
       {chats && chats.length === 0 && (
-        <Typography variant="h5">There are no active chats, create one</Typography>
+        <Typography variant="h5">{t('chats.not_found', { ns: NAME_SPACES.pages })}</Typography>
       )}
     </PageTemplate>
   );

@@ -19,5 +19,16 @@
   "cards": {
     "title": "User cards",
     "not_found": "No cards found"
+  },
+  "chats": {
+    "title": "Chats",
+    "not_found": "There are no active chats",
+    "switch": "All chats",
+    "create_form": "Create chat",
+    "create_label": "Chat name"
+  },
+  "characters": {
+    "title": "All characters",
+    "not_found": "No characters found"
   }
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Cookies from 'js-cookie';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -19,7 +20,7 @@ enum Language {
 
 export const LanguageSelect = () => {
   const { t, i18n } = useTranslation();
-  const lang = window.localStorage.getItem('i18nextLng') || Language.english;
+  const lang = Cookies.get('i18next') || Language.english;
   const [language, setLanguage] = useState(lang as Language);
   const [openLanguagesModal, setOpenLanguagesModal] = useState(false);
 

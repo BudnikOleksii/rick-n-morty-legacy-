@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { PageTemplate } from '../components/templates/PageTemplate';
@@ -8,9 +9,10 @@ import { charactersLoadingStart } from '../features/characters/characters-slice'
 import { CharactersList } from '../components/organisms/CharactersList';
 import { setsLoadingStart } from '../features/sets/sets-slice';
 import { registerAction } from '../features/actions-info/actions-info-slice';
-import { PATHS } from '../constants';
+import { NAME_SPACES, PATHS } from '../constants';
 
 const Characters = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
@@ -42,7 +44,7 @@ const Characters = () => {
 
   return (
     <PageTemplate
-      title="All characters"
+      title={t('characters.title', { ns: NAME_SPACES.pages })}
       info={charactersInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}
@@ -50,7 +52,7 @@ const Characters = () => {
       {characters && characters.length > 0 && <CharactersList characters={characters} />}
 
       {characters && characters.length === 0 && (
-        <Typography variant="h5">No characters found</Typography>
+        <Typography variant="h5">{t('characters.not_found', { ns: NAME_SPACES.pages })}</Typography>
       )}
     </PageTemplate>
   );
