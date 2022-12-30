@@ -29,5 +29,15 @@
     "open": "открыть",
     "delete": "удалить",
     "confirm": "подтвердить"
+  },
+  "filters": {
+    "character_name": "Имя персонажа",
+    "location": "Локация",
+    "price_range": "Диапазон цен",
+    "order": "Порядок сортировки",
+    "apply_btn": "Применить",
+    "clear_filters": "Сбросить",
+    "from_cheapest": "Сначала дешовые",
+    "from_expensive": "Сначала дорогие"
   }
 }

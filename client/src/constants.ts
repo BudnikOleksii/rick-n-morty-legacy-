@@ -27,6 +27,6 @@ export const SYSTEM_FEE = 0.1;
 export const STRIPE_CURRENCY = 'USD';
 export const NAME_SPACES = {
   main: 'main',
-  userCard: 'user-card',
+  cards: 'cards',
   pages: 'pages',
 };

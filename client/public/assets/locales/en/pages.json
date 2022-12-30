@@ -20,6 +20,14 @@
     "title": "User cards",
     "not_found": "No cards found"
   },
+  "all_cards": {
+    "title": "All cards",
+    "not_found": "No cards found"
+  },
+  "lots": {
+    "title": "Auction",
+    "not_found": "No lots found"
+  },
   "users": {
     "title": "Users",
     "not_found": "No users found"

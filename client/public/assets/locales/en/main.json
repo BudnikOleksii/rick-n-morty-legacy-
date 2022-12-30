@@ -29,5 +29,15 @@
     "open": "open",
     "delete": "delete",
     "confirm": "confirm"
+  },
+  "filters": {
+    "character_name": "Character Name",
+    "location": "Location",
+    "price_range": "Price range",
+    "order": "Sort order",
+    "apply_btn": "Apply filters",
+    "clear_filters": "Clear filters",
+    "from_cheapest": "Cheapest at first",
+    "from_expensive": "Expensive at first"
   }
 }

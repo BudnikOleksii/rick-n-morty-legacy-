@@ -29,5 +29,15 @@
     "open": "відкрити",
     "delete": "видалити",
     "confirm": "підтвердити"
+  },
+  "filters": {
+    "character_name": "Імя персонажа",
+    "location": "Локація",
+    "price_range": "Діапазон цін",
+    "order": "Порядок сортування",
+    "apply_btn": "Застосувати",
+    "clear_filters": "Зкинути",
+    "from_cheapest": "Від дешевших",
+    "from_expensive": "Від дорожчих"
   }
 }

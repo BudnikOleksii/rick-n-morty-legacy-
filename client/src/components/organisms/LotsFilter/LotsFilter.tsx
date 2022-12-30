@@ -1,4 +1,5 @@
 import { FC, memo, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -16,6 +17,7 @@ import { locationsLoadingStart } from '../../../features/locations/locations-sli
 import { selectLots } from '../../../features/lots/lots-selectors';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { IAutocomplete, OrderEnum } from '../../../types/helper-types';
+import { NAME_SPACES } from '../../../constants';
 
 interface Props {
   setQuery: (query: string) => void;
@@ -26,6 +28,7 @@ function valuetext(value: number) {
 }
 
 export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { locations } = useAppSelector(selectLocations);
   const {
@@ -82,7 +85,7 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
         <Grid item xs={12} sm={5} md={3} lg={2}>
           <TextField
             fullWidth
-            label="Character Name"
+            label={t('filters.character_name', { ns: NAME_SPACES.main })}
             variant="outlined"
             value={characterName}
             onChange={(event) => setCharacterName(event.target.value)}
@@ -96,15 +99,17 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
             options={locationsAutocomplete}
             value={location}
             onChange={handleTagsChange}
-            renderInput={(params) => <TextField {...params} label="Location" />}
+            renderInput={(params) => (
+              <TextField {...params} label={t('filters.location', { ns: NAME_SPACES.main })} />
+            )}
           />
         </Grid>
 
         <Grid item xs={12} sm={5} md={3} lg={2}>
           <Box sx={{ textAlign: 'center' }}>
-            Price range
+            {t('filters.price_range', { ns: NAME_SPACES.main })}
             <Slider
-              getAriaLabel={() => 'Temperature range'}
+              getAriaLabel={() => t('filters.price_range', { ns: NAME_SPACES.main })}
               value={priceRange}
               onChange={handlePriceRangeChange}
               valueLabelDisplay="auto"
@@ -122,11 +127,15 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
               labelId="sortOrder"
               id="sortOrder"
               value={sortOrder}
-              label="Sort order"
+              label={t('filters.order', { ns: NAME_SPACES.main })}
               onChange={(event) => setSortOrder(event.target.value as OrderEnum)}
             >
-              <MenuItem value={OrderEnum.asc}>Cheapest at first</MenuItem>
-              <MenuItem value={OrderEnum.desc}>Expensive at first</MenuItem>
+              <MenuItem value={OrderEnum.asc}>
+                {t('filters.from_cheapest', { ns: NAME_SPACES.main })}
+              </MenuItem>
+              <MenuItem value={OrderEnum.desc}>
+                {t('filters.from_expensive', { ns: NAME_SPACES.main })}
+              </MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -144,11 +153,11 @@ export const LotsFilter: FC<Props> = memo(({ setQuery }) => {
           }}
         >
           <Button variant="contained" color="primary" onClick={handleFiltersSubmit}>
-            Apply filters
+            {t('filters.apply_btn', { ns: NAME_SPACES.main })}
           </Button>
 
           <Button variant="contained" color="secondary" onClick={handleClearInputs}>
-            Clear filters
+            {t('filters.clear_filters', { ns: NAME_SPACES.main })}
           </Button>
         </Grid>
       </Grid>

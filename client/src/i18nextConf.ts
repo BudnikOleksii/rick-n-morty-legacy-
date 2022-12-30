@@ -9,7 +9,7 @@ i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    ns: [NAME_SPACES.main, NAME_SPACES.userCard, NAME_SPACES.pages],
+    ns: [NAME_SPACES.main, NAME_SPACES.cards, NAME_SPACES.pages],
     defaultNS: NAME_SPACES.main,
     supportedLngs: ['en', 'uk', 'ru'],
     fallbackLng: 'en',

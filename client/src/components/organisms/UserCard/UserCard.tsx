@@ -20,7 +20,7 @@ import { addNewRoleStart } from '../../../features/users/users-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { checkIsAdmin } from '../../../helpers/check-is-admin';
 import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
-import { ADMIN_ROLE, PATHS } from '../../../constants';
+import { ADMIN_ROLE, NAME_SPACES, PATHS } from '../../../constants';
 import { IUser } from '../../../types/user';
 
 type Props = {
@@ -66,7 +66,7 @@ export const UserCard: FC<Props> = ({ user }) => {
 
         <List>
           <ListItemComponent
-            name={t('rating', { ns: 'user-card' })}
+            name={t('user.rating', { ns: NAME_SPACES.cards })}
             value={rating}
             icon={<StarRateIcon />}
           />
@@ -74,20 +74,24 @@ export const UserCard: FC<Props> = ({ user }) => {
           {roles.map((role) => (
             <ListItemComponent
               key={role.id}
-              name={t('role', { ns: 'user-card' })}
+              name={t('user.role', { ns: NAME_SPACES.cards })}
               value={role.title}
               icon={<SupervisorAccountIcon />}
             />
           ))}
 
-          <ListItemComponent name={t('ip', { ns: 'user-card' })} value={ip} icon={<DnsIcon />} />
           <ListItemComponent
-            name={t('registration_date', { ns: 'user-card' })}
+            name={t('user.ip', { ns: NAME_SPACES.cards })}
+            value={ip}
+            icon={<DnsIcon />}
+          />
+          <ListItemComponent
+            name={t('user.registration_date', { ns: NAME_SPACES.cards })}
             value={getLocalDate(registration_date)}
             icon={<EventIcon />}
           />
           <ListItemComponent
-            name={t('last_seen', { ns: 'user-card' })}
+            name={t('user.last_seen', { ns: NAME_SPACES.cards })}
             value={getLocalTime(last_visit_date)}
             icon={<EventIcon />}
           />
@@ -97,18 +101,18 @@ export const UserCard: FC<Props> = ({ user }) => {
       <CardButtonsWrapper>
         {isAdmin && !hasAdminRole && (
           <BaseModal
-            openModalTitle={t('add_role', { ns: 'user-card' })}
+            openModalTitle={t('user.add_role', { ns: NAME_SPACES.cards })}
             open={openAddNewRoleModal}
             onOpenChange={setOpenAddNewRoleModal}
             styles={{ margin: 0 }}
           >
-            {t('add_role_confirmation', { ns: 'user-card' })}
+            {t('user.add_role_confirmation', { ns: NAME_SPACES.cards })}
             <ConfirmButton onConfirm={() => handleAddNewRole()} />
           </BaseModal>
         )}
 
         <Button variant="contained" onClick={handleNavigateToUserCards}>
-          {t('cards_link', { ns: 'user-card' })}
+          {t('user.cards_link', { ns: NAME_SPACES.cards })}
         </Button>
       </CardButtonsWrapper>
     </Card>
