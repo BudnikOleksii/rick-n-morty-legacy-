@@ -1,5 +1,5 @@
 {
-  "app_title": "Rick and Morty cards auction",
+  "app_title": "Rick and Morty",
   "language": "Language",
   "languages": {
     "en": "English",
@@ -28,7 +28,9 @@
   "buttons": {
     "open": "open",
     "delete": "delete",
-    "confirm": "confirm"
+    "confirm": "confirm",
+    "remove": "remove",
+    "add": "add"
   },
   "filters": {
     "character_name": "Character Name",

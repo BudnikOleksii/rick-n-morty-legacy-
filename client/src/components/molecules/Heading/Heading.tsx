@@ -9,7 +9,7 @@ interface Props {
 export const Heading: FC<Props> = ({ title }) => {
   return (
     <>
-      <Typography component="h1" variant="h2" align="center" color="text.primary" gutterBottom>
+      <Typography component="h1" variant="h3" align="center" color="text.primary" gutterBottom>
         {title}
       </Typography>
       <Divider>{title}</Divider>

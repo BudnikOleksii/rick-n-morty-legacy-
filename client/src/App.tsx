@@ -1,22 +1,23 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from './components/layouts/Layout';
+import { MainLayout } from './components/layouts/MainLayout';
+import { PrivateRoute } from './components/layouts/PrivateRoute';
 import NotFoundPage from './pages/NotFound';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
-import { MainLayout } from './components/layouts/MainLayout';
-import { PATHS } from './constants';
-import { PrivateRoute } from './components/layouts/PrivateRoute';
 import UserCards from './pages/UserCards';
 import Users from './pages/Users';
 import Sets from './pages/Sets';
 import Set from './pages/Set';
 import Characters from './pages/Characters';
+import Character from './pages/Character';
 import Lots from './pages/Lots';
 import Payments from './pages/Payments';
 import Cards from './pages/Cards';
 import Chats from './pages/Chats';
 import Chat from './pages/Chat';
+import { PATHS } from './constants';
 
 const App = () => {
   return (
@@ -37,7 +38,10 @@ const App = () => {
               <Route index element={<Sets />} />
               <Route path=":id" element={<Set />} />
             </Route>
-            <Route path={PATHS.characters} element={<Characters />} />
+            <Route path={PATHS.characters}>
+              <Route index element={<Characters />} />
+              <Route path=":id" element={<Character />} />
+            </Route>
             <Route path={PATHS.lots} element={<Lots />} />
             <Route path={PATHS.transactions} element={<Payments />} />
             <Route path={PATHS.chats}>

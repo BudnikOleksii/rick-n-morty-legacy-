@@ -11,6 +11,7 @@ export const CardButtonsWrapper: FC<Props> = ({ children }) => (
       display: 'flex',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
+      gap: '15px',
     }}
     disableSpacing
   >

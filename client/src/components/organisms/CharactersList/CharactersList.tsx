@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import Grid from '@mui/material/Grid';
 import { CharacterCard } from '../CharacterCard';
 import { GridItem } from '../../atoms/GridItem';
-import { ICharacter } from '../../../types/character';
+import { ICharacterBaseInfo } from '../../../types/character';
 
 interface Props {
-  characters: ICharacter[];
+  characters: ICharacterBaseInfo[];
 }
 
 export const CharactersList: FC<Props> = ({ characters }) => {

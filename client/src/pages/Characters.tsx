@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectCharacters } from '../features/characters/characters-selectors';
 import { charactersLoadingStart } from '../features/characters/characters-slice';
 import { CharactersList } from '../components/organisms/CharactersList';
-import { setsLoadingStart } from '../features/sets/sets-slice';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { NAME_SPACES, PATHS } from '../constants';
 
@@ -28,15 +27,6 @@ const Characters = () => {
       })
     );
   }, [page]);
-
-  useEffect(() => {
-    dispatch(registerAction(setsLoadingStart.type));
-    dispatch(
-      setsLoadingStart({
-        params: `/all`,
-      })
-    );
-  }, []);
 
   const handlePageChange = (pageNumber: number) => {
     navigate(`${PATHS.characters}?page=${pageNumber}`);

@@ -69,12 +69,6 @@ class Character extends Model {
     },
   };
 
-  static getCharacter(id) {
-    return this.query()
-      .withGraphFetched('[species, type, origin, location, episodes]')
-      .findById(id);
-  }
-
   $formatJson(json) {
     json = super.$formatJson(json);
     delete json.species_id;
