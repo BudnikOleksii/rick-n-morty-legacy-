@@ -11,7 +11,7 @@
     "lots": "Лоты",
     "chats": "Чаты",
     "characters": "Персонажы",
-    "sets": "Сэты",
+    "sets": "Сеты",
     "cards": "Все карточки",
     "payments": "Платежы",
     "logout": "Виход",
@@ -24,5 +24,10 @@
   "profile": {
     "rating": "Рейтинг: {{rating}}",
     "balance": "Баланс: {{balance}}"
+  },
+  "buttons": {
+    "open": "открыть",
+    "delete": "удалить",
+    "confirm": "подтвердить"
   }
 }

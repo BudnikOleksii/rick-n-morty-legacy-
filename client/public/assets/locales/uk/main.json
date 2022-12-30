@@ -24,5 +24,10 @@
   "profile": {
     "rating": "Рейтинг: {{rating}}",
     "balance": "Баланс: {{balance}}"
+  },
+  "buttons": {
+    "open": "відкрити",
+    "delete": "видалити",
+    "confirm": "підтвердити"
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { useTranslation } from 'react-i18next';
 import TextField from '@mui/material/TextField';
 import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
@@ -11,12 +12,14 @@ import { registerAction } from '../../../features/actions-info/actions-info-slic
 import { selectMessages } from '../../../features/messages/messages-selectors';
 import { createMessageStart } from '../../../features/messages/messages-slice';
 import { INewMessage } from '../../../types/chat-messages';
+import { NAME_SPACES } from '../../../constants';
 
 const schema = yup.object().shape({
   body: yup.string().trim().min(1).required(),
 });
 
 export const NewMessageForm = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { chat } = useAppSelector(selectMessages);
   const {
@@ -52,7 +55,7 @@ export const NewMessageForm = () => {
         {...register('body')}
         id="new-message"
         variant="standard"
-        label="Type Something"
+        label={t('chat.new_message', { ns: NAME_SPACES.pages })}
         fullWidth
         helperText={errors.body?.message}
       />

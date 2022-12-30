@@ -24,5 +24,10 @@
   "profile": {
     "rating": "Rating: {{rating}}",
     "balance": "Balance: {{balance}}"
+  },
+  "buttons": {
+    "open": "open",
+    "delete": "delete",
+    "confirm": "confirm"
   }
 }

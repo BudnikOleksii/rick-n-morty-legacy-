@@ -20,12 +20,36 @@
     "title": "User cards",
     "not_found": "No cards found"
   },
+  "users": {
+    "title": "Users",
+    "not_found": "No users found"
+  },
+  "sets": {
+    "title": "Sets",
+    "not_found": "There are no sets",
+    "create": "Create set",
+    "create_input": "Set name",
+    "delete_message": "Are you sure you want delete current set?",
+    "character": "Character",
+    "no_characters": "There are no characters in set"
+  },
   "chats": {
     "title": "Chats",
     "not_found": "There are no active chats",
     "switch": "All chats",
     "create_form": "Create chat",
-    "create_label": "Chat name"
+    "create_label": "Chat name",
+    "username": "Username",
+    "no_users": "There are no users in chat"
+  },
+  "chat": {
+    "title": "Chat",
+    "leave": "Leave chat",
+    "join": "Join chat",
+    "new_message": "Type Something",
+    "edit_message": "Type Something",
+    "deleted": "message has been deleted",
+    "delete_confirm": "Are you sure you want delete current message?"
   },
   "characters": {
     "title": "All characters",
