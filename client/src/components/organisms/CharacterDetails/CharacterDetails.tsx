@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ICharacter } from '../../../types/character';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -12,22 +12,19 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 import Diversity2Icon from '@mui/icons-material/Diversity2';
 import PublicIcon from '@mui/icons-material/Public';
 import LanguageIcon from '@mui/icons-material/Language';
-import Button from '@mui/material/Button';
 import { CardButtonsWrapper } from '../../atoms/CardButtonsWrapper';
-import { BaseModal } from '../../molecules/BaseModal';
-import { EpisodesList } from '../EpisodesList';
-import { ListItemBase } from '../../atoms/ListItemBase';
 import { ListItemComponent } from '../../molecules/ListItemComponent';
 import { SetsModalList } from '../SetsModalList';
-import { ConfirmButton } from '../../atoms/ConfirmButton';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { selectSets } from '../../../features/sets/sets-selcetors';
 import { selectCharacters } from '../../../features/characters/characters-selectors';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { setsLoadingStart, toggleCharacterInSetStart } from '../../../features/sets/sets-slice';
-import { createCardStart } from '../../../features/cards/cards-slice';
 import { NAME_SPACES } from '../../../constants';
 import { ISet } from '../../../types/set';
+import { EpisodesModal } from '../EpisodesModal';
+import { CharacterSetsModal } from '../CharacterSetsModal';
+import { CreateCardModal } from '../CreateCardModal';
 
 interface Props {
   character: ICharacter;
@@ -41,10 +38,6 @@ export const CharacterDetails: FC<Props> = ({ character }) => {
     character;
   const { sets: allSets } = useAppSelector(selectSets);
   const { allCharactersUsed } = useAppSelector(selectCharacters);
-  const [openEpisodesModal, setOpenEpisodesModal] = useState(false);
-  const [openSetsModal, setOpenSetsModal] = useState(false);
-  const [openAddSetModal, setOpenAddSetModal] = useState(false);
-  const [openCreateCardModal, setOpenCreateCardModal] = useState(false);
   const charactersSetIds = new Set();
   const setsWhereCanAdd: ISet[] = [];
 
@@ -77,16 +70,6 @@ export const CharacterDetails: FC<Props> = ({ character }) => {
         characterId: character.id,
       })
     );
-
-    setOpenSetsModal(false);
-    setOpenAddSetModal(false);
-  };
-
-  const handleCreateNewCard = () => {
-    dispatch(registerAction(createCardStart.type));
-    dispatch(createCardStart({ id }));
-
-    setOpenCreateCardModal(false);
   };
 
   return (
@@ -136,67 +119,20 @@ export const CharacterDetails: FC<Props> = ({ character }) => {
         </List>
 
         <CardButtonsWrapper>
-          <BaseModal
-            open={openEpisodesModal}
-            onOpenChange={setOpenEpisodesModal}
-            openModalTitle={t('character.episodes', { ns: NAME_SPACES.cards })}
-            buttonVariant="contained"
-            buttonColor="info"
-          >
-            <EpisodesList episodes={episodes} />
-          </BaseModal>
+          <EpisodesModal episodes={episodes} />
 
           {sets && sets.length > 0 && (
-            <BaseModal
-              open={openSetsModal}
-              onOpenChange={setOpenSetsModal}
-              openModalTitle={t('character.sets_info', { ns: NAME_SPACES.cards })}
-              buttonVariant="contained"
-              buttonColor="info"
-            >
-              {sets.map((set) => (
-                <ListItemBase key={set.id} text={set.name}>
-                  {isAdmin && (
-                    <Button
-                      variant="outlined"
-                      color="warning"
-                      onClick={() => handleToggleCharacterInSet(set.id)}
-                    >
-                      {t('buttons.remove', { ns: NAME_SPACES.main })}
-                    </Button>
-                  )}
-                </ListItemBase>
-              ))}
-            </BaseModal>
+            <CharacterSetsModal sets={sets} onToggleCharacterInSet={handleToggleCharacterInSet} />
           )}
 
           {isAdmin && setsWhereCanAdd.length > 0 && (
-            <BaseModal
-              open={openAddSetModal}
-              onOpenChange={setOpenAddSetModal}
-              openModalTitle={t('character.add_to_set', { ns: NAME_SPACES.cards })}
-              buttonVariant="contained"
-              buttonColor="success"
-            >
-              <SetsModalList
-                sets={setsWhereCanAdd}
-                onToggleCharacterInSet={handleToggleCharacterInSet}
-              />
-            </BaseModal>
+            <SetsModalList
+              sets={setsWhereCanAdd}
+              onToggleCharacterInSet={handleToggleCharacterInSet}
+            />
           )}
 
-          {isAdmin && allCharactersUsed && (
-            <BaseModal
-              openModalTitle={t('character.create_card_btn', { ns: NAME_SPACES.cards })}
-              buttonVariant="contained"
-              buttonColor="secondary"
-              open={openCreateCardModal}
-              onOpenChange={setOpenCreateCardModal}
-            >
-              {t('character.create_card_msg', { ns: NAME_SPACES.cards })}
-              <ConfirmButton onConfirm={handleCreateNewCard} />
-            </BaseModal>
-          )}
+          {isAdmin && allCharactersUsed && <CreateCardModal characterId={id} />}
         </CardButtonsWrapper>
       </CardContent>
     </Card>
