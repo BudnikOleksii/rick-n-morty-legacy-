@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from 'react';
-import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 
 interface Props {

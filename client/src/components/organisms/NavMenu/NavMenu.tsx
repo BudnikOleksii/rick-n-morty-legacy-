@@ -10,7 +10,6 @@ import AppBar from '@mui/material/AppBar';
 import { ButtonLink } from '../../atoms/ButtonLink';
 import { ProfileDropdown } from '../ProfileDropdown';
 import { FaqDropdown } from '../FaqDropdown';
-import { LanguageSelect } from '../../molecules/LanguageSelect';
 import { NAME_SPACES } from '../../../constants';
 
 interface Props {
