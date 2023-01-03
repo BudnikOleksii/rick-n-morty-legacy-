@@ -1,5 +1,6 @@
-import { FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -9,6 +10,8 @@ import AppBar from '@mui/material/AppBar';
 import { ButtonLink } from '../../atoms/ButtonLink';
 import { ProfileDropdown } from '../ProfileDropdown';
 import { FaqDropdown } from '../FaqDropdown';
+import { LanguageSelect } from '../../molecules/LanguageSelect';
+import { NAME_SPACES } from '../../../constants';
 
 interface Props {
   onDrawerToggle: () => void;
@@ -16,6 +19,7 @@ interface Props {
 }
 
 export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLinkClick = (item: string = '/') => navigate(item);
@@ -32,13 +36,15 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
         >
           <MenuIcon />
         </IconButton>
+
         <Typography
           variant="h6"
           component="div"
           sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
         >
-          Rick and Morty App
+          {t('app_title', { ns: NAME_SPACES.main })}
         </Typography>
+
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           {navItems.map((item) => (
             <ButtonLink key={item} item={item} onClick={handleLinkClick} />
@@ -47,6 +53,7 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
 
         <FaqDropdown />
         <ProfileDropdown />
+        <LanguageSelect />
       </Toolbar>
     </AppBar>
   );

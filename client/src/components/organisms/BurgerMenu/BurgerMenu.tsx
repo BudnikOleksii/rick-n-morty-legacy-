@@ -6,6 +6,8 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Drawer from '@mui/material/Drawer';
 import { ListItemLink } from '../../atoms/ListItemLink';
+import { NAME_SPACES } from '../../../constants';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   open?: boolean;
@@ -16,6 +18,7 @@ interface Props {
 const drawerWidth = 240;
 
 export const BurgerMenu: FC<Props> = memo(({ open, onDrawerToggle, navItems }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLinkClick = (item: string = '/') => navigate(item);
@@ -36,8 +39,9 @@ export const BurgerMenu: FC<Props> = memo(({ open, onDrawerToggle, navItems }) =
       >
         <Box onClick={onDrawerToggle} sx={{ textAlign: 'center' }}>
           <Typography variant="h6" sx={{ my: 2 }}>
-            Rick and Morty App
+            {t('app_title', { ns: NAME_SPACES.main })}
           </Typography>
+
           <Divider />
           <List>
             {navItems.map((item) => (

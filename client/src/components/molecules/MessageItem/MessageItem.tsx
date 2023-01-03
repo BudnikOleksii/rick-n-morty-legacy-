@@ -1,4 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../app/hooks';
+import { useOutsideClickHandle } from '../../../hooks/useOutsideClickHandle';
 import { IMessage } from '../../../types/chat-messages';
 import Grid from '@mui/material/Grid';
 import ListItemText from '@mui/material/ListItemText';
@@ -8,11 +11,10 @@ import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
 import { EditMessageForm } from '../../organisms/EditMessageForm';
 import { MessageActionsBlock } from '../../organisms/MessageActionsBlock';
-import { useAppSelector } from '../../../app/hooks';
 import { selectAuth } from '../../../features/auth/auth-selectors';
 import { getLocalTime } from '../../../helpers/date-helpers';
-import { useOutsideClickHandle } from '../../../hooks/useOutsideClickHandle';
 import { teal, indigo } from '@mui/material/colors';
+import { NAME_SPACES } from '../../../constants';
 
 const myMsgColor = teal[300];
 const msgColor = indigo[300];
@@ -23,6 +25,7 @@ interface Props {
 
 export const MessageItem: FC<Props> = ({ message }) => {
   const { user: author, body, created_at, updated_at, deleted_at } = message;
+  const { t } = useTranslation();
   const { user } = useAppSelector(selectAuth);
   const isUserAuthor = user?.id === author.id;
   const [isEditMode, setIsEditMode] = useState(false);
@@ -75,7 +78,7 @@ export const MessageItem: FC<Props> = ({ message }) => {
             ) : (
               <ListItemText
                 primary={!deleted_at ? body : ''}
-                secondary={deleted_at ? 'message has been deleted' : ''}
+                secondary={deleted_at ? t('chat.edit_message', { ns: NAME_SPACES.pages }) : ''}
               />
             )}
 

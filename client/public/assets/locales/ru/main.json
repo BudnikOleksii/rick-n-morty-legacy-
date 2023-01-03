@@ -1,0 +1,45 @@
+{
+  "app_title": "Рик и Морти",
+  "language": "Язык",
+  "languages": {
+    "en": "Английский",
+    "uk": "Украинский",
+    "ru": "Русский"
+  },
+  "paths": {
+    "users": "Пользователи",
+    "lots": "Лоты",
+    "chats": "Чаты",
+    "characters": "Персонажы",
+    "sets": "Сеты",
+    "cards": "Все карточки",
+    "payments": "Платежы",
+    "logout": "Виход",
+    "my_cards": "Мои карточки"
+  },
+  "dropdowns": {
+    "faq": "faq",
+    "profile": "профиль"
+  },
+  "profile": {
+    "rating": "Рейтинг: {{rating}}",
+    "balance": "Баланс: {{balance}}"
+  },
+  "buttons": {
+    "open": "открыть",
+    "delete": "удалить",
+    "confirm": "подтвердить",
+    "remove": "исключить",
+    "add": "добавить"
+  },
+  "filters": {
+    "character_name": "Имя персонажа",
+    "location": "Локация",
+    "price_range": "Диапазон цен",
+    "order": "Порядок сортировки",
+    "apply_btn": "Применить",
+    "clear_filters": "Сбросить",
+    "from_cheapest": "Сначала дешовые",
+    "from_expensive": "Сначала дорогие"
+  }
+}

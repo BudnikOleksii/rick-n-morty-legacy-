@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StripeCheckout, { Token } from 'react-stripe-checkout';
-import { CARDS_POINTS_RATE, STRIPE_CURRENCY } from '../../../constants';
+import { CARDS_POINTS_RATE, NAME_SPACES, STRIPE_CURRENCY } from '../../../constants';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { replenishBalanceStart } from '../../../features/transactions/transactions-slice';
 import { useAppDispatch } from '../../../app/hooks';
@@ -19,6 +20,7 @@ const MIN_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT;
 const MAX_AMOUNT_FOR_PURCHASE = AMOUNT_INCREMENT * 100;
 
 export const AccountReplenishmentBlock: FC<Props> = React.memo(({ user }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [cardsPointsAmount, setCardsPointsAmount] = useState(AMOUNT_INCREMENT);
   const amount = cardsPointsAmount * CARDS_POINTS_RATE;
@@ -80,7 +82,7 @@ export const AccountReplenishmentBlock: FC<Props> = React.memo(({ user }) => {
         amount={amount}
         currency={STRIPE_CURRENCY}
         billingAddress
-        label="Buy cards points"
+        label={t('payments.payment_btn', { ns: NAME_SPACES.pages }) as string}
       />
     </>
   );

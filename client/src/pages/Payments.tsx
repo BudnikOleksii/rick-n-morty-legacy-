@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { PATHS } from '../constants';
+import { NAME_SPACES, PATHS } from '../constants';
 import { PageTemplate } from '../components/templates/PageTemplate';
 import { selectTransactions } from '../features/transactions/transactions-selectors';
 import { transactionsLoadingStart } from '../features/transactions/transactions-slice';
@@ -9,8 +9,10 @@ import { selectAuth } from '../features/auth/auth-selectors';
 import { TransactionsTable } from '../components/organisms/TransactionsTable';
 import { registerAction } from '../features/actions-info/actions-info-slice';
 import { PaymentsActions } from '../components/organisms/PaymentsActions';
+import { useTranslation } from 'react-i18next';
 
-const Transactions = () => {
+const Payments = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const search = window.location.search;
   const params = new URLSearchParams(search);
@@ -34,7 +36,7 @@ const Transactions = () => {
 
   return (
     <PageTemplate
-      title="Payments"
+      title={t(`payments.title`, { ns: NAME_SPACES.pages })}
       info={transactionsInfo}
       currentPage={Number(page)}
       onPageChange={handlePageChange}
@@ -46,4 +48,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default Payments;

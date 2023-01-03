@@ -1,15 +1,17 @@
 import React, { FC } from 'react';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../../../app/hooks';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
-import * as yup from 'yup';
-import { useAppDispatch } from '../../../app/hooks';
-import { useForm } from 'react-hook-form';
 import { IMessage, INewMessage } from '../../../types/chat-messages';
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { editMessageStart } from '../../../features/messages/messages-slice';
+import { NAME_SPACES } from '../../../constants';
 
 interface Props {
   message: IMessage;
@@ -22,6 +24,7 @@ const schema = yup.object().shape({
 
 export const EditMessageForm: FC<Props> = ({ message, onFormClose }) => {
   const { id, chat_id, body } = message;
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -60,7 +63,7 @@ export const EditMessageForm: FC<Props> = ({ message, onFormClose }) => {
         id="edited-message"
         defaultValue={body}
         variant="standard"
-        label="Edit message"
+        label={t('chat.edit_message', { ns: NAME_SPACES.pages })}
         fullWidth
         helperText={errors.body?.message}
       />

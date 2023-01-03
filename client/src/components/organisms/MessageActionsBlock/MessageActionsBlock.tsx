@@ -1,15 +1,18 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../../../app/hooks';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { modalStyles } from '../../../modal-styles';
+import Typography from '@mui/material/Typography';
 import { ConfirmButton } from '../../atoms/ConfirmButton';
 import { IMessage } from '../../../types/chat-messages';
-import { useAppDispatch } from '../../../app/hooks';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { deleteMessageStart } from '../../../features/messages/messages-slice';
+import { modalStyles } from '../../../modal-styles';
+import { NAME_SPACES } from '../../../constants';
 
 interface Props {
   message: IMessage;
@@ -18,6 +21,7 @@ interface Props {
 
 export const MessageActionsBlock: FC<Props> = ({ message, onToggleEditMode }) => {
   const { id, chat_id } = message;
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
   const handleOpen = () => setOpenConfirmModal(true);
@@ -43,11 +47,13 @@ export const MessageActionsBlock: FC<Props> = ({ message, onToggleEditMode }) =>
       <Modal
         open={openConfirmModal}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="modal-delete_message"
+        aria-describedby="modal-delete_message"
       >
         <Box sx={modalStyles}>
-          Are you sure you want delete current message?
+          <Typography textAlign="center">
+            {t('chat.delete_confirm', { ns: NAME_SPACES.pages })}
+          </Typography>
           <ConfirmButton onConfirm={handleMessageDelete} />
         </Box>
       </Modal>

@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import Paper from '@mui/material/Paper';
-import { ChatUsersInfo } from '../ChatUsersInfo';
 import Grid from '@mui/material/Grid';
-import { MessagesList } from '../MessagesList';
 import Divider from '@mui/material/Divider';
+import { ChatUsersInfo } from '../ChatUsersInfo';
+import { MessagesList } from '../MessagesList';
 import { NewMessageForm } from '../NewMessageForm';
 import { IMessage } from '../../../types/chat-messages';
 

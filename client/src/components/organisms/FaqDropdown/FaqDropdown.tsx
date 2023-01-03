@@ -1,11 +1,13 @@
 import { useState, MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { PATHS } from '../../../constants';
+import { NAME_SPACES, PATHS } from '../../../constants';
 
 export const FaqDropdown = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -34,8 +36,9 @@ export const FaqDropdown = () => {
         variant="contained"
         color="secondary"
       >
-        FAQ
+        {t(`dropdowns.faq`, { ns: NAME_SPACES.main })}
       </Button>
+
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -45,9 +48,15 @@ export const FaqDropdown = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => handleLinkClick(PATHS.characters)}>Characters</MenuItem>
-        <MenuItem onClick={() => handleLinkClick(PATHS.sets)}>Sets</MenuItem>
-        <MenuItem onClick={() => handleLinkClick(PATHS.cards)}>All cards</MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.characters)}>
+          {t(`paths.characters`, { ns: NAME_SPACES.main })}
+        </MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.sets)}>
+          {t(`paths.sets`, { ns: NAME_SPACES.main })}
+        </MenuItem>
+        <MenuItem onClick={() => handleLinkClick(PATHS.cards)}>
+          {t(`paths.cards`, { ns: NAME_SPACES.main })}
+        </MenuItem>
       </Menu>
     </div>
   );

@@ -19,6 +19,8 @@ export interface ICharacter {
   sets?: ISet[];
 }
 
-export interface ICharactersResponse extends ISuccessResponse<ICharacter[]> {
+export type ICharacterBaseInfo = Omit<ICharacter, 'episodes' | 'sets' | 'origin' | 'location'>;
+
+export interface ICharactersResponse extends ISuccessResponse<ICharacterBaseInfo[]> {
   unusedCount: number;
 }

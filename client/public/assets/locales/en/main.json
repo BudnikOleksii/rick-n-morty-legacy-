@@ -1,0 +1,45 @@
+{
+  "app_title": "Rick and Morty",
+  "language": "Language",
+  "languages": {
+    "en": "English",
+    "uk": "Ukrainian",
+    "ru": "Russian"
+  },
+  "paths": {
+    "users": "Users",
+    "lots": "Lots",
+    "chats": "Chats",
+    "characters": "Characters",
+    "sets": "Sets",
+    "cards": "All cards",
+    "payments": "Payments",
+    "logout": "Logout",
+    "my_cards": "Your cards"
+  },
+  "dropdowns": {
+    "faq": "faq",
+    "profile": "profile"
+  },
+  "profile": {
+    "rating": "Rating: {{rating}}",
+    "balance": "Balance: {{balance}}"
+  },
+  "buttons": {
+    "open": "open",
+    "delete": "delete",
+    "confirm": "confirm",
+    "remove": "remove",
+    "add": "add"
+  },
+  "filters": {
+    "character_name": "Character Name",
+    "location": "Location",
+    "price_range": "Price range",
+    "order": "Sort order",
+    "apply_btn": "Apply filters",
+    "clear_filters": "Clear filters",
+    "from_cheapest": "Cheapest at first",
+    "from_expensive": "Expensive at first"
+  }
+}

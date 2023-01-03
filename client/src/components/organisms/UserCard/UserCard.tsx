@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -19,7 +20,7 @@ import { addNewRoleStart } from '../../../features/users/users-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { checkIsAdmin } from '../../../helpers/check-is-admin';
 import { getLocalDate, getLocalTime } from '../../../helpers/date-helpers';
-import { ADMIN_ROLE, PATHS } from '../../../constants';
+import { ADMIN_ROLE, NAME_SPACES, PATHS } from '../../../constants';
 import { IUser } from '../../../types/user';
 
 type Props = {
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export const UserCard: FC<Props> = ({ user }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id, username, rating, roles, ip, registration_date, last_visit_date } = user;
@@ -63,25 +65,33 @@ export const UserCard: FC<Props> = ({ user }) => {
         </Typography>
 
         <List>
-          <ListItemComponent name="Rating" value={rating} icon={<StarRateIcon />} />
+          <ListItemComponent
+            name={t('user.rating', { ns: NAME_SPACES.cards })}
+            value={rating}
+            icon={<StarRateIcon />}
+          />
 
           {roles.map((role) => (
             <ListItemComponent
               key={role.id}
-              name="Role"
+              name={t('user.role', { ns: NAME_SPACES.cards })}
               value={role.title}
               icon={<SupervisorAccountIcon />}
             />
           ))}
 
-          <ListItemComponent name="Ip address" value={ip} icon={<DnsIcon />} />
           <ListItemComponent
-            name="Registration date"
+            name={t('user.ip', { ns: NAME_SPACES.cards })}
+            value={ip}
+            icon={<DnsIcon />}
+          />
+          <ListItemComponent
+            name={t('user.registration_date', { ns: NAME_SPACES.cards })}
             value={getLocalDate(registration_date)}
             icon={<EventIcon />}
           />
           <ListItemComponent
-            name="Last seen"
+            name={t('user.last_seen', { ns: NAME_SPACES.cards })}
             value={getLocalTime(last_visit_date)}
             icon={<EventIcon />}
           />
@@ -91,18 +101,18 @@ export const UserCard: FC<Props> = ({ user }) => {
       <CardButtonsWrapper>
         {isAdmin && !hasAdminRole && (
           <BaseModal
-            openModalTitle="Add admin role"
+            openModalTitle={t('user.add_role', { ns: NAME_SPACES.cards })}
             open={openAddNewRoleModal}
             onOpenChange={setOpenAddNewRoleModal}
             styles={{ margin: 0 }}
           >
-            Are you sure you want add admin privilege for current user?
+            {t('user.add_role_confirmation', { ns: NAME_SPACES.cards })}
             <ConfirmButton onConfirm={() => handleAddNewRole()} />
           </BaseModal>
         )}
 
         <Button variant="contained" onClick={handleNavigateToUserCards}>
-          Users cards
+          {t('user.cards_link', { ns: NAME_SPACES.cards })}
         </Button>
       </CardButtonsWrapper>
     </Card>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { ChatUsersList } from '../ChatUsersList';
 import { BaseModal } from '../../molecules/BaseModal';
 import { ConfirmButton } from '../../atoms/ConfirmButton';
@@ -13,8 +15,10 @@ import { selectMessages } from '../../../features/messages/messages-selectors';
 import { toggleUserInChatStart } from '../../../features/chats/chats-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { selectSocket } from '../../../features/chat-socket/chat-socket-selectors';
+import { NAME_SPACES } from '../../../constants';
 
 export const ChatUsersInfo = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
   const { chat } = useAppSelector(selectMessages);
@@ -22,7 +26,8 @@ export const ChatUsersInfo = () => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [openUsersListModal, setOpenUsersListModal] = useState(false);
   const isUserInChat = chat?.users.some((userInChat) => userInChat.id === user?.id);
-  const toggleChatMessage = isUserInChat ? 'Leave' : 'Join';
+  const toggleChatStatus = isUserInChat ? 'leave' : 'join';
+  const toggleChatMessage = t(`chat.${toggleChatStatus}`, { ns: NAME_SPACES.pages });
 
   const handleToggleUserInChat = () => {
     if (user && chat) {
@@ -43,32 +48,31 @@ export const ChatUsersInfo = () => {
       {user && (
         <List>
           <UserListItem isOnline={isOnline} user={user}>
-            <BaseModal
-              openModalTitle={toggleChatMessage}
-              open={openConfirmModal}
-              onOpenChange={setOpenConfirmModal}
-              buttonVariant="contained"
-              styles={{ minWidth: 'min-content' }}
-            >
-              {`${toggleChatMessage}, please, confirm`}
-              <ConfirmButton onConfirm={handleToggleUserInChat} />
-            </BaseModal>
-
-            {chat && (
+            <Box>
               <BaseModal
-                openModalTitle="users"
-                open={openUsersListModal}
-                onOpenChange={setOpenUsersListModal}
+                openModalTitle={toggleChatMessage}
+                open={openConfirmModal}
+                onOpenChange={setOpenConfirmModal}
                 buttonVariant="contained"
-                styles={{
-                  minWidth: 'min-content',
-                  display: { xs: 'block', md: 'none' },
-                  marginLeft: '5px',
-                }}
               >
-                <ChatUsersList chat={chat} />
+                <Typography variant="h5" textAlign="center">
+                  {toggleChatMessage}
+                </Typography>
+                <ConfirmButton onConfirm={handleToggleUserInChat} />
               </BaseModal>
-            )}
+
+              {chat && (
+                <BaseModal
+                  openModalTitle={t('paths.users', { ns: NAME_SPACES.main })}
+                  open={openUsersListModal}
+                  onOpenChange={setOpenUsersListModal}
+                  buttonVariant="contained"
+                  styles={{ display: { xs: 'block', md: 'none' } }}
+                >
+                  <ChatUsersList chat={chat} />
+                </BaseModal>
+              )}
+            </Box>
           </UserListItem>
         </List>
       )}

@@ -11,6 +11,8 @@ import { selectAuth } from '../../../features/auth/auth-selectors';
 import { orange, lightGreen, indigo } from '@mui/material/colors';
 import { ITransaction } from '../../../types/transaction';
 import { getLocalTime } from '../../../helpers/date-helpers';
+import { NAME_SPACES } from '../../../constants';
+import { useTranslation } from 'react-i18next';
 
 const colorCredit = orange[400];
 const colorDebit = lightGreen[500];
@@ -19,20 +21,33 @@ interface Props {
 }
 
 export const TransactionsTable: FC<Props> = ({ transactions }) => {
+  const { t } = useTranslation();
   const { user } = useAppSelector(selectAuth);
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }} aria-label="Transactions table">
         <TableHead>
           <TableRow sx={{ backgroundColor: indigo[300] }}>
-            <TableCell>Transaction ID</TableCell>
-            <TableCell align="center">Lot ID</TableCell>
-            <TableCell align="center">Amount</TableCell>
-            <TableCell align="center">System fee</TableCell>
-            <TableCell align="center">Seller</TableCell>
-            <TableCell align="center">Purchaser</TableCell>
-            <TableCell align="center">Date of transaction</TableCell>
+            <TableCell>{t(`payments.table.transaction_id`, { ns: NAME_SPACES.pages })}</TableCell>
+            <TableCell align="center">
+              {t('payments.table.lot_id', { ns: NAME_SPACES.pages })}
+            </TableCell>
+            <TableCell align="center">
+              {t('payments.table.amount', { ns: NAME_SPACES.pages })}
+            </TableCell>
+            <TableCell align="center">
+              {t(`payments.table.system_fee`, { ns: NAME_SPACES.pages })}
+            </TableCell>
+            <TableCell align="center">
+              {t(`payments.table.seller`, { ns: NAME_SPACES.pages })}
+            </TableCell>
+            <TableCell align="center">
+              {t(`payments.table.purchaser`, { ns: NAME_SPACES.pages })}
+            </TableCell>
+            <TableCell align="center">
+              {t(`payments.table.transaction_date`, { ns: NAME_SPACES.pages })}
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
