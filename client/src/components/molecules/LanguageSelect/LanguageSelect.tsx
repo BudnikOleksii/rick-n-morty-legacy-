@@ -32,7 +32,7 @@ export const LanguageSelect = () => {
   };
 
   return (
-    <Box sx={{ position: 'absolute', zIndex: MATERIAL_NAV_Z_INDEX + 1, right: 15, top: 70 }}>
+    <Box sx={{ margin: '70px 15px 0 auto', width: 'max-content' }}>
       <IconButton onClick={() => setOpenLanguagesModal(true)} color="secondary">
         <LanguageIcon />
       </IconButton>

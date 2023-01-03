@@ -18,7 +18,7 @@ export const ErrorPage: FC<Props> = ({ errorNumber, text, image, children }) => 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: '60vh',
       }}
     >
       <Container maxWidth="md">

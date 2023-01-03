@@ -8,7 +8,6 @@ interface Props {
 
 export const ContentContainer: FC<Props> = ({ children }) => (
   <Box component="main" sx={{ p: 3, width: '100%', maxWidth: '1440px', margin: 'auto' }}>
-    <Toolbar />
     {children}
   </Box>
 );
