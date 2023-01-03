@@ -53,7 +53,6 @@ export const NavMenu: FC<Props> = memo(({ onDrawerToggle, navItems }) => {
 
         <FaqDropdown />
         <ProfileDropdown />
-        <LanguageSelect />
       </Toolbar>
     </AppBar>
   );

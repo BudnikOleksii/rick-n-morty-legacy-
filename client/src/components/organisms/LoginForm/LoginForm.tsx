@@ -1,14 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppDispatch } from '../../../app/hooks';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useAppDispatch } from '../../../app/hooks';
 import { loginStart } from '../../../features/auth/auth-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
 import { ILogin } from '../../../types/auth';
+import { NAME_SPACES } from '../../../constants';
 
 const schema = yup.object().shape({
   login: yup.string().email().required(),
@@ -16,6 +18,7 @@ const schema = yup.object().shape({
 });
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -37,7 +40,7 @@ export const LoginForm = () => {
         required
         fullWidth
         id="login"
-        label="Email Address"
+        label={t('auth.email', { ns: NAME_SPACES.main })}
         name="login"
         autoComplete="email"
         autoFocus
@@ -51,7 +54,7 @@ export const LoginForm = () => {
         required
         fullWidth
         name="password"
-        label="Password"
+        label={t('auth.password', { ns: NAME_SPACES.main })}
         type="password"
         id="password"
         autoComplete="current-password"
@@ -59,7 +62,7 @@ export const LoginForm = () => {
       />
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Sign In
+        {t('auth.sign_in', { ns: NAME_SPACES.main })}
       </Button>
     </Box>
   );

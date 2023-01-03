@@ -9,7 +9,7 @@ import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
 import MenuItem from '@mui/material/MenuItem';
-import { NAME_SPACES } from '../../../constants';
+import { MATERIAL_NAV_Z_INDEX, NAME_SPACES } from '../../../constants';
 import { modalStyles } from '../../../modal-styles';
 
 enum Language {
@@ -32,7 +32,7 @@ export const LanguageSelect = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ position: 'absolute', zIndex: MATERIAL_NAV_Z_INDEX + 1, right: 15, top: 70 }}>
       <IconButton onClick={() => setOpenLanguagesModal(true)} color="secondary">
         <LanguageIcon />
       </IconButton>

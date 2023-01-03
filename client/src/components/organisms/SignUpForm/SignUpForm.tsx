@@ -1,15 +1,17 @@
 import React from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../../../app/hooks';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useAppDispatch } from '../../../app/hooks';
 import { IRegistration } from '../../../types/auth';
 import { registrationStart } from '../../../features/auth/auth-slice';
 import { registerAction } from '../../../features/actions-info/actions-info-slice';
+import { NAME_SPACES } from '../../../constants';
 
 const schema = yup.object().shape({
   username: yup.string().trim().min(4).max(15).required(),
@@ -18,6 +20,7 @@ const schema = yup.object().shape({
 });
 
 export const SignUpForm = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -40,7 +43,7 @@ export const SignUpForm = () => {
             required
             fullWidth
             id="username"
-            label="Username"
+            label={t('auth.username', { ns: NAME_SPACES.main })}
             name="username"
             autoComplete="username"
             helperText={errors.username?.message}
@@ -54,7 +57,7 @@ export const SignUpForm = () => {
             required
             fullWidth
             id="login"
-            label="Email Address"
+            label={t('auth.email', { ns: NAME_SPACES.main })}
             name="login"
             autoComplete="email"
             helperText={errors.login?.message}
@@ -68,7 +71,7 @@ export const SignUpForm = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={t('auth.password', { ns: NAME_SPACES.main })}
             type="password"
             id="password"
             autoComplete="new-password"
@@ -78,7 +81,7 @@ export const SignUpForm = () => {
       </Grid>
 
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Sign Up
+        {t('auth.sign_up', { ns: NAME_SPACES.main })}
       </Button>
     </Box>
   );
