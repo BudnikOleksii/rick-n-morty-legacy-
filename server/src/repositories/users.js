@@ -9,10 +9,6 @@ const getAllUsers = (page, limit) => {
     .page(page - 1, limit);
 };
 
-const getUser = (columnName, value) => {
-  return User.query().findOne(columnName, value);
-};
-
 const getExistingUser = (columnName, value) => {
   return User.query()
     .select()
@@ -55,7 +51,6 @@ const getUserChats = (id) => {
 const updateLastSeen = (id, ipAddress) => User.query().patch({ ip: ipAddress }).findById(id);
 
 module.exports.UserRepository = {
-  getUser,
   getExistingUser,
   getAllUsers,
   createUser,
