@@ -1,6 +1,4 @@
-const config = require('../../config');
-
-const { protocol } = config.server;
+const { protocol } = require('../../config').server;
 
 const createInfoData = (total, page, limit, endpoint) => {
   const pages = Math.ceil(total / limit);
