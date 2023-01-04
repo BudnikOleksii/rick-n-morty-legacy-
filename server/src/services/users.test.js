@@ -1,5 +1,6 @@
 const { UserService } = require('./users');
 const { UserRepository } = require('../repositories/users');
+const { BadRequestError } = require('../utils/errors/api-errors');
 
 const mockUserFromDB = {
   id: 1,
@@ -31,10 +32,12 @@ describe('getAllUsers', function () {
   const limit = 20;
   const endpoint = 'localhost:8080/v1/users';
 
-  it('should not call UserRepository.getAllUsers if limit incorrect', async function () {
+  it('should not call UserRepository.getAllUsers if limit incorrect and throw BadRequestError', async function () {
     try {
       await UserService.getAllUsers(page, limit * 1000, endpoint);
-    } catch (e) {}
+    } catch (error) {
+      expect(error.constructor).toBe(BadRequestError);
+    }
 
     expect(UserRepository.getAllUsers).toHaveBeenCalledTimes(0);
   });
