@@ -69,6 +69,7 @@ const development = {
 
 const config = {
   development,
+  test: development, // use dev config for tests too
 };
 
 module.exports = config[env];
