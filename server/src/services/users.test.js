@@ -1,7 +1,7 @@
 const { UserService } = require('./users');
 const { UserRepository } = require('../repositories/users');
 
-const userFromDB = {
+const mockUserFromDB = {
   id: 1,
   username: 'admin',
   login: 'admin@gmail.com',
@@ -16,28 +16,25 @@ const userFromDB = {
   roles: ['admin'],
 };
 
-const usersFromDB = {
-  results: [userFromDB],
+const mockUsersFromDB = {
+  results: [mockUserFromDB],
   total: 1,
 };
-
-UserRepository.getAllUsers = jest.fn((page, limit) => usersFromDB);
+jest.mock('../repositories/users', () => ({
+  UserRepository: {
+    getAllUsers: jest.fn(() => mockUsersFromDB),
+  },
+}));
 
 describe('getAllUsers', function () {
   const page = 1;
   const limit = 20;
   const endpoint = 'localhost:8080/v1/users';
 
-  it('should have getAllUsers function', function () {
-    expect(typeof UserService.getAllUsers).toBe('function');
-  });
-
   it('should not call UserRepository.getAllUsers if limit incorrect', async function () {
     try {
       await UserService.getAllUsers(page, limit * 1000, endpoint);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
 
     expect(UserRepository.getAllUsers).toHaveBeenCalledTimes(0);
   });
@@ -51,7 +48,7 @@ describe('getAllUsers', function () {
   it('should return correct info object', async function () {
     const { info } = await UserService.getAllUsers(page, limit, endpoint);
 
-    expect(info.total).toBe(usersFromDB.total);
+    expect(info.total).toBe(mockUsersFromDB.total);
     expect(info.next).toBeNull();
     expect(info.prev).toBeNull();
     expect(info.pages).toBe(1);
@@ -60,6 +57,6 @@ describe('getAllUsers', function () {
   it('should return an array of users', async function () {
     const { results } = await UserService.getAllUsers(page, limit, endpoint);
 
-    expect(results).toBe(usersFromDB.results);
+    expect(results).toBe(mockUsersFromDB.results);
   });
 });
