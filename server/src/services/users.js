@@ -25,8 +25,10 @@ const getAllUsers = async (page, limit, endpoint) => {
   };
 };
 
+const getUser = (columnName, value) => UserRepository.getExistingUser(columnName, value);
+
 const getExistingUser = async (columnName, value) => {
-  const user = await UserRepository.getExistingUser(columnName, value);
+  const user = await getUser(columnName, value);
 
   if (!user) {
     throw new NotFoundError(['User not found']);
@@ -40,8 +42,6 @@ const getUserById = async (id) => {
 
   return getExistingUser('id', id);
 };
-
-const getUser = (columnName, value) => UserRepository.getUser(columnName, value);
 
 const createUser = async (userData, ip) => {
   const { username, login, password } = userData;

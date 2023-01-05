@@ -1,5 +1,6 @@
 const { UserService } = require('./users');
 const { UserRepository } = require('../repositories/users');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 
 const mockUserFromDB = {
   id: 1,
@@ -10,19 +11,25 @@ const mockUserFromDB = {
   registration_date: '2022-12-26T07:20:51.000Z',
   last_visit_date: '2023-01-04T11:24:33.000Z',
   ip: '127.0.0.1',
-  activated: true,
+  activated: false,
   deleted_at: null,
   stripe_account_id: null,
   roles: ['admin'],
+  activation_link: '12345678',
 };
 
 const mockUsersFromDB = {
   results: [mockUserFromDB],
   total: 1,
 };
+
 jest.mock('../repositories/users', () => ({
   UserRepository: {
     getAllUsers: jest.fn(() => mockUsersFromDB),
+    getExistingUser: jest.fn((columnName, value) =>
+      mockUserFromDB[columnName] === value ? mockUserFromDB : null
+    ),
+    createUser: jest.fn(() => mockUserFromDB),
   },
 }));
 
@@ -31,10 +38,12 @@ describe('getAllUsers', function () {
   const limit = 20;
   const endpoint = 'localhost:8080/v1/users';
 
-  it('should not call UserRepository.getAllUsers if limit incorrect', async function () {
+  it('should not call UserRepository.getAllUsers if limit incorrect and throw BadRequestError', async function () {
     try {
       await UserService.getAllUsers(page, limit * 1000, endpoint);
-    } catch (e) {}
+    } catch (error) {
+      expect(error.constructor).toBe(BadRequestError);
+    }
 
     expect(UserRepository.getAllUsers).toHaveBeenCalledTimes(0);
   });
@@ -58,5 +67,76 @@ describe('getAllUsers', function () {
     const { results } = await UserService.getAllUsers(page, limit, endpoint);
 
     expect(results).toBe(mockUsersFromDB.results);
+  });
+});
+
+describe('getUser', function () {
+  it('should return user by username', async function () {
+    const user = await UserService.getUser('username', 'admin');
+
+    expect(user).toBe(mockUserFromDB);
+  });
+
+  it('should return null if user doesn`t exists', async function () {
+    const user = await UserService.getUser('username', 'user');
+
+    expect(user).toBeNull();
+  });
+});
+
+describe('getExistingUser', function () {
+  it('should return user', async function () {
+    const user = await UserService.getExistingUser('login', 'admin@gmail.com');
+
+    expect(user).toBe(mockUserFromDB);
+  });
+
+  it('should throw not found error if user doesnt exists', async function () {
+    let response;
+
+    try {
+      response = await UserService.getExistingUser('login', 'user@gmail.com');
+    } catch (error) {
+      expect(error.constructor).toBe(NotFoundError);
+    }
+
+    expect(response).toBeUndefined();
+  });
+});
+
+describe('getUserById', function () {
+  it('should return user', async function () {
+    const user = await UserService.getUserById(1);
+
+    expect(user).toBe(mockUserFromDB);
+  });
+
+  it('should throw bad request error if provided id is incorrect', async function () {
+    try {
+      await UserService.getUserById('test');
+    } catch (error) {
+      expect(error.constructor).toBe(BadRequestError);
+    }
+
+    expect(UserRepository.getExistingUser).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe('createUser', function () {
+  const userData = {
+    username: '',
+    login: '',
+    password: '',
+  };
+  const ip = '127.0.0.1';
+
+  it('should throw bad request error if user with same login or username already exists', async function () {
+    try {
+      await UserService.createUser(mockUserFromDB, ip);
+    } catch (error) {
+      expect(error.constructor).toBe(BadRequestError);
+    }
+
+    expect(UserRepository.createUser).toHaveBeenCalledTimes(0);
   });
 });
