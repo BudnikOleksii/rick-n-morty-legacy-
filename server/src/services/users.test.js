@@ -1,6 +1,7 @@
 const { UserService } = require('./users');
 const { UserRepository } = require('../repositories/users');
 const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
+const { MailService } = require('./mail-service');
 
 const mockUserFromDB = {
   id: 1,
@@ -23,13 +24,38 @@ const mockUsersFromDB = {
   total: 1,
 };
 
+const mockNewUserData = {
+  username: 'user',
+  login: 'user@gmail.com',
+  password: '12345678',
+};
+
+const mockIp = '127.0.0.1';
+
+const mockNewUser = {
+  ...mockNewUserData,
+  id: 2,
+  ip: mockIp,
+  activation_link: 'root',
+  activated: false,
+  deleted_at: null,
+  stripe_account_id: null,
+  roles: ['user'],
+};
+
 jest.mock('../repositories/users', () => ({
   UserRepository: {
     getAllUsers: jest.fn(() => mockUsersFromDB),
     getExistingUser: jest.fn((columnName, value) =>
       mockUserFromDB[columnName] === value ? mockUserFromDB : null
     ),
-    createUser: jest.fn(() => mockUserFromDB),
+    createUser: jest.fn(() => mockNewUser),
+  },
+}));
+
+jest.mock('./mail-service', () => ({
+  MailService: {
+    sendActivationMail: jest.fn(),
   },
 }));
 
@@ -123,20 +149,25 @@ describe('getUserById', function () {
 });
 
 describe('createUser', function () {
-  const userData = {
-    username: '',
-    login: '',
-    password: '',
-  };
-  const ip = '127.0.0.1';
-
   it('should throw bad request error if user with same login or username already exists', async function () {
     try {
-      await UserService.createUser(mockUserFromDB, ip);
+      await UserService.createUser(mockUserFromDB, mockIp);
     } catch (error) {
       expect(error.constructor).toBe(BadRequestError);
     }
 
     expect(UserRepository.createUser).toHaveBeenCalledTimes(0);
+    expect(MailService.sendActivationMail).toHaveBeenCalledTimes(0);
   });
+
+  it('should return new user and send activation link to email', async function () {
+    const user = await UserService.createUser(mockNewUserData, mockIp);
+
+    expect(user).toBe(mockNewUser);
+    expect(MailService.sendActivationMail).toBeCalled();
+  });
+});
+
+describe('updateUser', function () {
+  it('should return updated user', function () {});
 });
