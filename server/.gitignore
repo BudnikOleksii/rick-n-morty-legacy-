@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+# Tests coverage report
+coverage/
+
 # Compiled Java class files
 *.class
 

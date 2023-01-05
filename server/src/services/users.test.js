@@ -32,10 +32,6 @@ jest.mock('../repositories/users', () => ({
   },
 }));
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
-
 describe('getAllUsers', function () {
   const page = 1;
   const limit = 20;
