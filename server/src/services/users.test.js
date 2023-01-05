@@ -6,6 +6,8 @@ const { MailService } = require('./mail-service');
 const mockAdminRole = { id: 1, title: 'admin' };
 const mockUserRole = { id: 2, title: 'user' };
 const mockRoles = [mockAdminRole, mockUserRole];
+
+const mockIp = '127.0.0.1';
 const mockUserFromDB = {
   id: 1,
   username: 'admin',
@@ -35,8 +37,6 @@ const mockNewUserData = {
   password: '12345678',
 };
 
-const mockIp = '127.0.0.1';
-
 const mockNewUser = {
   ...mockNewUserData,
   id: 2,
@@ -47,6 +47,8 @@ const mockNewUser = {
   stripe_account_id: null,
   roles: [mockUserRole],
 };
+
+const mockFindUserById = (id) => mockUsers.find((user) => user.id === id);
 
 jest.mock('../repositories/users', () => ({
   UserRepository: {
@@ -69,6 +71,13 @@ jest.mock('../repositories/users', () => ({
       }
 
       return user;
+    }),
+    updateLastSeen: jest.fn((id, ip) => {
+      const user = mockFindUserById(id);
+
+      if (user) {
+        user.last_visit_date = mockNewDate;
+      }
     }),
   },
 }));
@@ -212,6 +221,6 @@ describe('addNewRole', function () {
 
   it('should not add new role if user already have this role', async function () {
     expect.assertions(1);
-    await expect(UserService.addNewRole(1, 'user')).rejects.toThrow(BadRequestError);
+    await expect(UserService.addNewRole(1, newRole)).rejects.toThrow(BadRequestError);
   });
 });
