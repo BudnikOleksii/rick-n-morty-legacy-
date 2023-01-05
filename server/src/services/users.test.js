@@ -3,6 +3,9 @@ const { UserRepository } = require('../repositories/users');
 const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 const { MailService } = require('./mail-service');
 
+const mockAdminRole = { id: 1, title: 'admin' };
+const mockUserRole = { id: 2, title: 'user' };
+const mockRoles = [mockAdminRole, mockUserRole];
 const mockUserFromDB = {
   id: 1,
   username: 'admin',
@@ -15,7 +18,7 @@ const mockUserFromDB = {
   activated: false,
   deleted_at: null,
   stripe_account_id: null,
-  roles: ['admin'],
+  roles: [mockAdminRole],
   activation_link: '12345678',
 };
 
@@ -42,7 +45,7 @@ const mockNewUser = {
   activated: false,
   deleted_at: null,
   stripe_account_id: null,
-  roles: ['user'],
+  roles: [mockUserRole],
 };
 
 jest.mock('../repositories/users', () => ({
@@ -58,6 +61,15 @@ jest.mock('../repositories/users', () => ({
       return user ? { ...user, ...payload } : null;
     }),
     deleteUser: jest.fn((id) => (mockUsers.find((user) => user.id === id) ? 1 : 0)),
+    addNewRole: jest.fn((user, roleTitle) => {
+      const currentRole = mockRoles.find((role) => role.title === roleTitle);
+
+      if (currentRole) {
+        user.roles.push(currentRole);
+      }
+
+      return user;
+    }),
   },
 }));
 
@@ -187,5 +199,19 @@ describe('deleteUser', function () {
   it('should return throw error if user with id not found', async function () {
     expect.assertions(1);
     await expect(UserService.deleteUser(3)).rejects.toThrow(NotFoundError);
+  });
+});
+
+describe('addNewRole', function () {
+  const newRole = 'user';
+  it('should return user with new role', async function () {
+    const userWithNewRole = await UserService.addNewRole(1, newRole);
+
+    expect(userWithNewRole.roles.some((role) => role.title === newRole)).toBeTruthy();
+  });
+
+  it('should not add new role if user already have this role', async function () {
+    expect.assertions(1);
+    await expect(UserService.addNewRole(1, 'user')).rejects.toThrow(BadRequestError);
   });
 });
