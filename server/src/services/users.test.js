@@ -11,7 +11,7 @@ const mockUserFromDB = {
   registration_date: '2022-12-26T07:20:51.000Z',
   last_visit_date: '2023-01-04T11:24:33.000Z',
   ip: '127.0.0.1',
-  activated: true,
+  activated: false,
   deleted_at: null,
   stripe_account_id: null,
   roles: ['admin'],
@@ -22,13 +22,14 @@ const mockUsersFromDB = {
   results: [mockUserFromDB],
   total: 1,
 };
+
 jest.mock('../repositories/users', () => ({
   UserRepository: {
     getAllUsers: jest.fn(() => mockUsersFromDB),
     getExistingUser: jest.fn((columnName, value) =>
       mockUserFromDB[columnName] === value ? mockUserFromDB : null
     ),
-    createUser: jest.fn(() => mockUsersFromDB),
+    createUser: jest.fn(() => mockUserFromDB),
   },
 }));
 
@@ -129,9 +130,9 @@ describe('createUser', function () {
   };
   const ip = '127.0.0.1';
 
-  it('should throw bad request error if user with same login already exists', async function () {
+  it('should throw bad request error if user with same login or username already exists', async function () {
     try {
-      await UserService.createUser(mockUserFromDB);
+      await UserService.createUser(mockUserFromDB, ip);
     } catch (error) {
       expect(error.constructor).toBe(BadRequestError);
     }
