@@ -101,7 +101,7 @@ const updateLastSeen = async (id, ipAddress) => {
   const user = await getUserById(id);
   const ip = ipAddress || user.ip;
 
-  await UserRepository.updateLastSeen(id, ip);
+  return UserRepository.updateLastSeen(id, ip);
 };
 
 const getUserChats = async (id) => {
