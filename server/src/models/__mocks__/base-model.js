@@ -17,6 +17,7 @@ BaseModel.withGraphFetched = jest.fn().mockReturnThis();
 BaseModel.findById = jest.fn().mockReturnThis();
 BaseModel.insert = jest.fn().mockReturnThis();
 BaseModel.insertAndFetch = jest.fn().mockReturnThis();
+BaseModel.patchAndFetchById = jest.fn().mockReturnThis();
 BaseModel.orderBy = jest.fn().mockReturnThis();
 BaseModel.$relatedQuery = jest.fn().mockReturnThis();
 BaseModel.relate = jest.fn().mockReturnThis();
