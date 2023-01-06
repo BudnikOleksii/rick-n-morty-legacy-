@@ -1,6 +1,9 @@
 const { BadRequestError } = require('../utils/errors/api-errors');
 const { SetsRepository } = require('../repositories/sets');
 const { SetsService } = require('./sets');
+const { mockData } = require('../repositories/__mocks__/sets').SetsRepository;
+
+const { mockChatsFromDB } = mockData;
 
 jest.mock('../repositories/sets');
 describe('getSets', function () {
@@ -16,24 +19,18 @@ describe('getSets', function () {
     expect(SetsRepository.getSets).toHaveBeenCalledTimes(0);
   });
 
-  // it('should call UserRepository.getAllUsers', async function () {
-  //   await UserService.getAllUsers(page, limit, endpoint);
-  //
-  //   expect(UserRepository.getAllUsers).toBeCalled();
-  // });
-  //
-  // it('should return correct info object', async function () {
-  //   const { info } = await UserService.getAllUsers(page, limit, endpoint);
-  //
-  //   expect(info.total).toBe(mockUsersFromDB.total);
-  //   expect(info.next).toBeNull();
-  //   expect(info.prev).toBeNull();
-  //   expect(info.pages).toBe(1);
-  // });
-  //
-  // it('should return an array of users', async function () {
-  //   const { results } = await UserService.getAllUsers(page, limit, endpoint);
-  //
-  //   expect(results).toBe(mockUsersFromDB.results);
-  // });
+  it('should return correct info object', async function () {
+    const { info } = await SetsService.getSets(page, limit, endpoint);
+
+    expect(info.total).toBe(mockChatsFromDB.total);
+    expect(info.next).toBeNull();
+    expect(info.prev).toBeNull();
+    expect(info.pages).toBe(1);
+  });
+
+  it('should return an array of chats', async function () {
+    const { results } = await SetsService.getSets(page, limit, endpoint);
+
+    expect(results).toStrictEqual(mockChatsFromDB.results);
+  });
 });

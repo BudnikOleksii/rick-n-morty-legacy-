@@ -150,7 +150,6 @@ describe('addNewRole', function () {
 describe('updateLastSeen', function () {
   it('should update last visit date and ip', async function () {
     const updated = await UserService.updateLastSeen(mockUserFromDB.id, mockIp);
-    console.log(updated);
 
     expect(updated.last_visit_date).toBe(mockNewDate);
     expect(mockUserFromDB.ip).toBe(mockIp);
