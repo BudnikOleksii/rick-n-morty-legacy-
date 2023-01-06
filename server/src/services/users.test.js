@@ -8,6 +8,7 @@ const mockUserRole = { id: 2, title: 'user' };
 const mockRoles = [mockAdminRole, mockUserRole];
 
 const mockIp = '127.0.0.1';
+const mockNewDate = new Date();
 const mockUserFromDB = {
   id: 1,
   username: 'admin',
@@ -23,6 +24,9 @@ const mockUserFromDB = {
   roles: [mockAdminRole],
   activation_link: '12345678',
 };
+
+const mockChat = { id: 1, name: 'Rick and Morty main', users: [mockUserFromDB] };
+const mockChats = [mockChat];
 
 const mockUsers = [mockUserFromDB];
 
@@ -77,6 +81,20 @@ jest.mock('../repositories/users', () => ({
 
       if (user) {
         user.last_visit_date = mockNewDate;
+      }
+    }),
+    getUserChats: jest.fn((id) => {
+      const user = mockFindUserById(id);
+
+      if (user) {
+        const chats = mockChats
+          .filter((chat) => chat.users.some((user) => user.id === id))
+          .map((chat) => ({ id: chat.id, name: chat.name }));
+
+        return {
+          ...user,
+          chats,
+        };
       }
     }),
   },
@@ -222,5 +240,45 @@ describe('addNewRole', function () {
   it('should not add new role if user already have this role', async function () {
     expect.assertions(1);
     await expect(UserService.addNewRole(1, newRole)).rejects.toThrow(BadRequestError);
+  });
+});
+
+describe('updateLastSeen', function () {
+  it('should update last visit date and ip', async function () {
+    await UserService.updateLastSeen(mockUserFromDB.id, mockIp);
+
+    expect(mockUserFromDB.last_visit_date).toBe(mockNewDate);
+    expect(mockUserFromDB.ip).toBe(mockIp);
+  });
+});
+
+describe('getUserChats', function () {
+  it('should return user with his chats', async function () {
+    const user = await UserService.getUserChats(mockUserFromDB.id);
+
+    expect(user.chats.length).toBe(1);
+  });
+
+  it('should throw bad request error if incorrect id provided', async function () {
+    expect.assertions(2);
+    await expect(UserService.getUserChats('test')).rejects.toThrow(BadRequestError);
+    expect(UserRepository.getUserChats).toHaveBeenCalledTimes(0);
+  });
+
+  it('should throw not found if user with current id doesnt exists', async function () {
+    expect.assertions(1);
+    await expect(UserService.getUserChats(5)).rejects.toThrow(NotFoundError);
+  });
+});
+
+describe('activateAccount', function () {
+  it('should throw not found error if user with link not found', async function () {
+    expect.assertions(1);
+    await expect(UserService.activateAccount('incorrectLink')).rejects.toThrow(NotFoundError);
+  });
+
+  it('should change activated status to true', async function () {
+    const updatedUser = await UserService.activateAccount('12345678');
+    expect(updatedUser.activated).toBeTruthy();
   });
 });

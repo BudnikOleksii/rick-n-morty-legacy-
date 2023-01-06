@@ -3,19 +3,13 @@ const { RoleRepository } = require('./roles');
 
 const getAllUsers = (page, limit) => {
   return User.query()
-    .select()
     .whereNotDeleted()
     .withGraphFetched('roles')
     .page(page - 1, limit);
 };
 
 const getExistingUser = (columnName, value) => {
-  return User.query()
-    .select()
-    .whereNotDeleted()
-    .where(columnName, value)
-    .withGraphFetched('roles')
-    .first();
+  return User.query().whereNotDeleted().where(columnName, value).withGraphFetched('roles').first();
 };
 
 const createUser = async (user) => {
