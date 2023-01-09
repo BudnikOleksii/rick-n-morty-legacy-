@@ -1,84 +1,88 @@
 const Set = require('../models/sets');
-const BaseModel = require('../models/base-model');
+const MockBaseModel = require('../models/__mocks__/base-model');
 const { SetsRepository } = require('./sets');
 
 jest.mock('../models/base-model');
 
-describe('getSets', function () {
-  it('should call query builder methods withGraphFetched and page', function () {
-    SetsRepository.getSets();
+const testColumnName = 'id';
+const testId = 1;
+const testNotFoundId = 11;
+const testSet = MockBaseModel.mockData.find((set) => set[testColumnName] === testId);
+const testNewSetName = 'new set';
 
-    expect(Set.query).toBeCalled();
-    expect(Set.withGraphFetched).toBeCalled();
-    expect(Set.page).toBeCalled();
+describe('getSets', function () {
+  it('should return results and total sets count', async function () {
+    const { results, total } = await SetsRepository.getSets(1, 20);
+    expect(results).toStrictEqual(MockBaseModel.mockData);
+    expect(total).toBe(MockBaseModel.mockData.length);
   });
 });
 
 describe('getAllSets', function () {
-  it('should call query builder method withGraphFetched', function () {
-    SetsRepository.getAllSets();
+  it('should return all sets query', function () {
+    const sets = SetsRepository.getAllSets();
 
-    expect(Set.query).toBeCalled();
-    expect(Set.withGraphFetched).toBeCalled();
-  });
-});
-
-describe('getSet', function () {
-  const columnName = 'id';
-  const value = 1;
-
-  it('should call query builder methods withGraphFetched and findOne', function () {
-    SetsRepository.getSet(columnName, value);
-
-    expect(Set.query).toBeCalled();
-    expect(Set.withGraphFetched).toBeCalled();
-    expect(Set.findOne).toBeCalledWith(columnName, value);
-  });
-});
-
-describe('createSet', function () {
-  it('should call query builder method insertAndFetch', function () {
-    SetsRepository.createSet();
-
-    expect(Set.query).toBeCalled();
-    expect(Set.insertAndFetch).toBeCalled();
-  });
-});
-
-describe('deleteSet', function () {
-  const id = 1;
-
-  it('should call query builder method deleteById', function () {
-    SetsRepository.deleteSet(id);
-
-    expect(Set.query).toBeCalled();
-    expect(Set.deleteById).toBeCalledWith(id);
-  });
-});
-
-describe('addCharacterToSet', function () {
-  it('should relate character with methods $relatedQuery and relate', function () {
-    SetsRepository.addCharacterToSet(Set, BaseModel);
-
-    expect(Set.$relatedQuery).toBeCalled();
-    expect(Set.relate).toBeCalled();
-  });
-});
-
-describe('removeCharacterFromSet', function () {
-  it('should unrelate character with methods $relatedQuery and unrelate', function () {
-    SetsRepository.removeCharacterFromSet(Set, BaseModel);
-
-    expect(Set.$relatedQuery).toBeCalled();
-    expect(Set.unrelate).toBeCalled();
+    expect(sets.mockData).toStrictEqual(MockBaseModel.mockData);
   });
 });
 
 describe('getSetsInfo', function () {
-  it('should call resultSize method', function () {
-    SetsRepository.getSetsInfo();
+  it('should return total sets count', async function () {
+    const { total } = await SetsRepository.getSetsInfo();
 
-    expect(Set.query).toBeCalled();
-    expect(Set.resultSize).toBeCalled();
+    expect(total).toBe(MockBaseModel.mockData.length);
+  });
+});
+
+describe('getSet', function () {
+  it('should return set if found', function () {
+    const set = SetsRepository.getSet(testColumnName, testId);
+    expect(set).toStrictEqual(testSet);
+  });
+
+  it('should return undefined if set not found', function () {
+    const set = SetsRepository.getSet(testColumnName, testNotFoundId);
+    expect(set).toBeUndefined();
+  });
+});
+
+describe('createSet', function () {
+  it('should add new set', function () {
+    const setsWithNewSet = SetsRepository.createSet(testNewSetName);
+    const lastIndex = setsWithNewSet.mockData.length - 1;
+
+    expect(setsWithNewSet.mockData[lastIndex].name).toBe(testNewSetName);
+  });
+});
+
+describe('deleteSet', function () {
+  it('should return numbers of deleted sets', function () {
+    const deletedCount = SetsRepository.deleteSet(testId);
+    expect(deletedCount).toBe(1);
+  });
+
+  it('should return 0 if nothing to delete', function () {
+    const deletedCount = SetsRepository.deleteSet(testNotFoundId);
+    expect(deletedCount).toBe(0);
+  });
+});
+
+describe('addCharacterToSet', function () {
+  it('should relate character with methods $relatedQuery and relate, and return set', async function () {
+    const set = await SetsRepository.addCharacterToSet(Set, MockBaseModel);
+
+    expect(Set.$relatedQuery).toBeCalled();
+    expect(Set.relate).toBeCalled();
+    expect(set).toStrictEqual(testSet);
+  });
+});
+
+describe('removeCharacterFromSet', function () {
+  it('should unrelate character with methods $relatedQuery and unrelate and return set', async function () {
+    const set = await SetsRepository.removeCharacterFromSet(Set, MockBaseModel);
+
+    expect(Set.$relatedQuery).toBeCalled();
+    expect(Set.unrelate).toBeCalled();
+    expect(set).toStrictEqual(testSet);
   });
 });

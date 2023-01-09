@@ -1,47 +1,37 @@
 const Character = require('../models/characters');
+const MockBaseModel = require('../models/__mocks__/base-model');
 const { CharactersRepository } = require('./characters');
 
 jest.mock('../models/base-model');
 
-const mockId = 1;
+const testId = 1;
+const testSet = MockBaseModel.mockData.find((set) => set.id === testId);
 
 describe('getCharacters', function () {
-  it('should call query builder methods withGraphFetched and page', function () {
-    CharactersRepository.getCharacters();
-
-    expect(Character.query).toBeCalled();
-    expect(Character.withGraphFetched).toBeCalled();
-    expect(Character.page).toBeCalled();
+  it('should results and total characters count', function () {
+    const { results, total } = CharactersRepository.getCharacters(1, 20);
+    expect(results).toStrictEqual(MockBaseModel.mockData);
+    expect(total).toBe(MockBaseModel.mockData.length);
   });
 });
 
 describe('getCharacterById', function () {
   it('should call query builder methods withGraphFetched and findById', function () {
-    CharactersRepository.getCharacterById(mockId);
-
-    expect(Character.query).toBeCalled();
-    expect(Character.withGraphFetched).toBeCalled();
-    expect(Character.findById).toBeCalledWith(mockId);
-  });
-});
-
-describe('countUnused', function () {
-  it('should call query builder methods where and resultSize', function () {
-    CharactersRepository.countUnused();
-
-    expect(Character.query).toBeCalled();
-    expect(Character.where).toBeCalled();
-    expect(Character.resultSize).toBeCalled();
+    const character = CharactersRepository.getCharacterById(testId);
+    expect(character).toStrictEqual(testSet);
   });
 });
 
 describe('markCharacterAsUsed', function () {
-  const unused = { unused: false };
+  it('should return updated character, unused === false', function () {
+    const updatedCharacter = CharactersRepository.markCharacterAsUsed(testId);
+    expect(updatedCharacter.unused).toBeFalsy();
+  });
+});
 
-  it('should call query builder method patchAndFetchById', function () {
-    CharactersRepository.markCharacterAsUsed(mockId);
-
-    expect(Character.query).toBeCalled();
-    expect(Character.patchAndFetchById).toBeCalledWith(mockId, unused);
+describe('countUnused', function () {
+  it('should return number of unused characters', function () {
+    const unusedCount = CharactersRepository.countUnused();
+    expect(unusedCount).toBe(1);
   });
 });
