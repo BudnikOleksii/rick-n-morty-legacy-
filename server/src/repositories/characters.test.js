@@ -3,6 +3,8 @@ const { CharactersRepository } = require('./characters');
 
 jest.mock('../models/base-model');
 
+const mockId = 1;
+
 describe('getCharacters', function () {
   it('should call query builder methods withGraphFetched and page', function () {
     CharactersRepository.getCharacters();
@@ -15,11 +17,11 @@ describe('getCharacters', function () {
 
 describe('getCharacterById', function () {
   it('should call query builder methods withGraphFetched and findById', function () {
-    CharactersRepository.getCharacterById();
+    CharactersRepository.getCharacterById(mockId);
 
     expect(Character.query).toBeCalled();
     expect(Character.withGraphFetched).toBeCalled();
-    expect(Character.findById).toBeCalled();
+    expect(Character.findById).toBeCalledWith(mockId);
   });
 });
 
@@ -34,10 +36,12 @@ describe('countUnused', function () {
 });
 
 describe('markCharacterAsUsed', function () {
+  const unused = { unused: false };
+
   it('should call query builder method patchAndFetchById', function () {
-    CharactersRepository.markCharacterAsUsed();
+    CharactersRepository.markCharacterAsUsed(mockId);
 
     expect(Character.query).toBeCalled();
-    expect(Character.patchAndFetchById).toBeCalled();
+    expect(Character.patchAndFetchById).toBeCalledWith(mockId, unused);
   });
 });

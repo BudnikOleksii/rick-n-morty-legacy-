@@ -24,12 +24,15 @@ describe('getAllSets', function () {
 });
 
 describe('getSet', function () {
+  const columnName = 'id';
+  const value = 1;
+
   it('should call query builder methods withGraphFetched and findOne', function () {
-    SetsRepository.getSet();
+    SetsRepository.getSet(columnName, value);
 
     expect(Set.query).toBeCalled();
     expect(Set.withGraphFetched).toBeCalled();
-    expect(Set.findOne).toBeCalled();
+    expect(Set.findOne).toBeCalledWith(columnName, value);
   });
 });
 
@@ -43,11 +46,13 @@ describe('createSet', function () {
 });
 
 describe('deleteSet', function () {
+  const id = 1;
+
   it('should call query builder method deleteById', function () {
-    SetsRepository.deleteSet();
+    SetsRepository.deleteSet(id);
 
     expect(Set.query).toBeCalled();
-    expect(Set.deleteById).toBeCalled();
+    expect(Set.deleteById).toBeCalledWith(id);
   });
 });
 
