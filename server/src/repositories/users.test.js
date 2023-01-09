@@ -1,92 +1,69 @@
 const User = require('../models/users');
+const MockUser = require('../models/__mocks__/users');
 const { UserRepository } = require('./users');
-const { RoleRepository } = require('./roles');
-jest.mock('../models/users', () => ({
-  query: jest.fn().mockReturnThis(),
-  where: jest.fn().mockReturnThis(),
-  whereNotDeleted: jest.fn().mockReturnThis(),
-  withGraphFetched: jest.fn().mockReturnThis(),
-  insertAndFetch: jest.fn().mockReturnThis(),
-  $relatedQuery: jest.fn().mockReturnThis(),
-  relate: jest.fn().mockReturnThis(),
-  patch: jest.fn().mockReturnThis(),
-  findById: jest.fn().mockReturnThis(),
-  deleteById: jest.fn(),
-  page: jest.fn(),
-  first: jest.fn(),
-}));
 
+jest.mock('../models/users');
 jest.mock('./roles');
-const mockId = 1;
-const mockRoles = 'roles';
-const mockChats = 'chats';
+
+const testId = 1;
+const testUser = MockUser.mockData.find((user) => user.id === testId);
 
 describe('getAllUsers', function () {
-  it('should call query builder methods whereNotDeleted, withGraphFetched and page', function () {
-    UserRepository.getAllUsers(1, 20);
-
-    expect(User.query).toBeCalled();
-    expect(User.whereNotDeleted).toBeCalled();
-    expect(User.withGraphFetched).toBeCalledWith(mockRoles);
-    expect(User.page).toBeCalled();
+  it('should return results and total users count', function () {
+    const { results, total } = UserRepository.getAllUsers(1, 20);
+    expect(results).toStrictEqual(MockUser.mockData);
+    expect(total).toBe(MockUser.mockData.length);
   });
 });
 
 describe('getExistingUser', function () {
-  it('should call query builder methods whereNotDeleted, withGraphFetched and first', function () {
-    UserRepository.getExistingUser('id', 1);
-
-    expect(User.query).toBeCalled();
-    expect(User.whereNotDeleted).toBeCalled();
-    expect(User.withGraphFetched).toBeCalledWith(mockRoles);
-    expect(User.first).toBeCalled();
+  it('should return user', function () {
+    const user = UserRepository.getExistingUser('id', testId);
+    expect(user).toStrictEqual(testUser);
   });
 });
 
 describe('createUser', function () {
-  it('should call query builder method insertAndFetch', function () {
-    UserRepository.createUser();
+  it('should return created user', async function () {
+    const newUser = await UserRepository.createUser();
+    expect(newUser).toStrictEqual(testUser);
+  });
+});
 
-    expect(User.query).toBeCalled();
-    expect(User.insertAndFetch).toBeCalled();
+describe('addNewRole', function () {
+  it('should return relate role with methods $relatedQuery,relate and return updated user', async function () {
+    const updatedUser = await UserRepository.addNewRole(User, MockUser);
+
+    expect(updatedUser).toStrictEqual(testUser);
+    expect(User.$relatedQuery).toBeCalled();
+    expect(User.relate).toBeCalled();
   });
 });
 
 describe('updateUser', function () {
-  it('should call query builder methods patch and findById with correct id', function () {
-    UserRepository.updateUser(mockId);
-
-    expect(User.query).toBeCalled();
-    expect(User.patch).toBeCalled();
-    expect(User.findById).toBeCalledWith(mockId);
+  it('should return updated user', async function () {
+    const updatedUser = await UserRepository.updateUser(testId);
+    expect(updatedUser).toStrictEqual(testUser);
   });
 });
 
 describe('deleteUser', function () {
-  it('should call query builder method deleteById with correct id', function () {
-    UserRepository.deleteUser(mockId);
-
-    expect(User.query).toBeCalled();
-    expect(User.deleteById).toBeCalledWith(mockId);
+  it('should return count of deleted users', function () {
+    const deletedCount = UserRepository.deleteUser(testId);
+    expect(deletedCount).toBe(1);
   });
 });
 
 describe('getUserChats', function () {
-  it('should call query builder methods findById and withGraphFetched with correct args', function () {
-    UserRepository.getUserChats(mockId);
-
-    expect(User.query).toBeCalled();
-    expect(User.findById).toBeCalledWith(mockId);
-    expect(User.withGraphFetched).toBeCalledWith(mockChats);
+  it('should return user with chats', function () {
+    const user = UserRepository.getUserChats(testId);
+    expect(user).toStrictEqual(testUser);
   });
 });
 
 describe('updateLastSeen', function () {
-  it('should call query builder method patch and findById', function () {
-    UserRepository.updateLastSeen(mockId);
-
-    expect(User.query).toBeCalled();
-    expect(User.patch).toBeCalled();
-    expect(User.findById).toBeCalledWith(mockId);
+  it('should update and return user', function () {
+    const user = UserRepository.updateLastSeen(testId);
+    expect(user).toStrictEqual(testUser);
   });
 });

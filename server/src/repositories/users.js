@@ -39,7 +39,7 @@ const addNewRole = async (user, role) => {
 };
 
 const getUserChats = (id) => {
-  return User.query().findById(id).withGraphFetched('chats');
+  return User.query().where('id', id).withGraphFetched('chats').first();
 };
 
 const updateLastSeen = (id, ipAddress) => User.query().patch({ ip: ipAddress }).findById(id);

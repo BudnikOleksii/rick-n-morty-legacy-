@@ -1,4 +1,3 @@
-const Character = require('../models/characters');
 const MockBaseModel = require('../models/__mocks__/base-model');
 const { CharactersRepository } = require('./characters');
 
@@ -8,7 +7,7 @@ const testId = 1;
 const testSet = MockBaseModel.mockData.find((set) => set.id === testId);
 
 describe('getCharacters', function () {
-  it('should results and total characters count', function () {
+  it('should return results and total characters count', function () {
     const { results, total } = CharactersRepository.getCharacters(1, 20);
     expect(results).toStrictEqual(MockBaseModel.mockData);
     expect(total).toBe(MockBaseModel.mockData.length);
