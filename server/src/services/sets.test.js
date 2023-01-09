@@ -1,9 +1,9 @@
-const { BadRequestError } = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 const { SetsRepository } = require('../repositories/sets');
 const { SetsService } = require('./sets');
 const { mockData } = require('../repositories/__mocks__/sets').SetsRepository;
 
-const { mockChatsFromDB } = mockData;
+const { mockSet, mockSetsFromDB } = mockData;
 
 jest.mock('../repositories/sets');
 describe('getSets', function () {
@@ -22,7 +22,7 @@ describe('getSets', function () {
   it('should return correct info object', async function () {
     const { info } = await SetsService.getSets(page, limit, endpoint);
 
-    expect(info.total).toBe(mockChatsFromDB.total);
+    expect(info.total).toBe(mockSetsFromDB.total);
     expect(info.next).toBeNull();
     expect(info.prev).toBeNull();
     expect(info.pages).toBe(1);
@@ -31,6 +31,18 @@ describe('getSets', function () {
   it('should return an array of chats', async function () {
     const { results } = await SetsService.getSets(page, limit, endpoint);
 
-    expect(results).toStrictEqual(mockChatsFromDB.results);
+    expect(results).toStrictEqual(mockSetsFromDB.results);
+  });
+});
+describe('getSet', function () {
+  it('should not call SetsRepository.getSets if limit incorrect and throw BadRequestError', async function () {
+    expect.assertions(1);
+    await expect(SetsService.getSet('name', 'not found set')).rejects.toThrow(NotFoundError);
+  });
+
+  it('should return set', async function () {
+    const set = await SetsService.getSet('name', mockSet.name);
+
+    expect(set).toStrictEqual(mockSet);
   });
 });

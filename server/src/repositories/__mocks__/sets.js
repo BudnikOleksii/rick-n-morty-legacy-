@@ -1,14 +1,17 @@
-const mockChat = { id: 1, name: 'Rick and Morty main', users: [{ id: 1 }] };
-const mockChats = [mockChat];
-const mockChatsFromDB = {
-  results: mockChats,
-  total: mockChats.length,
+const mockCharacter = { id: 1 };
+const mockSet = { id: 1, name: 'Rick and Morty set', characters: [mockCharacter] };
+const mockSets = [mockSet];
+const mockSetsFromDB = {
+  results: mockSets,
+  total: mockSets.length,
 };
 
 module.exports.SetsRepository = {
-  getSets: jest.fn(() => mockChatsFromDB),
+  getSets: jest.fn(() => mockSetsFromDB),
+  getSet: jest.fn((columnName, value) => mockSets.find((set) => set[columnName] === value)),
   mockData: {
-    mockChats,
-    mockChatsFromDB,
+    mockSet,
+    mockSets,
+    mockSetsFromDB,
   },
 };
