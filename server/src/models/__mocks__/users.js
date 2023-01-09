@@ -1,5 +1,5 @@
-const mockUser = { id: 1, name: 'first', unused: true };
-const mockUser2 = { id: 2, name: 'second', unused: false };
+const mockUser = { id: 1, username: 'admin' };
+const mockUser2 = { id: 2, username: 'user' };
 
 class User {}
 
