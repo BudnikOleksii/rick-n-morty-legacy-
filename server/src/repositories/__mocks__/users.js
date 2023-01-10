@@ -12,12 +12,13 @@ const mockUserFromDB = {
   rating: 0,
   registration_date: '2022-12-26T07:20:51.000Z',
   last_visit_date: '2023-01-04T11:24:33.000Z',
-  ip: '127.0.0.1',
+  ip: mockIp,
   activated: false,
   deleted_at: null,
   stripe_account_id: null,
   roles: [mockAdminRole],
   activation_link: '12345678',
+  balance: 0,
 };
 
 const mockChat = { id: 1, name: 'Rick and Morty main', users: [mockUserFromDB] };
@@ -45,6 +46,7 @@ const mockNewUser = {
   deleted_at: null,
   stripe_account_id: null,
   roles: [mockUserRole],
+  balance: 0,
 };
 
 const mockFindUserById = (id) => mockUsers.find((user) => user.id === id);
@@ -93,6 +95,7 @@ module.exports.UserRepository = {
     }
   }),
   mockData: {
+    mockUsers,
     mockNewUser,
     mockNewDate,
     mockNewUserData,
