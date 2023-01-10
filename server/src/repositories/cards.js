@@ -14,10 +14,10 @@ const getCardById = (id) => {
     .findById(id);
 };
 
-const createCard = async (character) => {
-  const createdCard = await Card.query().insert({ character_id: character.id });
-
-  return getCardById(createdCard.id);
+const createCard = (character) => {
+  return Card.query()
+    .insertAndFetch({ character_id: character.id })
+    .withGraphFetched('[character.[species, type, origin, location, episodes], owner]');
 };
 
 const changeOwner = async (card, owner) => {

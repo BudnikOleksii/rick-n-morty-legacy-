@@ -12,7 +12,7 @@ const mockUserFromDB = {
   rating: 0,
   registration_date: '2022-12-26T07:20:51.000Z',
   last_visit_date: '2023-01-04T11:24:33.000Z',
-  ip: '127.0.0.1',
+  ip: mockIp,
   activated: false,
   deleted_at: null,
   stripe_account_id: null,

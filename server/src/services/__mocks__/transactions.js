@@ -1,5 +1,5 @@
 const mockUserBalance = {
-  balance: 100,
+  balance: 0,
 };
 
 module.exports.TransactionService = {
