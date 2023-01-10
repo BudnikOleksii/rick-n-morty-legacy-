@@ -20,28 +20,29 @@ describe('getCards', function () {
 describe('getCardById', function () {
   it('should return card if found', function () {
     const card = CardsRepository.getCardById(Card.id);
-    expect(card).toStrictEqual(testCard);
+    expect(card.mockResults).toStrictEqual(testCard);
   });
 
   it('should return undefined if card not found', function () {
     const card = CardsRepository.getCardById(11);
-    expect(card).toBeUndefined();
+    expect(card.mockResults).toBeUndefined();
   });
 });
 
 describe('createCard', function () {
   it('should return query with new card', function () {
     const cardsQuery = CardsRepository.createCard({ id: testCharacterId });
-    const lastIndex = cardsQuery.mockData.length - 1;
-
-    expect(cardsQuery.mockData[lastIndex].character_id).toBe(testCharacterId);
+    expect(cardsQuery.mockResults.character_id).toBe(testCharacterId);
   });
 });
 
 describe('changeOwner', function () {
-  it('should return card', async function () {
-    const card = await CardsRepository.changeOwner(Card, { id: 1 });
-    expect(card).toStrictEqual(testCard);
+  it('should relate new owner', async function () {
+    const newOwner = { id: 1 };
+    CardsRepository.changeOwner(Card, newOwner);
+
+    expect(Card.$relatedQuery).toBeCalledWith('owner');
+    expect(Card.relate).toBeCalledWith(newOwner);
   });
 });
 
@@ -56,12 +57,12 @@ describe('getUserCards', function () {
 describe('getAllUserCards', function () {
   it('should return query with all user cards', function () {
     const cards = CardsRepository.getAllUserCards(testUserId);
-    expect(cards.mockData).toStrictEqual(testUserCards);
+    expect(cards.mockResults).toStrictEqual(testUserCards);
   });
 
   it('should return empty array if user dont have any card', function () {
     const cards = CardsRepository.getAllUserCards(5);
-    const userCards = cards.mockData;
+    const userCards = cards.mockResults;
     expect(Array.isArray(userCards)).toBeTruthy();
     expect(userCards.length).toBe(0);
   });

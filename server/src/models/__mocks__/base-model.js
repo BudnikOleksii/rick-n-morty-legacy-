@@ -13,11 +13,15 @@ BaseModel.mockReturnValue = (value) => {
   returnValue = value;
 };
 BaseModel.mockData = [mockEntity, mockEntity2];
+BaseModel.mockResults = [mockEntity, mockEntity2];
 BaseModel.id = 1;
 
-BaseModel.query = jest.fn().mockReturnThis();
+BaseModel.query = jest.fn(function () {
+  this.mockResults = this.mockData;
+  return this;
+});
 BaseModel.where = jest.fn(function (columnName, value) {
-  this.mockData = this.mockData.filter((entity) => entity[columnName] === value);
+  this.mockResults = this.mockData.filter((entity) => entity[columnName] === value);
 
   return this;
 });
@@ -25,10 +29,10 @@ BaseModel.whereNotDeleted = jest.fn().mockReturnThis();
 BaseModel.withGraphFetched = jest.fn().mockReturnThis();
 BaseModel.insert = jest.fn().mockReturnThis();
 BaseModel.insertAndFetch = jest.fn(function (data) {
-  this.mockData.push({
+  this.mockResults = {
     id: this.mockData.length + 1,
     ...data,
-  });
+  };
 
   return this;
 });
@@ -57,7 +61,9 @@ BaseModel.findOne = jest.fn(function (columnName, value) {
   return this.mockData.find((entity) => entity[columnName] === value);
 });
 BaseModel.findById = jest.fn(function (id) {
-  return this.mockData.find((entity) => entity.id === id);
+  this.mockResults = this.mockData.find((entity) => entity.id === id);
+
+  return this;
 });
 BaseModel.deleteById = jest.fn(function (id) {
   const deleted = this.mockData.find((entity) => entity.id === id);

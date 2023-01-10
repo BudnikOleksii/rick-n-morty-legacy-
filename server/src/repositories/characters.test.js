@@ -17,7 +17,7 @@ describe('getCharacters', function () {
 describe('getCharacterById', function () {
   it('should call query builder methods withGraphFetched and findById', function () {
     const character = CharactersRepository.getCharacterById(testId);
-    expect(character).toStrictEqual(testSet);
+    expect(character.mockResults).toStrictEqual(testSet);
   });
 });
 
@@ -31,6 +31,6 @@ describe('markCharacterAsUsed', function () {
 describe('countUnused', function () {
   it('should return number of unused characters', function () {
     const unusedCount = CharactersRepository.countUnused();
-    expect(unusedCount).toBe(1);
+    expect(unusedCount).toBe(2);
   });
 });

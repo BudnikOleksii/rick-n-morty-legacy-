@@ -48,10 +48,8 @@ describe('getSet', function () {
 
 describe('createSet', function () {
   it('should add new set', function () {
-    const setsWithNewSet = SetsRepository.createSet(testNewSetName);
-    const lastIndex = setsWithNewSet.mockData.length - 1;
-
-    expect(setsWithNewSet.mockData[lastIndex].name).toBe(testNewSetName);
+    const sets = SetsRepository.createSet(testNewSetName);
+    expect(sets.mockResults.name).toBe(testNewSetName);
   });
 });
 
