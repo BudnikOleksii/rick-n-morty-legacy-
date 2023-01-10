@@ -26,6 +26,7 @@ BaseModel.where = jest.fn(function (columnName, value) {
   return this;
 });
 BaseModel.whereNotDeleted = jest.fn().mockReturnThis();
+BaseModel.whereExists = jest.fn().mockReturnThis();
 BaseModel.withGraphFetched = jest.fn().mockReturnThis();
 BaseModel.insert = jest.fn().mockReturnThis();
 BaseModel.insertAndFetch = jest.fn(function (data) {
@@ -45,6 +46,7 @@ BaseModel.patchAndFetchById = jest.fn(function (id, data) {
 });
 BaseModel.orderBy = jest.fn().mockReturnThis();
 BaseModel.$relatedQuery = jest.fn().mockReturnThis();
+BaseModel.relatedQuery = jest.fn().mockReturnThis();
 BaseModel.relate = jest.fn().mockReturnThis();
 BaseModel.unrelate = jest.fn().mockReturnThis();
 BaseModel.startTransaction = jest.fn();
