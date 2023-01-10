@@ -1,11 +1,12 @@
 const { Model } = require('objection');
+const BaseModel = require('./base-model');
 const Species = require('./species');
 const Type = require('./types');
 const Location = require('./locations');
 const Episode = require('./episodes');
 const Sets = require('./sets');
 
-class Character extends Model {
+class Character extends BaseModel {
   static get tableName() {
     return 'characters';
   }

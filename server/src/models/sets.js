@@ -1,6 +1,7 @@
 const { Model } = require('objection');
+const BaseModel = require('./base-model');
 
-class Set extends Model {
+class Set extends BaseModel {
   static get tableName() {
     return 'sets';
   }
@@ -16,11 +17,11 @@ class Set extends Model {
           from: 'sets.id',
           through: {
             from: 'sets_characters.set_id',
-            to: 'sets_characters.character_id'
+            to: 'sets_characters.character_id',
           },
-          to: 'characters.id'
-        }
-      }
+          to: 'characters.id',
+        },
+      },
     };
   }
 
