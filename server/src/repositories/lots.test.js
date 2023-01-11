@@ -5,7 +5,6 @@ const Episode = require('../models/__mocks__/episodes');
 jest.mock('../models/lots');
 
 const testId = 1;
-const testLot = Lot.mockData.find((lot) => lot.id === testId);
 const testCardId = 5;
 const testUser = { id: 1, username: 'admin' };
 
@@ -50,7 +49,16 @@ describe('getLot', function () {
 describe('createLot', function () {
   it('should create lot and return query with new lot', function () {
     const lot = LotsRepository.createLot({ card_id: testCardId });
-    expect(lot.mockResults.card_id).toBe(testCardId);
+    expect(lot.id).toBe(testId);
+  });
+});
+
+describe('updateLot', function () {
+  const payload = { current_price: 1000 };
+  it('should update and return lot', async function () {
+    const lot = await LotsRepository.updateLot(testId, testUser, payload);
+    expect(Lot.patchAndFetchById).toBeCalledWith(testId, payload);
+    expect(lot.id).toBe(testId);
   });
 });
 
