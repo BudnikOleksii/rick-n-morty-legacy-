@@ -59,9 +59,7 @@ const createLot = (payload) => {
 const updateLot = async (id, user, payload) => {
   const lot = await Lot.query().patchAndFetchById(id, payload);
 
-  if (process.env.NODE_ENV !== 'test') {
-    await lot.$relatedQuery('lastPersonToBet').relate(user);
-  }
+  await lot.$relatedQuery('lastPersonToBet').relate(user);
 
   return getLot('id', id);
 };
