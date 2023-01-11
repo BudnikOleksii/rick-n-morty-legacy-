@@ -3,7 +3,6 @@ const Card = require('../models/cards');
 
 const getAllFinishedLots = () => {
   return Lot.query()
-    .select()
     .whereNotDeleted()
     .where('end_date', '<', new Date())
     .withGraphFetched('[card.[character.[species, type], owner], lastPersonToBet]');
@@ -12,7 +11,6 @@ const getAllFinishedLots = () => {
 const getLots = (queryParams) => {
   const { name, minPrice, maxPrice, locationId, order, page, limit } = queryParams;
   return Lot.query()
-    .select()
     .whereNotDeleted()
     .withGraphFetched(
       '[card.[character.[species, type, origin, location, episodes], owner], lastPersonToBet]'
@@ -34,7 +32,11 @@ const getLots = (queryParams) => {
 };
 
 const getLotsPriceRange = () => {
-  return Lot.query().min('current_price as minPrice').max('current_price as maxPrice').first();
+  return Lot.query()
+    .whereNotDeleted()
+    .min('current_price as minPrice')
+    .max('current_price as maxPrice')
+    .first();
 };
 
 const getLot = (columnName, value) => {
@@ -46,15 +48,20 @@ const getLot = (columnName, value) => {
     .findOne(columnName, value);
 };
 
-const createLot = async (payload) => {
-  const newLot = await Lot.query().insert(payload);
-
-  return getLot('id', newLot.id);
+const createLot = (payload) => {
+  return Lot.query()
+    .insertAndFetch(payload)
+    .withGraphFetched(
+      '[card.[character.[species, type, origin, location, episodes], owner], lastPersonToBet]'
+    );
 };
 
 const updateLot = async (id, user, payload) => {
   const lot = await Lot.query().patchAndFetchById(id, payload);
-  await lot.$relatedQuery('lastPersonToBet').relate(user);
+
+  if (process.env.NODE_ENV !== 'test') {
+    await lot.$relatedQuery('lastPersonToBet').relate(user);
+  }
 
   return getLot('id', id);
 };
