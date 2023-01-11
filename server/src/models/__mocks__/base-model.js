@@ -13,22 +13,31 @@ BaseModel.mockReturnValue = (value) => {
   returnValue = value;
 };
 BaseModel.mockData = [mockEntity, mockEntity2];
+BaseModel.mockResults = [mockEntity, mockEntity2];
 BaseModel.id = 1;
 
-BaseModel.query = jest.fn().mockReturnThis();
+BaseModel.query = jest.fn(function () {
+  this.mockResults = this.mockData;
+  return this;
+});
 BaseModel.where = jest.fn(function (columnName, value) {
-  this.mockData = this.mockData.filter((entity) => entity[columnName] === value);
+  if (arguments.length === 3) {
+    return this;
+  }
+  this.mockResults = this.mockData.filter((entity) => entity[columnName] === value);
 
   return this;
 });
 BaseModel.whereNotDeleted = jest.fn().mockReturnThis();
+BaseModel.whereExists = jest.fn().mockReturnThis();
+BaseModel.whereBetween = jest.fn().mockReturnThis();
 BaseModel.withGraphFetched = jest.fn().mockReturnThis();
 BaseModel.insert = jest.fn().mockReturnThis();
 BaseModel.insertAndFetch = jest.fn(function (data) {
-  this.mockData.push({
+  this.mockResults = {
     id: this.mockData.length + 1,
     ...data,
-  });
+  };
 
   return this;
 });
@@ -41,6 +50,7 @@ BaseModel.patchAndFetchById = jest.fn(function (id, data) {
 });
 BaseModel.orderBy = jest.fn().mockReturnThis();
 BaseModel.$relatedQuery = jest.fn().mockReturnThis();
+BaseModel.relatedQuery = jest.fn().mockReturnThis();
 BaseModel.relate = jest.fn().mockReturnThis();
 BaseModel.unrelate = jest.fn().mockReturnThis();
 BaseModel.startTransaction = jest.fn();
@@ -52,12 +62,48 @@ BaseModel.page = jest.fn(function (page, limit) {
     total: this.mockData.length,
   };
 });
-BaseModel.first = jest.fn();
+BaseModel.min = jest.fn(function (columnNameWithAlias) {
+  const columnName = columnNameWithAlias.split(' ')[0];
+  let min = Infinity;
+  this.mockData.forEach((entity) => {
+    if (entity[columnName] < min) {
+      min = entity[columnName];
+    }
+  });
+
+  this.mockResults[0] = {
+    ...this.mockResults[0],
+    min,
+  };
+
+  return this;
+});
+BaseModel.max = jest.fn(function (columnNameWithAlias) {
+  const columnName = columnNameWithAlias.split(' ')[0];
+  let max = -Infinity;
+  this.mockData.forEach((entity) => {
+    if (entity[columnName] > max) {
+      max = entity[columnName];
+    }
+  });
+
+  this.mockResults[0] = {
+    ...this.mockResults[0],
+    max,
+  };
+
+  return this;
+});
+BaseModel.first = jest.fn(function () {
+  return this.mockResults[0];
+});
 BaseModel.findOne = jest.fn(function (columnName, value) {
   return this.mockData.find((entity) => entity[columnName] === value);
 });
 BaseModel.findById = jest.fn(function (id) {
-  return this.mockData.find((entity) => entity.id === id);
+  this.mockResults = this.mockData.find((entity) => entity.id === id);
+
+  return this;
 });
 BaseModel.deleteById = jest.fn(function (id) {
   const deleted = this.mockData.find((entity) => entity.id === id);

@@ -1,5 +1,4 @@
 const Chat = require('../models/chats');
-const User = require('../models/users');
 
 const getChats = (page, limit) => {
   return Chat.query()
