@@ -3,15 +3,12 @@ const { CardsRepository } = require('../repositories/cards');
 const { CardsService } = require('./cards');
 const { mockData } = require('../repositories/__mocks__/cards').CardsRepository;
 const { mockUserFromDB } = require('../repositories/__mocks__/users').UserRepository.mockData;
+const { page, limit, incorrectLimit, notFoundId } = require('./__mocks__/mock-data');
 
 const { mockCardsFromDB, mockCard, mockUserId, mockCards } = mockData;
 const mockUserCards = mockCards.filter((card) => card.owner_id === mockUserId);
 const cardId = mockCard.id;
-const page = 1;
-const limit = 20;
-const incorrectLimit = limit * 1000;
 const endpoint = 'localhost:8080/v1/cards';
-const notFoundId = 0.1;
 
 jest.mock('../repositories/cards');
 jest.mock('../repositories/characters');
@@ -38,8 +35,6 @@ describe('getCards', function () {
 });
 
 describe('getCardById', function () {
-  const incorrectCardId = 100;
-
   it('should throw BadRequestError if incorrect id provided', async function () {
     expect.assertions(2);
     await expect(CardsService.getCardById('invalid id')).rejects.toThrow(BadRequestError);
@@ -48,7 +43,7 @@ describe('getCardById', function () {
 
   it('should throw NotFoundError if card not found', async function () {
     expect.assertions(1);
-    await expect(CardsService.getCardById(incorrectCardId)).rejects.toThrow(NotFoundError);
+    await expect(CardsService.getCardById(notFoundId)).rejects.toThrow(NotFoundError);
   });
 
   it('should return card', async function () {

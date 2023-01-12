@@ -2,19 +2,17 @@ const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors')
 const { SetsRepository } = require('../repositories/sets');
 const { SetsService } = require('./sets');
 const { mockData } = require('../repositories/__mocks__/sets').SetsRepository;
+const { mockCharacter } = require('../repositories/__mocks__/characters').CharactersRepository
+  .mockData;
+const { page, limit, incorrectLimit, notFoundId } = require('./__mocks__/mock-data');
 
-const { mockSet, mockSet2, mockSetsFromDB, mockCharacter } = mockData;
+const { mockSet, mockSet2, mockSetsFromDB } = mockData;
 const mockCard = { character: mockCharacter };
 const mockUserCards = [mockCard];
+const endpoint = 'localhost:8080/v1/sets';
 
 jest.mock('../repositories/sets');
-jest.mock('./characters', () => ({
-  CharactersService: {
-    getCharacterById: jest.fn((characterId) =>
-      characterId === mockCharacter.id ? mockCharacter : null
-    ),
-  },
-}));
+jest.mock('../repositories/characters');
 jest.mock('./cards', () => ({
   CardsService: {
     getAllUserCards: jest.fn(() => mockUserCards),
@@ -22,30 +20,21 @@ jest.mock('./cards', () => ({
 }));
 
 describe('getSets', function () {
-  const page = 1;
-  const limit = 20;
-  const endpoint = 'localhost:8080/v1/sets';
-
   it('should not call SetsRepository.getSets if limit incorrect and throw BadRequestError', async function () {
     expect.assertions(2);
-    await expect(SetsService.getSets(page, limit * 1000, endpoint)).rejects.toThrow(
+    await expect(SetsService.getSets(page, incorrectLimit, endpoint)).rejects.toThrow(
       BadRequestError
     );
     expect(SetsRepository.getSets).toHaveBeenCalledTimes(0);
   });
 
-  it('should return correct info object', async function () {
-    const { info } = await SetsService.getSets(page, limit, endpoint);
+  it('should return correct info object and an array of sets', async function () {
+    const { info, results } = await SetsService.getSets(page, limit, endpoint);
 
     expect(info.total).toBe(mockSetsFromDB.total);
     expect(info.next).toBeNull();
     expect(info.prev).toBeNull();
     expect(info.pages).toBe(1);
-  });
-
-  it('should return an array of sets', async function () {
-    const { results } = await SetsService.getSets(page, limit, endpoint);
-
     expect(results).toStrictEqual(mockSetsFromDB.results);
   });
 });
@@ -58,7 +47,6 @@ describe('getSet', function () {
 
   it('should return set', async function () {
     const set = await SetsService.getSet('name', mockSet.name);
-
     expect(set).toStrictEqual(mockSet);
   });
 });
@@ -103,11 +91,11 @@ describe('deleteSet', function () {
 
   it('should throw NotFoundError if set not found', async function () {
     expect.assertions(1);
-    await expect(SetsService.deleteSet(3)).rejects.toThrow(NotFoundError);
+    await expect(SetsService.deleteSet(notFoundId)).rejects.toThrow(NotFoundError);
   });
 
   it('should return count of deleted sets', async function () {
-    const deleted = await SetsService.deleteSet(1);
+    const deleted = await SetsService.deleteSet(mockSet.id);
     expect(deleted).toBe(1);
   });
 });
