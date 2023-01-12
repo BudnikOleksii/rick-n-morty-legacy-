@@ -28,6 +28,13 @@ BaseModel.where = jest.fn(function (columnName, value) {
 
   return this;
 });
+BaseModel.orWhere = jest.fn(function (columnName, value) {
+  const prevResults = this.mockResults;
+  const newResults = this.mockData.filter((entity) => entity[columnName] === value);
+  this.mockResults = [...prevResults, newResults];
+
+  return this;
+});
 BaseModel.whereNotDeleted = jest.fn().mockReturnThis();
 BaseModel.whereExists = jest.fn().mockReturnThis();
 BaseModel.whereBetween = jest.fn().mockReturnThis();
@@ -43,10 +50,12 @@ BaseModel.insertAndFetch = jest.fn(function (data) {
 });
 BaseModel.patchAndFetchById = jest.fn(function (id, data) {
   const entity = this.findById(id);
-  return {
+  this.mockResults = {
     ...entity,
     ...data,
   };
+
+  return this;
 });
 BaseModel.orderBy = jest.fn().mockReturnThis();
 BaseModel.$relatedQuery = jest.fn().mockReturnThis();
@@ -94,6 +103,18 @@ BaseModel.max = jest.fn(function (columnNameWithAlias) {
 
   return this;
 });
+BaseModel.sum = jest.fn(function (columnNameWithAlias) {
+  const columnName = columnNameWithAlias.split(' ')[0];
+  const prevResults = this.mockResults[0];
+  const prevSum = prevResults.sum || 0;
+  const sum = prevSum + this.mockResults.reduce((acc, entity) => acc + entity[columnName], 0);
+  this.mockResults[0] = {
+    ...prevResults,
+    sum,
+  };
+
+  return this;
+});
 BaseModel.first = jest.fn(function () {
   return this.mockResults[0];
 });
@@ -110,6 +131,7 @@ BaseModel.deleteById = jest.fn(function (id) {
 
   return deleted ? 1 : 0;
 });
+BaseModel.delete = jest.fn().mockReturnThis();
 BaseModel.resultSize = jest.fn(function () {
   return this.mockData.length;
 });

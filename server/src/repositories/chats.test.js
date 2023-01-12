@@ -23,7 +23,7 @@ describe('getChat', function () {
 });
 
 describe('getChatById', function () {
-  it('should return find by id', function () {
+  it('should return query with chat find by id', function () {
     const chat = ChatsRepository.getChatById(testId);
     expect(chat.mockResults).toStrictEqual(testChat);
   });
