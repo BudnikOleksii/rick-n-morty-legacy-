@@ -1,15 +1,15 @@
 const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
-const { mockData } = require('../repositories/__mocks__/chats').ChatsRepository;
-const { page, limit, incorrectLimit, notFoundId } = require('./__mocks__/mock-data');
 const { ChatsService } = require('./chats');
 const { ChatsRepository } = require('../repositories/chats');
-const { SetsService } = require('./sets');
-const { SetsRepository } = require('../repositories/sets');
+const { mockData } = require('../repositories/__mocks__/chats').ChatsRepository;
+const { mockUserFromDB } = require('../repositories/__mocks__/users').UserRepository.mockData;
+const { page, limit, incorrectLimit, notFoundId } = require('./__mocks__/mock-data');
 
 const { mockChats, mockChat, mockUserId } = mockData;
 const endpoint = 'localhost:8080/v1/chats';
 
 jest.mock('../repositories/chats');
+jest.mock('../repositories/users');
 
 describe('getChats', function () {
   it('should not call ChatsRepository.getChats if limit incorrect and throw BadRequestError', async function () {
@@ -101,5 +101,19 @@ describe('getUserChats', function () {
     expect(info.prev).toBeNull();
     expect(info.pages).toBe(1);
     expect(results).toStrictEqual(mockChats);
+  });
+});
+
+describe('toggleUserInChat', function () {
+  it('should return user without chat if user was in this chat', async function () {
+    const userWithChats = await ChatsService.toggleUserInChat(mockChat.id, mockUserFromDB.id);
+    const isUserHaveChat = userWithChats.chats.some((ch) => ch.id === mockChat.id);
+    expect(isUserHaveChat).toBeFalsy();
+  });
+
+  it('should return user with new chat if user join it', async function () {
+    const userWithChats = await ChatsService.toggleUserInChat(2, mockUserFromDB.id);
+    const isUserHaveChat = userWithChats.chats.some((ch) => ch.id === mockChat.id);
+    expect(isUserHaveChat).toBeTruthy();
   });
 });

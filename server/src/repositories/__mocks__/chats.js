@@ -13,6 +13,14 @@ module.exports.ChatsRepository = {
   getChatById: jest.fn((chatId) => mockChats.find((chat) => chat.id === chatId)),
   createChat: jest.fn((name) => ({ id: mockChats.length + 1, name })),
   getUserChats: jest.fn(() => mockChatsFromDB),
+  removeUserFromChat: jest.fn((chat, user) => ({
+    ...user,
+    chats: user.chats.filter((ch) => ch.id !== chat.id),
+  })),
+  addUserToChat: jest.fn((chat, user) => ({
+    ...user,
+    chats: [...user.chats, chat],
+  })),
   mockData: {
     mockChatsFromDB,
     mockChat,
