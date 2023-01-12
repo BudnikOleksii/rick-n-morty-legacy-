@@ -74,6 +74,7 @@ const getUserChats = async (page, limit, endpoint, userId) => {
 
 module.exports.ChatsService = {
   getChats,
+  getChat,
   getChatById,
   createChat,
   toggleUserInChat,
