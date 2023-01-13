@@ -1,6 +1,5 @@
-const { mockCard, mockCard2, mockCard3 } = require('./cards').CardsRepository.mockData;
+const { mockCard, mockCard2 } = require('./cards').CardsRepository.mockData;
 
-const mockUserId = 2;
 const mockLot = {
   id: 1,
   card_id: 3,

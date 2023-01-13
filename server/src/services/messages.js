@@ -2,7 +2,7 @@ const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
 const { MessagesRepository } = require('../repositories/messages');
-const { BadRequestError, ForbiddenError } = require('../utils/errors/api-errors');
+const { ForbiddenError, NotFoundError } = require('../utils/errors/api-errors');
 const { checkMessageLength } = require('../utils/check-message-length');
 
 const getChatMessages = async (page, limit, endpoint, chatId) => {
@@ -21,7 +21,7 @@ const getMessageById = async (id) => {
   const message = await MessagesRepository.getMessageById(id);
 
   if (!message) {
-    throw new BadRequestError(['Message not found']);
+    throw new NotFoundError(['Message not found']);
   }
 
   return message;

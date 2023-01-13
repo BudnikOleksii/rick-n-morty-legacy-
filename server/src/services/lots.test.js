@@ -1,11 +1,11 @@
 const { BadRequestError, NotFoundError, ForbiddenError } = require('../utils/errors/api-errors');
-const { page, limit, incorrectLimit, notFoundId } = require('./__mocks__/mock-data');
 const { LotsRepository } = require('../repositories/lots');
 const { LotsService } = require('./lots');
 const { CardsService } = require('./cards');
 const { CharactersRepository } = require('../repositories/characters');
 const { TransactionService } = require('./transactions');
 const { auctionFinished } = require('./auction-finished-subject');
+const { page, limit, incorrectLimit, notFoundId } = require('./__mocks__/mock-data');
 const { mockData } = require('../repositories/__mocks__/lots').LotsRepository;
 const { mockCard, mockCard2, mockCard3 } = require('../repositories/__mocks__/cards')
   .CardsRepository.mockData;
