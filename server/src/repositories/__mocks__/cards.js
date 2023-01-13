@@ -1,7 +1,8 @@
 const mockUserId = 2;
-const mockCard = { id: 1, owner_id: mockUserId, character_id: 1 };
-const mockCard2 = { id: 2, owner_id: mockUserId, character_id: 2 };
-const mockCards = [mockCard, mockCard2];
+const mockCard = { id: 1, owner_id: mockUserId, character_id: 1, owner: { id: 1 } };
+const mockCard2 = { id: 2, owner_id: mockUserId, character_id: 2, owner: { id: 2 } };
+const mockCard3 = { id: 3, owner_id: mockUserId, character_id: 3, owner: null };
+const mockCards = [mockCard, mockCard2, mockCard3];
 const mockCardsFromDB = {
   results: mockCards,
   total: mockCards.length,
@@ -24,6 +25,8 @@ module.exports.CardsRepository = {
   mockData: {
     mockCardsFromDB,
     mockCard,
+    mockCard2,
+    mockCard3,
     mockCards,
     mockUserId,
   },
