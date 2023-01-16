@@ -94,7 +94,7 @@ const handleBet = async (lotId, bet, tokenData) => {
   const lot = await getLotById(lotId);
   const { end_date, card, current_price, max_price, min_step, min_action_duration } = lot;
 
-  if (new Date().toLocaleString() > new Date(end_date).toLocaleString()) {
+  if (new Date() > new Date(end_date)) {
     await finishAuction(lot);
     throw new BadRequestError(['Current auction already finished']);
   }

@@ -191,7 +191,7 @@ describe('handleBet', function () {
   });
 
   it('should return lot with new owner and current price', async function () {
-    const bet = 400;
+    const bet = 500;
     const newOwner = mockUsers.find((user) => user.id === adminTokenData.id);
     const lot = await LotsService.handleBet(mockLot2.id, bet, adminTokenData);
 
