@@ -45,7 +45,7 @@ const handleStripePayment = async (userId, amount, token) => {
     await UserService.updateUser(userId, { stripe_account_id: customersAccount.id });
   }
 
-  await stripe.charges.create({
+  return stripe.charges.create({
     source: source.id,
     amount: amount * cardPointsRate,
     currency: stripeCurrency,
@@ -68,10 +68,13 @@ const handleStripeWithdrawal = async (userId, amount) => {
     source_type: 'card',
   });
 
-  console.log(transfer);
+  return transfer;
 };
 
 module.exports.StripeService = {
+  stripe,
+  createCustomer,
+  createAccountForCustomer,
   handleStripePayment,
   handleStripeWithdrawal,
 };
