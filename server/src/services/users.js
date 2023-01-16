@@ -1,11 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const config = require('../../config');
 const { UserRepository } = require('../repositories/users');
-const {
-  BadRequestError,
-  NotFoundError,
-  InternalServerError,
-} = require('../utils/errors/api-errors');
+const { BadRequestError, NotFoundError } = require('../utils/errors/api-errors');
 const bcrypt = require('bcrypt');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkId } = require('../utils/check-id');
@@ -68,10 +64,6 @@ const createUser = async (userData, ip) => {
     ip,
     activation_link: activationLink,
   });
-
-  if (!user) {
-    throw new InternalServerError(['Cannot create user']);
-  }
 
   await MailService.sendActivationMail(login, createActivationLink(activationLink));
 
