@@ -1,5 +1,5 @@
 const config = require('../../config');
-const { BadRequestError, ForbiddenError } = require('../utils/errors/api-errors');
+const { BadRequestError, ForbiddenError, NotFoundError } = require('../utils/errors/api-errors');
 const { createInfoData } = require('../utils/create-info-data');
 const { checkLimitForRequest } = require('../utils/check-limit-for-request');
 const { LotsRepository } = require('../repositories/lots');
@@ -30,7 +30,7 @@ const getLotById = async (id) => {
   const lot = await LotsRepository.getLot('id', id);
 
   if (!lot) {
-    throw new BadRequestError(['Lot not found']);
+    throw new NotFoundError(['Lot not found']);
   }
 
   return lot;
@@ -94,7 +94,7 @@ const handleBet = async (lotId, bet, tokenData) => {
   const lot = await getLotById(lotId);
   const { end_date, card, current_price, max_price, min_step, min_action_duration } = lot;
 
-  if (new Date() > end_date) {
+  if (new Date() > new Date(end_date)) {
     await finishAuction(lot);
     throw new BadRequestError(['Current auction already finished']);
   }
@@ -147,6 +147,7 @@ module.exports.LotsService = {
   getLots,
   getLotById,
   createLot,
+  finishAuction,
   handleBet,
   closeAllFinishedAuctions,
   getLotsPriceRange,
