@@ -53,6 +53,7 @@ const informLotSeller = async (lot) => {
 };
 
 module.exports.MailService = {
+  transporter,
   sendActivationMail,
   informAuctionWinner,
   informLotSeller,

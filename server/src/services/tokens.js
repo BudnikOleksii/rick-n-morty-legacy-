@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config');
 const { generateTokens } = require('../utils/generate-tokens');
 const { TokenRepository } = require('../repositories/tokens');
-const { InternalServerError, UnauthorizedError } = require('../utils/errors/api-errors');
+const { UnauthorizedError } = require('../utils/errors/api-errors');
 
 const { jwtAccessSecret, jwtRefreshSecret } = config.server;
 
@@ -31,14 +31,8 @@ const createTokens = async (userId, roles) => {
   };
 };
 
-const removeToken = async (refreshToken) => {
-  const isTokenDeleted = await TokenRepository.removeRefreshToken(refreshToken);
-
-  if (!isTokenDeleted) {
-    throw new InternalServerError(['Token was not removed']);
-  }
-
-  return isTokenDeleted;
+const removeToken = (refreshToken) => {
+  return TokenRepository.removeRefreshToken(refreshToken);
 };
 
 const validateAccessToken = async (token) => {

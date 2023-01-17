@@ -5,7 +5,7 @@ const updateUserRating = async (userId) => {
   const userCardsCount = (await CardsService.getAllUserCards(userId)).length;
   const userSetsBonus = (await SetsService.getUserSets(userId)).ratingBonus;
 
-  await UserService.updateUser(userId, {
+  return UserService.updateUser(userId, {
     rating: userCardsCount + userSetsBonus,
   });
 };
