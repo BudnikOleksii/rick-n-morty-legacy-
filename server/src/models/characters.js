@@ -70,7 +70,6 @@ class Character extends BaseModel {
     },
   };
 
-  /* istanbul ignore next */
   $formatJson(json) {
     json = super.$formatJson(json);
     delete json.species_id;
